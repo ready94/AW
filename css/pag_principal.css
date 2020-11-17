@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url(../img/coffee.jpg);
+    background-size: 100%;
+}
+
+#scroll {
+    cursor: default;
+    overflow: scroll;
+    height: auto;
+}
