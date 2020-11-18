@@ -9,12 +9,12 @@ html {
     font-family: 'VT323', monospace;
 }
 
-body{
+body {
     background-color: #e0dddd;
     opacity: 0.7;
-    margin:0 auto;
-    max-width:1400px;
-    min-height:1000px;
+    margin: 0 auto;
+    max-width: 1400px;
+    min-height: 1000px;
 }
 
 #scroll {
@@ -23,52 +23,52 @@ body{
     height: auto;
 }
 
-header{
+header {
     border: solid 10px black;
-    
 }
 
-header #titulo{
+ul {
+    list-style: none;
+}
+
+#titulo {
     flex: left;
-    padding: 15px 15px 15px 15px;
+    padding: 15px;
     font-size: x-large;
 }
 
-header #login{
-    
+#login {
     text-align: center;
     border-left: solid 10px black;
-    
+    margin-left: 100px;
 }
 
-#icon{
-    
-    width:6vw;
-    height:6vw;
+#icon {
+    width: 6vw;
+    height: 6vw;
     margin-left: 1200px;
 }
 
-#usu{
-    padding: 15px 15px 15px 15px;
-    
-    margin-left:1400px;
+#usu {
+    padding: 15px;
+    margin-left: 1400px;
     font-size: medium;
 }
 
-.button{
-    background-color:#5b3924;
-    border-radius:4px;
-    border:none;
-    color:#fff;
+.button {
+    background-color: #5b3924;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
     float: left;
-    font-size:14px;
-    
+    font-size: 14px;
     margin-top: 1.5em;
-    padding:10px 36px;
+    padding: 10px 36px;
     text-decoration: none;
-    cursor:pointer;
+    cursor: pointer;
 }
-.button:hover{
-    background-color:#eec170;
-    color:#fff
+
+.button:hover {
+    background-color: #eec170;
+    color: #fff
 }
