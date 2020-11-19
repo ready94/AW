@@ -12,7 +12,7 @@ body{
     background-color: #e0dddd;
     opacity: 0.7;
     margin:0 auto;
-    max-width:1400px;
+    max-width:1250px;
     min-height:600px;
     font-family: 'VT323', monospace;
 }
@@ -54,6 +54,7 @@ input[type=text],input[type=file]{
     padding:10px 36px;
     text-decoration: none;
     cursor:pointer;
+    font-family: 'VT323', monospace;
 }
 .button:hover{
     background-color:#eec170;

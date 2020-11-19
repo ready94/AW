@@ -13,46 +13,65 @@ body {
     background-color: #e0dddd;
     opacity: 0.7;
     margin: 0 auto;
-    max-width: 1400px;
+    max-width: 1300px;
     min-height: 1000px;
 }
 
-#scroll {
-    cursor: default;
-    overflow: scroll;
-    height: auto;
+a{
+    text-decoration: none;
 }
+
+/*------------- header -------------------*/
 
 header {
+    margin:0 auto;
     border: solid 10px black;
+    height: 150px;
 }
 
-ul {
-    list-style: none;
+#cabecera{
+    display: inline-flex;
 }
 
 #titulo {
+    
+    padding: 30px;
+    font-size: 35px;
     flex: left;
-    padding: 15px;
-    font-size: x-large;
+}
+
+#titulo a{
+    text-decoration: none;
+    color:rgb(0, 0, 0);
+    cursor:pointer;
 }
 
 #login {
+    flex: right;
     text-align: center;
     border-left: solid 10px black;
-    margin-left: 100px;
+    height: 150px;
+    margin-left: 150px;
 }
 
 #icon {
-    width: 6vw;
-    height: 6vw;
-    margin-left: 1200px;
+    width: 110px;
+    height: 110px;
+    float: left;
+    padding: 15px;
 }
 
 #usu {
+    font-size: larger;
+    float: right;
+    padding:20px;
+}
+
+#nick{
     padding: 15px;
-    margin-left: 1400px;
-    font-size: medium;
+    text-align: center;
+    color: black;
+    cursor: pointer;
 }
 
 .button {
@@ -62,13 +81,55 @@ ul {
     color: #fff;
     float: left;
     font-size: 14px;
-    margin-top: 1.5em;
+    margin-top: 1px;
+    margin-right: 3px;
     padding: 10px 36px;
-    text-decoration: none;
     cursor: pointer;
+    font-family: 'VT323', monospace;
 }
 
 .button:hover {
     background-color: #eec170;
     color: #fff
+}
+
+/*----------- mantener nav y buscar fijas ------------*/
+
+#fijo{
+    position:sticky;
+    top: 0;
+}
+
+/*----------- barra de navegacion --------------*/
+
+nav{
+    font-family: 'VT323', monospace;
+    display: inline-block;
+    border-left: solid 10px black;
+    border-right:solid 10px black ;
+    border-bottom: solid 10px black;
+    width: 98.5%;
+    height: 2.5em;
+   
+}
+
+nav a:hover{
+    background-color: #eec170;
+    color:#fff;
+}
+
+/*---------- Barra de buscar ------------------*/
+
+#buscar{
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fff;
+    background-image: url(../img/buscar.png);
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+   
 }
