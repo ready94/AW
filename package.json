@@ -1,0 +1,25 @@
+{
+  "name": "aw",
+  "version": "1.0.0",
+  "description": "Practica AW",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ready94/AW.git"
+  },
+  "keywords": [
+    "aw"
+  ],
+  "author": "Bruno y Paula",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ready94/AW/issues"
+  },
+  "homepage": "https://github.com/ready94/AW#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
