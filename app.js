@@ -39,6 +39,7 @@ app.listen(config.port, function(err) {
 });
 
 let daoUser = new DAOUsers(pool);
+let moment = require("moment");
 
 app.use(express.static(ficherosEstaticos));
 app.set("view engine", "ejs");
@@ -101,13 +102,13 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
     var nick = request.body.nick;
     var icon = request.body.icon;
 
-    if(icon.isEmpty())
-        var icon="NULL";
-    if(request.icon!= undefined)
-        icon= request.filter.path;
+    if (icon == undefined)
+        var icon = "NULL";
+    if (request.icon != undefined)
+        icon = request.filter.path;
 
 
-    var usuario= {
+    var usuario = {
         email: email,
         password: password,
         nombre: nick,
@@ -115,20 +116,20 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
         fecha_alta: moment().format("MMM Do YY")
     }
 
-    daoUser.insertUser(usuario,cd_insertUser); //insertamos el usuario en la BBDD
+    daoUser.insertUser(usuario, cd_insertUser); //insertamos el usuario en la BBDD
 
-    function cd_insertUser(err,resultado){
-        if(err){
+    function cd_insertUser(err, resultado) {
+        if (err) {
             response.status(500);
             console.log("ERROR BBDD" + err); //comen
-            if(err.sqlState==2300){
+            if (err.sqlState == 2300) {
                 alert("Email ya existente");
             };
-            response.render("crear_cuenta",{errorMsg: null})
-        }else if ( resultado.length != 0){
+            response.render("crear_cuenta", { errorMsg: null })
+        } else if (resultado.length != 0) {
             console.log("USUARIO CREADO CORRECTAMENTE"); //comen
             response.redirect("/login.html"); // redirecion a la pagina login si no ha habido errores 
-        }else{
+        } else {
             console.log("ERROR AL CREAR EL USUARIO "); //comen
             response.redirect("/login.html");
         }
