@@ -20,13 +20,11 @@
     </header>
 
     <form action="/crearCuenta" method="POST">
-        Correo*: <br><input type="email" name="mail" required><br> Contraseña*:
-        <br>
-        <!--cambiar el minimo de la contraseña y añadir caracteres especiales-->
-        <input type="password" name="pass" minlength="4" required><br> Confirmar contraseña*: <br>
-        <input type="text" name="nick" minlength="4" required><br> Nombre para mostrar (Nick)*:<br>
-        <input type="text" requiered> <br>Imagen del perfil:<br>
-        <input type="file" name="icon" accept="jpeg,png"><br>
+        Correo*: <br><input type="email" name="mail" required><br> 
+        Contraseña*:<br><input type="password" name="pass" minlength="4" required><br>
+        Confirmar contraseña*: <br><input type="text" name="pass_confirm" minlength="4" required><br>
+        Nombre para mostrar (Nick)*:<br><input type="text" name="nick" requiered> <br>
+        Imagen del perfil:<br><input type="file" name="icon" accept="jpeg,png"><br>
         <input class="button" type="submit" value="Crear cuenta">
     </form>
     <input class="button" type="button" value="Iniciar sesion">

@@ -88,6 +88,12 @@ app.get("/logout", function(request, response) { // desconecta el usuario loguea
 
 // CREAR CUENTA
 
+// Retorna un entero aleatorio entre min (incluido) y max (excluido)
+// ¡Usando Math.round() te dará una distribución no-uniforme!
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
 app.get("/crear_cuenta.html", function(request, response) {
 
     response.status(200);
@@ -99,13 +105,20 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
 
     var email = request.body.mail;
     var password = request.body.pass;
+    var password2 = request.body.pass_confirm;
     var nick = request.body.nick;
     var icon = request.body.icon;
 
-    if (icon == undefined)
-        var icon = "NULL";
+    if (request.icon == undefined){
+     
+        icon= "../public/img/icon"+ getRandom(1,10)+ ".png";
+    }
+        
     if (request.icon != undefined)
         icon = request.filter.path;
+
+    if(password!=password2) //to do
+        password= "";
 
 
     var usuario = {
@@ -113,7 +126,7 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
         password: password,
         nombre: nick,
         imagen: icon,
-        fecha_alta: moment().format("MMM Do YY")
+        fecha_alta: new Date()
     }
 
     daoUser.insertUser(usuario, cd_insertUser); //insertamos el usuario en la BBDD
