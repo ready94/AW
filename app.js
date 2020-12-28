@@ -8,6 +8,7 @@ const fs = require("fs");
 const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
 const expressValidator = require("express-validator");
+const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
 
@@ -83,6 +84,59 @@ app.get("/logout", function(request, response) { // desconecta el usuario loguea
     response.redirect("/login.html");
 });
 
+
+// CREAR CUENTA
+
+app.get("/crear_cuenta.html", function(request, response) {
+
+    response.status(200);
+    response.render("crear_cuenta", { errorMsg: null }); // renderiza la pagina login.ejs
+
+});
+
+app.post("/crearCuenta", function(request, response) { // peticion a la view login.ejs
+
+    var email = request.body.mail;
+    var password = request.body.pass;
+    var nick = request.body.nick;
+    var icon = request.body.icon;
+
+    if(icon.isEmpty())
+        var icon="NULL";
+    if(request.icon!= undefined)
+        icon= request.filter.path;
+
+
+    var usuario= {
+        email: email,
+        password: password,
+        nombre: nick,
+        imagen: icon,
+        fecha_alta: moment().format("MMM Do YY")
+    }
+
+    daoUser.insertUser(usuario,cd_insertUser); //insertamos el usuario en la BBDD
+
+    function cd_insertUser(err,resultado){
+        if(err){
+            response.status(500);
+            console.log("ERROR BBDD" + err); //comen
+            if(err.sqlState==2300){
+                alert("Email ya existente");
+            };
+            response.render("crear_cuenta",{errorMsg: null})
+        }else if ( resultado.length != 0){
+            console.log("USUARIO CREADO CORRECTAMENTE"); //comen
+            response.redirect("/login.html"); // redirecion a la pagina login si no ha habido errores 
+        }else{
+            console.log("ERROR AL CREAR EL USUARIO "); //comen
+            response.redirect("/login.html");
+        }
+    }
+
+});
+
+
 /* No sabemos como funciona esto hulio
 app.get("/reset", function(request, response) {
     response.status(200);
@@ -92,11 +146,7 @@ app.get("/reset", function(request, response) {
 });
 */
 
-//const DAOUsers = require("./DAOUsers.js");
-//const DAOTasks = require("./DAOTasks.js");
 
 
-//let daoUser = new DAOUsers(pool);
-//let daoTask = new DAOTasks(pool);
 
 // Definición de las funciones callback
