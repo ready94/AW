@@ -223,7 +223,36 @@ app.get("/pag_principal.html", function(request, response) {
     }
 });
 
+app.get("/preguntas.html", function(request, response) {
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+        response.locals.email = request.session.usuario;
 
+        daoUser.getUser(response.locals.email, cb_getUser);
+
+        function cb_getUser(error, resultado) {
+            if (error) {
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            } else {
+
+                var usuario = { // valores del usuario
+                    nombre: resultado[0].nombre,
+                    imagen: resultado[0].imagen
+                };
+                // guardamos los valores del usuario logueado actualmente en variables de sesion
+
+                request.session.nombre = usuario.nombre;
+                request.session.imagen = usuario.imagen;
+
+                response.status(200);
+                response.render("preguntas", { perfil: usuario }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+            }
+        }
+    }
+});
 
 /* No sabemos como funciona esto hulio
 app.get("/reset", function(request, response) {
