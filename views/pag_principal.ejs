@@ -30,11 +30,13 @@
 
             <div id="login">
 
-                <img src="../img/icon4.png" id="icon">
+                <img src=<%= perfil.imagen %> id="icon">
                 <div id="usu">
 
                     <a href="../html/perfil_usu.html" title="Perfil">
-                        <h3 id="nick">SHAM</h3>
+                        <h3 id="nick">
+                            <%= perfil.nombre %>
+                        </h3>
                     </a>
 
                     <a class="button" href="/logout" title="Cerrar sesion">

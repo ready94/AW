@@ -69,7 +69,7 @@ app.post("/login", function(request, response) { // peticion a la view login.ejs
             response.render("login", { errorMsg: null })
         } else if (resultado.length != 0) {
             console.log("USUARIO LOGUEADO CORRECTAMENTE");
-            request.session.currentUser = email; // usuario logueado actualmente
+            request.session.usuario = email; // usuario logueado actualmente
             response.redirect("/pag_principal.html"); // redirecion a la pagina perfil que se muestra por pantalla
 
         } else {
@@ -94,7 +94,7 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function validarPass(p1,p2){
+function validarPass(p1, p2) {
 
     //la contraseña no tiene espacios en blanco
     var espacios = false;
@@ -102,12 +102,12 @@ function validarPass(p1,p2){
 
     while (!espacios && (cont < p1.length)) {
         if (p1.charAt(cont) == " ")
-        espacios = true;
+            espacios = true;
         cont++;
     }
-   
+
     if (espacios) {
-        alert ("La contraseña no puede contener espacios en blanco");
+        alert("La contraseña no puede contener espacios en blanco");
         return false;
     }
 
@@ -121,8 +121,8 @@ function validarPass(p1,p2){
     if (p1 != p2) {
         alert("Las passwords deben de coincidir");
         return false;
-      } else {
-        return true; 
+    } else {
+        return true;
     }
 
 }
@@ -147,18 +147,18 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
         icon = "../img/icon" + getRandom(1, 10) + ".png";
     }
 
-    if (request.icon != undefined){
+    if (request.icon != undefined) {
         icon = request.filter.path;
     }
 
 
-    if(validarPass(password,password2)){
+    if (validarPass(password, password2)) {
         //Expresion regular para validar contraseña
         //primer caracter una letra
         var passw = /^[A-Za-z]\w{3,16}$/;
-   
+
         if (password.match(passw)) {
-        
+
             var usuario = {
                 email: email,
                 password: password,
@@ -166,9 +166,9 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
                 imagen: icon,
                 fecha_alta: new Date()
             }
-        
+
             daoUser.insertUser(usuario, cd_insertUser); //insertamos el usuario en la BBDD
-        
+
             function cd_insertUser(err, resultado) {
                 if (err) {
                     response.status(500);
@@ -189,14 +189,38 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
             alert("contraseña no valida"); //comen
         }
     }
-    
+
 });
 
 app.get("/pag_principal.html", function(request, response) {
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+        response.locals.email = request.session.usuario;
 
-    response.status(200);
-    response.render("pag_principal", { errorMsg: null }); // renderiza la pagina
+        daoUser.getUser(response.locals.email, cb_getUser);
 
+        function cb_getUser(error, resultado) {
+            if (error) {
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            } else {
+
+                var usuario = { // valores del usuario
+                    nombre: resultado[0].nombre,
+                    imagen: resultado[0].imagen
+                };
+                // guardamos los valores del usuario logueado actualmente en variables de sesion
+
+                request.session.nombre = usuario.nombre;
+                request.session.imagen = usuario.imagen;
+
+                response.status(200);
+                response.render("pag_principal", { perfil: usuario }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+            }
+        }
+    }
 });
 
 
