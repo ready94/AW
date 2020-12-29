@@ -35,7 +35,7 @@ class DAOUsers {
             if (err) {
                 callback(new Error("Error de conexión a la base de datos image"));
             } else {
-                connection.query("SELECT img FROM user WHERE email = '" + email + "';",
+                connection.query("SELECT imagen FROM usuario WHERE email = '" + email + "';",
                     function(err, rows) {
                         connection.release(); // devolver al pool la conexión
                         if (err) {
@@ -50,6 +50,28 @@ class DAOUsers {
                     });
             }
         });
+    }
+
+    getUser(email, callback) {
+        this.pool.getConnection(function(err, conexion) {
+            if (err) {
+                callback(err);
+            } else {
+                // devuelve el usuario entero cuyo email es el pasado por parametro
+                var sql = 'SELECT * FROM usuario WHERE email = ?;'
+                var para = [email]
+                conexion.query(sql, para, function(err, resultado) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        console.log(resultado);
+                        callback(null, resultado);
+
+                    }
+                }); //END QUERY
+                conexion.release();
+            }
+        }); //END GET CONEXION
     }
 
     insertUser(user, callback) {
