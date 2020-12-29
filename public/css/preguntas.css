@@ -159,14 +159,15 @@ nav a:hover{
     box-sizing: border-box;
     border: 2px solid rgb(104, 104, 104);
     border-radius: 4px;
+    list-style: none;
 }
 
 .info_pregunta{
-
+    display: inline-block;
 }
 
 .info_usu{
-
+    display: inline-block;
 }
 
 textarea{

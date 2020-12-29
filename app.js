@@ -267,7 +267,7 @@ app.get("/preguntas.html", function(request, response) {
                         // guardamos los valores del usuario logueado actualmente en variables de sesion
 
                         response.status(200);
-                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, ususarioPregunta: usuarioPregunta }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                        response.render("preguntas", { preguntas: resultado, perfil: usuario, usuarioPregunta: usuarioPregunta }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
                     }
                 }
             }
