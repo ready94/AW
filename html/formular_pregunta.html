@@ -2,15 +2,15 @@
 <html lang="es">
 
 <head>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/pag_principal.css">
-    <link rel="icon" type="image/png" href="../img/icon1.png">
+    <link rel="stylesheet" type="text/css" media="screen" href="../public/css/formular_pregunta.css">
+    <link rel="icon" type="image/png" href="../public/img/icon1.png">
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
     <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
     <!--Iconos diseñados por <a href="https://smashicons.com/" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>-->
 
     <meta charset="UTF-8">
     <title>
-        Cafe con preguntas
+        Café con preguntas
     </title>
 </head>
 
@@ -23,7 +23,7 @@
         <div id="cabecera">
 
             <div id="titulo">
-                <a href="../html/pag_principal.html"><h1>Café con preguntas</h1></a>
+                <a href="/pag_principal.html"><h1>Café con preguntas</h1></a>
             </div>
     
             <div id="login">
@@ -73,21 +73,22 @@
         </form>
     </div>
     
-    <div>
-        buscar
-    </div>
 
-    <div>
-        <h1>Formular una pregunta</h1>
-    </div>
+    <div id="fondo">
+        <div id="espacio">
+            <h1>Formular una pregunta</h1>
+        </div>
 
-    <form>
-     Título:<br>lAIDSHFÍhg<br><input type="text" requiered><br>
-     Cuerpo:<br>ÑÍNEFPIJGB<br><input type="area" required><br>
-     Etiquetas:<br>asdfhmasdòhnm<br><input type="text"><br>
-     <input class="button" type="submit" value="Publica tu pregunta">
-        
-    </form>
+        <form action="crearPregunta">
+            Título<br><h6>Se especifico e imagina que le estás haciendo la pregunta a otra persona</h6><input type="text" class="linea" name="titulo" size="80" requiered><br>
+            Cuerpo<br><h6>Incluye toda la información que alguien necesitaría para responder tu pregunta</h6><textarea class="linea" name="cuerpo" cols="73" rows="10" required></textarea><br>
+            Etiquetas<br><h6>Añade hasta 5 etiquetas (sin espacios) para describir sobre que trata tu pregunta</h6><input type="text" class="linea" name="etiqueta" size="80" placeholder="Por ejemplo: @node@express"><br>
+            <input class="button" type="submit" value="Publica tu pregunta">
+               
+        </form>
+
+    </div>
+    
 
 </body>
 
