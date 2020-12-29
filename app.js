@@ -231,6 +231,11 @@ app.get("/preguntas.html", function(request, response) {
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
+        var usuario ={
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
         daoPreguntas.getPreguntas(cb_getPreguntas);
 
         function cb_getPreguntas(error, resultado){
@@ -255,14 +260,14 @@ app.get("/preguntas.html", function(request, response) {
                         console.log("ERROR EN LA BASE DE DATOS");
                     } else {
 
-                        var usuario = { // valores del usuario
+                        var usuarioPregunta = { // valores del usuario
                             nombre: res[0].nombre,
                             imagen: res[0].imagen
                         };
                         // guardamos los valores del usuario logueado actualmente en variables de sesion
 
                         response.status(200);
-                        response.render("preguntas", { preguntas: pregunta, perfil: usuario }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, ususarioPregunta: usuarioPregunta }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
                     }
                 }
             }
