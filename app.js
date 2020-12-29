@@ -12,8 +12,8 @@ const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
 
-const DAOUsers = require("./DAOUsers.js");
-const DAOPreguntas = require("./DAOPreguntas.js");
+const DAOUsers = require("./DAOUsers");
+const DAOPreguntas = require("./DAOPreguntas");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -31,14 +31,6 @@ const pool = mysql.createPool(config.mysqlConfig);
 
 const ficherosEstaticos = path.join(__dirname, "public");
 
-// Arrancar el servidor en el puerto 3000
-app.listen(config.port, function(err) {
-    if (err)
-        console.log("ERROR al iniciar el servidor");
-    else
-        console.log(`Servidor arrancado en el puerto ${config.port}`);
-});
-
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
 let moment = require("moment");
@@ -49,6 +41,14 @@ app.set("views", path.join(__dirname, "views"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
 app.use(expressValidator());
+
+// Arrancar el servidor en el puerto 3000
+app.listen(config.port, function (err) {
+    if (err)
+        console.log("ERROR al iniciar el servidor");
+    else 
+        console.log(`Servidor arrancado en el puerto ${config.port}`);
+});
 
 app.get("/login.html", function(request, response) {
 
