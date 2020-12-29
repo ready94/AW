@@ -70,7 +70,7 @@ app.post("/login", function(request, response) { // peticion a la view login.ejs
         } else if (resultado.length != 0) {
             console.log("USUARIO LOGUEADO CORRECTAMENTE");
             request.session.currentUser = email; // usuario logueado actualmente
-            response.redirect("/perfil.html"); // redirecion a la pagina perfil que se muestra por pantalla
+            response.redirect("/pag_principal.html"); // redirecion a la pagina perfil que se muestra por pantalla
 
         } else {
             console.log("ERROR AL LOGUEAR USUARIO ");
@@ -94,6 +94,39 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function validarPass(p1,p2){
+
+    //la contraseña no tiene espacios en blanco
+    var espacios = false;
+    var cont = 0;
+
+    while (!espacios && (cont < p1.length)) {
+        if (p1.charAt(cont) == " ")
+        espacios = true;
+        cont++;
+    }
+   
+    if (espacios) {
+        alert ("La contraseña no puede contener espacios en blanco");
+        return false;
+    }
+
+    //que no haya ningun campo vacio
+    if (p1.length == 0 || p2.length == 0) {
+        alert("Los campos de la password no pueden quedar vacios");
+        return false;
+    }
+
+    //que la contraseña y la confirmacion sean iguales
+    if (p1 != p2) {
+        alert("Las passwords deben de coincidir");
+        return false;
+      } else {
+        return true; 
+    }
+
+}
+
 app.get("/crear_cuenta.html", function(request, response) {
 
     response.status(200);
@@ -111,56 +144,61 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
 
     if (request.icon == undefined) {
 
-        icon = "../public/img/icon" + getRandom(1, 10) + ".png";
+        icon = "../img/icon" + getRandom(1, 10) + ".png";
     }
 
-    if (request.icon != undefined)
+    if (request.icon != undefined){
         icon = request.filter.path;
-
-    //Expresion regular para validar contraseña
-    var passw = /^[A-Za-z]\w{7,14}$/;
-    //if (password == password2) {
-    if (password.match(passw)) {
-        console.log("contraseña valida");
-    } else {
-        console.log("contraseña no valida");
-    }
-    // } //to do
-
-
-
-    if (password != password2) //to do
-        password = "";
-
-
-    var usuario = {
-        email: email,
-        password: password,
-        nombre: nick,
-        imagen: icon,
-        fecha_alta: new Date()
     }
 
-    daoUser.insertUser(usuario, cd_insertUser); //insertamos el usuario en la BBDD
 
-    function cd_insertUser(err, resultado) {
-        if (err) {
-            response.status(500);
-            console.log("ERROR BBDD" + err); //comen
-            if (err.sqlState == 2300) {
-                alert("Email ya existente");
-            };
-            response.render("crear_cuenta", { errorMsg: null })
-        } else if (resultado.length != 0) {
-            console.log("USUARIO CREADO CORRECTAMENTE"); //comen
-            response.redirect("/login.html"); // redirecion a la pagina login si no ha habido errores 
+    if(validarPass(password,password2)){
+        //Expresion regular para validar contraseña
+        //primer caracter una letra
+        var passw = /^[A-Za-z]\w{3,16}$/;
+   
+        if (password.match(passw)) {
+        
+            var usuario = {
+                email: email,
+                password: password,
+                nombre: nick,
+                imagen: icon,
+                fecha_alta: new Date()
+            }
+        
+            daoUser.insertUser(usuario, cd_insertUser); //insertamos el usuario en la BBDD
+        
+            function cd_insertUser(err, resultado) {
+                if (err) {
+                    response.status(500);
+                    console.log("ERROR BBDD" + err); //comen
+                    if (err.sqlState == 2300) {
+                        alert("Email ya existente");
+                    };
+                    response.render("crear_cuenta", { errorMsg: null })
+                } else if (resultado.length != 0) {
+                    console.log("USUARIO CREADO CORRECTAMENTE"); //comen
+                    response.redirect("/login.html"); // redirecion a la pagina login si no ha habido errores 
+                } else {
+                    console.log("ERROR AL CREAR EL USUARIO "); //comen
+                    response.redirect("/crear_cuenta.html");
+                }
+            }
         } else {
-            console.log("ERROR AL CREAR EL USUARIO "); //comen
-            response.redirect("/login.html");
+            alert("contraseña no valida"); //comen
         }
     }
+    
+});
+
+app.get("/pag_principal.html", function(request, response) {
+
+    response.status(200);
+    response.render("pag_principal", { errorMsg: null }); // renderiza la pagina
 
 });
+
 
 
 /* No sabemos como funciona esto hulio
