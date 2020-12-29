@@ -238,7 +238,7 @@ app.get("/preguntas.html", function(request, response) {
                 response.status(500);
                 console.log("ERROR EN LA BASE DE DATOS");
             } else {
-
+                
                 var pregunta = {
                     idUsuario: resultado[0].id_usuario,
                     titulo: resultado[0].titulo,
@@ -246,8 +246,8 @@ app.get("/preguntas.html", function(request, response) {
                     idEtiquetas: resultado[0].id_etiquetas,
                     fecha: resultado[0].fecha
                 };
-
-                daoUser.getUser(pregunta.idUsuario, cb_getUser);
+               
+                daoUser.getUserByID(pregunta.idUsuario, cb_getUser);
 
                 function cb_getUser(err, res) {
                     if (err) {

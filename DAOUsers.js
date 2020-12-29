@@ -74,6 +74,29 @@ class DAOUsers {
         }); //END GET CONEXION
     }
 
+    getUserByID(idUsuario, callback) {
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                callback(err);
+            } else {
+                // devuelve el usuario entero cuyo email es el pasado por parametro
+                var sql = 'SELECT * FROM usuario WHERE id_usuario = ?;';
+                var para = [idUsuario];
+                conexion.query(sql, para, function (err, resultado) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        console.log(resultado);
+                        callback(null, resultado);
+
+                    }
+                }); //END QUERY
+                conexion.release();
+            }
+        }); //END GET CONEXION
+    }
+
+
     insertUser(user, callback) {
 
             this.pool.getConnection(function(err, conexion) {

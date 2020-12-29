@@ -13,10 +13,10 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
+//id_usuario, titulo, cuerpo, id_etiquetas, fecha
+                var sql =  "SELECT id_usuario, titulo, cuerpo, id_etiquetas, fecha FROM preguntas;";  //seleciona todas las preguntas de la base de datos  
 
-                var sql = 'SELECT id_usuario, titulo, cuerpo, id_etiquetas, fecha FROM preguntas;'  //seleciona todas las preguntas de la base de datos  
-
-                conexion.query(sql, function (err, resultado) {
+                conexion.query("SELECT id_usuario, titulo, cuerpo, id_etiquetas, fecha FROM preguntas;", function (err, resultado) {
                     if (err)
                         callback(err);
                     else
