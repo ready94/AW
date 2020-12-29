@@ -139,9 +139,6 @@ nav a:hover{
 #barra_info{
     font-family: 'VT323', monospace;
     display: inline-block;
-    border-left: solid 10px black;
-    border-right:solid 10px black ;
-    border-bottom: solid 10px black;
     width: 98.5%;
     height: 2.5em;
 }
@@ -156,29 +153,30 @@ nav a:hover{
     font-family: 'VT323', monospace;
 }
 
+.pregunta{
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid rgb(104, 104, 104);
+    border-radius: 4px;
+}
+
+.info_pregunta{
+
+}
+
+.info_usu{
+
+}
+
+textarea{
+    resize: none;
+}
+
 #espacio{
     margin: 1em 0.5em 0.5em 0.5em;
 }
 
-form{
-    margin-top: 0.5em;
-    font-family: 'VT323', monospace;
-}
-
-.linea{
-    margin: 0.5em 0.5em 0.5em 0.5em;
-    border-radius:4px;
-    border:black 1px solid;
-    text-align: left;
-    padding:10px 36px;
-    font-size: medium;
-}
-
-textarea{
-    text-align: left;
-    font-size: medium;
-    font-family: 'VT323', monospace;
-}
 
 
 
