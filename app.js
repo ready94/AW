@@ -13,6 +13,7 @@ const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
 
 const DAOUsers = require("./DAOUsers.js");
+const DAOPreguntas = require("./DAOPreguntas.js");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -39,6 +40,7 @@ app.listen(config.port, function(err) {
 });
 
 let daoUser = new DAOUsers(pool);
+let daoPreguntas = new DAOPreguntas(pool);
 let moment = require("moment");
 
 app.use(express.static(ficherosEstaticos));
@@ -228,30 +230,61 @@ app.get("/preguntas.html", function(request, response) {
         response.redirect("/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
-        response.locals.email = request.session.usuario;
 
-        daoUser.getUser(response.locals.email, cb_getUser);
+        daoPreguntas.getPreguntas(cb_getPreguntas);
 
-        function cb_getUser(error, resultado) {
+        function cb_getPreguntas(error, resultado){
             if (error) {
                 response.status(500);
                 console.log("ERROR EN LA BASE DE DATOS");
             } else {
 
-                var usuario = { // valores del usuario
-                    nombre: resultado[0].nombre,
-                    imagen: resultado[0].imagen
+                var pregunta = {
+                    idUsuario: resultado[0].id_usuario,
+                    titulo: resultado[0].titulo,
+                    cuerpo: resultado[0].cuerpo,
+                    idEtiquetas: resultado[0].id_etiquetas,
+                    fecha: resultado[0].fecha
                 };
-                // guardamos los valores del usuario logueado actualmente en variables de sesion
 
-                request.session.nombre = usuario.nombre;
-                request.session.imagen = usuario.imagen;
+                daoUser.getUser(pregunta.idUsuario, cb_getUser);
 
-                response.status(200);
-                response.render("preguntas", { perfil: usuario }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                function cb_getUser(err, res) {
+                    if (err) {
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    } else {
+
+                        var usuario = { // valores del usuario
+                            nombre: res[0].nombre,
+                            imagen: res[0].imagen
+                        };
+                        // guardamos los valores del usuario logueado actualmente en variables de sesion
+
+                        response.status(200);
+                        response.render("preguntas", { preguntas: pregunta, perfil: usuario }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                    }
+                }
             }
+
         }
+        
     }
+});
+
+app.get("/formular_pregunta.html", function (request, response) {
+
+    response.status(200);
+    response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
+
+});
+
+app.post("/formularPregunta", function (request, response) {
+
+    
+    response.status(200);
+    response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
+
 });
 
 /* No sabemos como funciona esto hulio
