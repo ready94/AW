@@ -92,7 +92,7 @@ app.get("/logout", function(request, response) { // desconecta el usuario loguea
 // ¡Usando Math.round() te dará una distribución no-uniforme!
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
-  }
+}
 
 app.get("/crear_cuenta.html", function(request, response) {
 
@@ -109,16 +109,28 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
     var nick = request.body.nick;
     var icon = request.body.icon;
 
-    if (request.icon == undefined){
-     
-        icon= "../public/img/icon"+ getRandom(1,10)+ ".png";
+    if (request.icon == undefined) {
+
+        icon = "../public/img/icon" + getRandom(1, 10) + ".png";
     }
-        
+
     if (request.icon != undefined)
         icon = request.filter.path;
 
-    if(password!=password2) //to do
-        password= "";
+    //Expresion regular para validar contraseña
+    var passw = /^[A-Za-z]\w{7,14}$/;
+    //if (password == password2) {
+    if (password.match(passw)) {
+        console.log("contraseña valida");
+    } else {
+        console.log("contraseña no valida");
+    }
+    // } //to do
+
+
+
+    if (password != password2) //to do
+        password = "";
 
 
     var usuario = {
