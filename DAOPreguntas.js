@@ -65,6 +65,15 @@ class DAOPreguntas{
         });//END GET CONEXION
     }
 
+    count(callback){
+        var cont=0;
+        for(){
+            cont++;
+        }
+
+        return cont;
+    }
+
 }
 
 module.exports = DAOPreguntas;
