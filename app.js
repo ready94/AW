@@ -14,6 +14,7 @@ const sessionStore = new MySQLStore(config.mysqlConfig);
 
 const DAOUsers = require("./DAOUsers");
 const DAOPreguntas = require("./DAOPreguntas");
+const DAOEtiquetas = require("./DAOEtiquetas");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -33,6 +34,7 @@ const ficherosEstaticos = path.join(__dirname, "public");
 
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
+let daoEtiquetas = new DAOEtiquetas(pool);
 let moment = require("moment");
 
 app.use(express.static(ficherosEstaticos));
@@ -219,7 +221,7 @@ app.get("/pag_principal.html", function(request, response) {
                 request.session.imagen = usuario.imagen;
 
                 response.status(200);
-                response.render("pag_principal", { perfil: usuario }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                response.render("pag_principal", { perfil: usuario });
             }
         }
     }
@@ -231,7 +233,7 @@ app.get("/preguntas.html", function(request, response) {
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
-        var usuario ={
+        var usuario = {
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
@@ -279,17 +281,57 @@ app.get("/preguntas.html", function(request, response) {
 
 app.get("/formular_pregunta.html", function (request, response) {
 
-    response.status(200);
-    response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
 
+        var usuario = {
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        response.status(200);
+        response.render("formular_pregunta", { perfil: usuario }); 
+            
+    }
+    
 });
 
-app.post("/formularPregunta", function (request, response) {
+app.post("/crearPregunta", function (request, response) {
 
-    
-    response.status(200);
-    response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+        var titulo = request.body.titulo;
+        var cuerpo = request.body.cuerpo;
+        var etiqueta = request.body.etiqueta;
+        var aux = [];
 
+        if(etiqueta != undefined){
+            var etiquetas = etiqueta.split("@");
+            for(var i = 0; i < 5; i++){
+                if(etiquetas[i] != undefined){
+                    aux.push(etiquetas[i]);
+                }
+                else{
+                    aux.push("NULL");
+                }
+            }
+        }
+        else{
+            for (var i = 0; i < 5; i++) {
+                aux.push("NULL"); 
+            }
+        }
+
+        daoEtiquetas.insertEtiquetas(aux, cb_insertEtiquetas);
+        daoPreguntas.insertPregunta(titulo, cuerpo)
+
+        response.status(200);
+        response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
+    }
 });
 
 /* No sabemos como funciona esto hulio
