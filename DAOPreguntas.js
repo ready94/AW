@@ -42,14 +42,14 @@ class DAOPreguntas{
 
     }
 
-    insertPregunta(){
+    insertPregunta(id_usuario, titulo, cuerpo, id_etiqueta, fecha, callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
 
-                var sql = 'INSERT INTO preguntas (id_isuario, respuesta1, respuesta2, respuesta3) VALUES (?, ?, ?, ?);';//inserta una pregunta con sus respuestas en la base de datos
+                var sql = 'INSERT INTO preguntas (id_usuario, titulo, id_etiqueta, cuerpo, fecha) VALUES (?, ?, ?, ?, ?);';
                 var para = [pregunta.Pregunta, pregunta.Respuesta1, pregunta.Respuesta2, pregunta.Respuesta3]
 
                 conexion.query(sql, para, function (err, resultado) {
