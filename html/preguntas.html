@@ -73,34 +73,56 @@
         </form>
     </div>
     
-    <div>
-        <h1>Todas las preguntas</h1>
-    </div>
-
-    <div id="barra_info">
-        <div>
-            contador + preguntas
-        </div>
-        <a class="button" href="/formular_pregunta.html" title="formular">
-            <b>Formular una pregunta</b>
-        </a>
-        
-    </div>
 
 
     <div id="fondo">
+
+        <div>
+            <h1>Todas las preguntas</h1>
+        </div>
+
+        <div id="barra_info">
+            <div id="contador">
+                contador + preguntas
+            </div>
+            <a class="button" href="/formular_pregunta.html" title="formular">
+                <b>Formular una pregunta</b>
+            </a>
+            
+        </div>
+
         <ul>
+            
             <li class="pregunta">
-                <div class="info_pregunta"> 
-                    <h1>Tituloo en azul</h1>
-                    <textarea readonly ></textarea>
-                </div>
-                <div class="info_usu"> 
-                    icon
-                </div>
+                <a class="info_pregunta"> 
+                    <div class="titulo_pregunta">Titulo</div>
+                    <textarea maxlength="150" readonly >cuerpo pregunta 
+                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                    </textarea>
+                    <div class="etiqueta_preguntas">
+                        Etiqueta
+                    </div>
+
+                </a>
+                <a class="info_usu">
+                    <div class="fecha_usu">
+                        Formulada el + fecha
+                    </div>
+                    
+                    <img class="imagen_usu" src="../public/img/icon5.png">
+                    <div class="nombre_usu">
+                        Nombre
+                    </div>
+                    
+                    
+                </a>
             </li>
+            
         </ul>
     </div>
+
 
 
 </body>
