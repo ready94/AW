@@ -237,6 +237,12 @@ app.get("/preguntas.html", function(request, response) {
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
+        //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
+        daoPreguntas.count(cb_count);
+
+        function cb_count(error, resultado){
+
+        }
 
         daoPreguntas.getPreguntas(cb_getPreguntas);
 
