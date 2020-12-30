@@ -166,10 +166,14 @@ nav a:hover{
     border: 2px solid rgb(104, 104, 104);
     border-radius: 4px;
     list-style: none;
+    display: flex;
+    flex-wrap: nowrap;
+      
 }
 
 .info_pregunta{
-    display: inline-block;
+    float: left;
+    width: 80%;
     cursor: pointer;
 }
 
@@ -188,7 +192,7 @@ textarea{
     border: none;
     border-radius: 4px;
     font-size: 16px;
-    
+    resize: none;
     background-color: #e0dddd;
 }
 
@@ -203,9 +207,9 @@ textarea{
 
 .info_usu{
     text-align: center;
-    display: inline-block;
+    float: left;
+    width: 50%;
     cursor: pointer;
-    margin-left: 70%;
     border-left:2px solid rgb(104, 104, 104);
 }
 
