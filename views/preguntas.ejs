@@ -75,37 +75,51 @@
         </form>
     </div>
 
-    <div>
-        <h1>Todas las preguntas</h1>
-    </div>
-
-    <div id="barra_info">
-        <div>
-          
-
-            contador + preguntas
-        </div>
-        <a class="button" href="/formular_pregunta.html" title="formular">
-            <b>Formular una pregunta</b>
-        </a>
-        
-    </div>
-
-
     <div id="fondo">
+
+        <div>
+            <h1>Todas las preguntas</h1>
+        </div>
+
+        <div id="barra_info">
+            <div id="contador">
+                contador + preguntas
+            </div>
+            <a class="button" href="/formular_pregunta.html" title="formular">
+                <b>Formular una pregunta</b>
+            </a>
+            
+        </div>
+
         <ul>
-            <% preguntas.forEach(function(preguntas){ %>
+            
             <li class="pregunta">
-                <div class="info_pregunta"> 
-                    <h1><% preguntas.titulo %></h1>
-                    <textarea readonly ><% preguntas.cuerpo %></textarea>
-                </div>
-                <div class="info_usu"> 
-                    <% usuarioPregunta.imagen %>
-                    <% usuarioPregunta.nombre %>
-                </div>
+                <a class="info_pregunta" href="../html/formular_pregunta.html"> 
+                    <div class="titulo_pregunta">Titulo</div>
+                    
+                    <textarea maxlength="150" disabled >cuerpo preguntaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaannnnnnnnnnnnnnnnnnnnnnnnnnnnnsgdh+asw9orejgh+çasonbglñsnfbvha´sfgásfdgbkndbalñdíndpighdprfnsññññgna rjtépaihytairhgtAWBRGLAJRHGÑLAERHGÑLA HLKNFDDGBLNDLBKNDÑHNJDPpeiorjhñdnh
+                    </textarea>
+                    
+                    
+                    <div class="etiqueta_preguntas">
+                        Etiqueta
+                    </div>
+
+                </a>
+                <a class="info_usu" href="../html/usuarios.html">
+                    <div class="fecha_usu">
+                        Formulada el + fecha
+                    </div>
+                    
+                    <img class="imagen_usu" src="../public/img/icon5.png">
+                    <div class="nombre_usu">
+                        Nombre
+                    </div>
+                    
+                    
+                </a>
             </li>
-            <% }); %>
+            
         </ul>
     </div>
 

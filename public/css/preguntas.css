@@ -145,7 +145,6 @@ nav a:hover{
     text-align: left;
     font-size: 20px;
     font-family: 'VT323', monospace;
-    
 }
 
 #barra_info{
@@ -168,41 +167,50 @@ nav a:hover{
     list-style: none;
     display: flex;
     flex-wrap: nowrap;
+    background-color: white;
       
 }
 
 .info_pregunta{
     float: left;
-    width: 80%;
+    width: 90%;
     cursor: pointer;
+    text-decoration: none;
+}
+.info_pregunta a:visited{
+   color: red;
 }
 
 .titulo_pregunta{
-    
+    margin: 0.25em 0.5em;
     font-size: x-large;
     color:#2e1d12;
-
-   
 }
 
 textarea{
-    font-family: 'VT323', monospace;
-    padding: 1px 1px;
+    width: 100%;
+    height: auto;
+    margin: 0.25em 0.25em 0em 0.5em;
     resize: none;
     border: none;
-    border-radius: 4px;
     font-size: 16px;
-    resize: none;
-    background-color: #e0dddd;
+    font-style: italic;
+    color:rgb(0, 0, 0);
+    background-color: white;
+    overflow-y: hidden;
+    cursor: pointer;
 }
 
 .etiqueta_preguntas{
-    padding: 1px 1px;
+    padding: 2px 2px;
+    margin: 0.5em 0.5em;
+    width: auto;
     box-sizing: border-box;
-    border: 2px solid #ccc;
+    border: 3px solid #2e1d12;;
     border-radius: 4px;
     font-size: medium;
     text-align: center;
+    display: inline-block;
 }
 
 .info_usu{
