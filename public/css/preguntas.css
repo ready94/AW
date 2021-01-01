@@ -42,7 +42,6 @@ header {
 }
 
 #titulo a{
-    text-decoration: none;
     color:rgb(0, 0, 0);
     cursor:pointer;
 }
@@ -168,17 +167,16 @@ nav a:hover{
     display: flex;
     flex-wrap: nowrap;
     background-color: white;
-      
+}
+
+.pregunta a{
+    color: black;
 }
 
 .info_pregunta{
     float: left;
     width: 90%;
     cursor: pointer;
-    text-decoration: none;
-}
-.info_pregunta a:visited{
-   color: red;
 }
 
 .titulo_pregunta{
@@ -208,7 +206,7 @@ textarea{
     box-sizing: border-box;
     border: 3px solid #2e1d12;;
     border-radius: 4px;
-    font-size: medium;
+    font-size: small;
     text-align: center;
     display: inline-block;
 }

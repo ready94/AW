@@ -13,7 +13,7 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-//id_usuario, titulo, cuerpo, id_etiquetas, fecha
+            //id_usuario, titulo, cuerpo, id_etiquetas, fecha
                 var sql =  "SELECT id_usuario, titulo, cuerpo, id_etiquetas, fecha FROM preguntas;";  //seleciona todas las preguntas de la base de datos  
 
                 conexion.query("SELECT id_usuario, titulo, cuerpo, id_etiquetas, fecha FROM preguntas;", function (err, resultado) {
@@ -66,12 +66,24 @@ class DAOPreguntas{
     }
 
     count(callback){
-        var cont=0;
-        for(){
-            cont++;
-        }
+        this.pool.getConnection(function (err, conexion) {
 
-        return cont;
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                var sql =  'SELECT COUNT(id_pregunta) FROM preguntas;'; 
+
+                conexion.query(sql, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else
+                        callback(null, resultado);
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+        
     }
 
 }
