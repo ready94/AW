@@ -264,34 +264,36 @@ app.get("/preguntas.html", function(request, response) {
                             fecha: resultado[0].fecha
                         };
                
-                        daoUser.getUserByID(pregunta.idUsuario, cb_getUser);
+                        var aux = [];
 
-                        function cb_getUser(err, res) {
-                            if (err) {
-                                response.status(500);
-                                console.log("ERROR EN LA BASE DE DATOS");
-                            } else {
+                        for(var i = 0; i < resultado.length; i++){
+                            daoUser.getUserByID(resultado[i].idUsuario, cb_getUser);
 
-                                var usuarioPregunta = { // valores del usuario
-                                    nombre: res[0].nombre,
-                                    imagen: res[0].imagen
-                                };
-                        // guardamos los valores del usuario logueado actualmente en variables de sesion
+                            function cb_getUser(err, res) {
+                                if (err) {
+                                    response.status(500);
+                                    console.log("ERROR EN LA BASE DE DATOS");
+                                } else {
 
-                                response.status(200);
-                                response.render("preguntas", { preguntas: resultado, perfil: usuario, usuarioPregunta: usuarioPregunta, contador:contador }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                                    var usuarioPregunta = { // valores del usuario
+                                        nombre: res[0].nombre,
+                                        imagen: res[0].imagen
+                                    };
+                                    aux.push(usuarioPregunta);
+                                }
                             }
                         }
+                        
+                        // guardamos los valores del usuario logueado actualmente en variables de sesion
+
+                        response.status(200);
+                        response.render("preguntas", { preguntas: resultado, perfil: usuario, usuarioPregunta: aux, contador:contador }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
                     }
-
                 }
-              
             }
-                
-        }
 
-        
-        
+        }
+              
     }
 });
 
