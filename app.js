@@ -15,6 +15,7 @@ const sessionStore = new MySQLStore(config.mysqlConfig);
 const DAOUsers = require("./DAOUsers");
 const DAOPreguntas = require("./DAOPreguntas");
 const DAOEtiquetas = require("./DAOEtiquetas");
+const DAOERelacion = require("./DAORelacion");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -35,6 +36,7 @@ const ficherosEstaticos = path.join(__dirname, "public");
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
 let daoEtiquetas = new DAOEtiquetas(pool);
+let daoRelacion = new DAORelacion(pool);
 let moment = require("moment");
 
 app.use(express.static(ficherosEstaticos));
@@ -322,6 +324,8 @@ app.post("/crearPregunta", function (request, response) {
         var titulo = request.body.titulo;
         var cuerpo = request.body.cuerpo;
         var etiqueta = request.body.etiqueta;
+        var fecha = new Date();
+
         var aux = [];
 
         if(etiqueta != undefined){
@@ -330,19 +334,34 @@ app.post("/crearPregunta", function (request, response) {
                 if(etiquetas[i] != undefined){
                     aux.push(etiquetas[i]);
                 }
-                else{
-                    aux.push("NULL");
-                }
-            }
-        }
-        else{
-            for (var i = 0; i < 5; i++) {
-                aux.push("NULL"); 
             }
         }
 
-        daoEtiquetas.insertEtiquetas(aux, cb_insertEtiquetas);
-        daoPreguntas.insertPregunta(titulo, cuerpo)
+        if(aux.length > 0){
+            daoEtiquetas.insertEtiquetas(aux, cb_insertEtiquetas);
+
+            function cb_insertEtiquetas(err, resultado) {
+                if (err) {
+                    response.status(500);
+                    console.log("ERROR BBDD" + err); //comen
+                } else if (resultado.length != 0) {
+                    daoPreguntas.insertPregunta(titulo, cuerpo, fecha, cb_insertPregunta);
+                    
+                    function cb_insertPregunta(err, res) {
+                        if (err) {
+                            response.status(500);
+                            console.log("ERROR BBDD" + err); //comen
+                        } else if (res.length != 0) {
+                            daoRelacion.insertRelacion();
+                            //Para hacerlo, hay que recoger los id de la pregunta y de las etiquetas para poder pasárselo a la relación
+
+                        }
+                    }
+                    
+                } 
+            }
+        }
+        
 
         response.status(200);
         response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
