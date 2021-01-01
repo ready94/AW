@@ -256,14 +256,6 @@ app.get("/preguntas.html", function(request, response) {
                         console.log("ERROR EN LA BASE DE DATOS");
                     } else {
                 
-                        var pregunta = {
-                            idUsuario: resultado[0].id_usuario,
-                            titulo: resultado[0].titulo,
-                            cuerpo: resultado[0].cuerpo,
-                            idEtiquetas: resultado[0].id_etiquetas,
-                            fecha: resultado[0].fecha
-                        };
-               
                         var aux = [];
 
                         for(var i = 0; i < resultado.length; i++){
@@ -275,11 +267,17 @@ app.get("/preguntas.html", function(request, response) {
                                     console.log("ERROR EN LA BASE DE DATOS");
                                 } else {
 
-                                    var usuarioPregunta = { // valores del usuario
+                                    var pregunta = {
+                                        idUsuario: resultado[i].id_usuario,
+                                        titulo: resultado[i].titulo,
+                                        cuerpo: resultado[i].cuerpo,
+                                        idEtiquetas: resultado[i].id_etiquetas,
+                                        fecha: resultado[i].fecha, 
                                         nombre: res[0].nombre,
                                         imagen: res[0].imagen
                                     };
-                                    aux.push(usuarioPregunta);
+                                    
+                                    aux.push(pregunta);
                                 }
                             }
                         }
@@ -287,7 +285,7 @@ app.get("/preguntas.html", function(request, response) {
                         // guardamos los valores del usuario logueado actualmente en variables de sesion
 
                         response.status(200);
-                        response.render("preguntas", { preguntas: resultado, perfil: usuario, usuarioPregunta: aux, contador:contador }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                        response.render("preguntas", { preguntas: aux, perfil: usuario, contador:contador }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
                     }
                 }
             }
