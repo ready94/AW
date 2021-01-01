@@ -260,7 +260,6 @@ app.get("/preguntas.html", function(request, response) {
                             idUsuario: resultado[0].id_usuario,
                             titulo: resultado[0].titulo,
                             cuerpo: resultado[0].cuerpo,
-                            idEtiquetas: resultado[0].id_etiquetas,
                             fecha: resultado[0].fecha
                         };
                
