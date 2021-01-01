@@ -256,42 +256,42 @@ app.get("/preguntas.html", function(request, response) {
                         console.log("ERROR EN LA BASE DE DATOS");
                     } else {
                 
-                        var aux = [];
+                        var pregunta = {
+                            idUsuario: resultado[0].id_usuario,
+                            titulo: resultado[0].titulo,
+                            cuerpo: resultado[0].cuerpo,
+                            idEtiquetas: resultado[0].id_etiquetas,
+                            fecha: resultado[0].fecha
+                        };
+               
+                        daoUser.getUserByID(pregunta.idUsuario, cb_getUser);
 
-                        for(var i = 0; i < resultado.length; i++){
-                            daoUser.getUserByID(resultado[i].idUsuario, cb_getUser);
+                        function cb_getUser(err, res) {
+                            if (err) {
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            } else {
 
-                            function cb_getUser(err, res) {
-                                if (err) {
-                                    response.status(500);
-                                    console.log("ERROR EN LA BASE DE DATOS");
-                                } else {
-
-                                    var pregunta = {
-                                        idUsuario: resultado[i].id_usuario,
-                                        titulo: resultado[i].titulo,
-                                        cuerpo: resultado[i].cuerpo,
-                                        idEtiquetas: resultado[i].id_etiquetas,
-                                        fecha: resultado[i].fecha, 
-                                        nombre: res[0].nombre,
-                                        imagen: res[0].imagen
-                                    };
-                                    
-                                    aux.push(pregunta);
-                                }
-                            }
-                        }
-                        
+                                var usuarioPregunta = { // valores del usuario
+                                    nombre: res[0].nombre,
+                                    imagen: res[0].imagen
+                                };
                         // guardamos los valores del usuario logueado actualmente en variables de sesion
 
-                        response.status(200);
-                        response.render("preguntas", { preguntas: aux, perfil: usuario, contador:contador }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                                response.status(200);
+                                response.render("preguntas", { preguntas: resultado, perfil: usuario, usuarioPregunta: usuarioPregunta, contador:contador }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
+                            }
+                        }
                     }
-                }
-            }
 
-        }
+                }
               
+            }
+                
+        }
+
+        
+        
     }
 });
 
