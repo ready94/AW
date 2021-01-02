@@ -6,17 +6,16 @@ class DAOEtiquetas {
         this.pool = pool;
     }
 
-    //Recoge todas las preguntas almacenadas en la BBDD
-    getEtiquetas(callback) {
+    getEtiquetas(id_pregunta,callback) {
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
-                //id_usuario, titulo, cuerpo, id_etiquetas, fecha
-                var sql = "SELECT * FROM etiquetas;";  //seleciona todas las preguntas de la base de datos  
-
-                conexion.query("SELECT * FROM etiquetas;", function (err, resultado) {
+                
+                var sql = "SELECT * FROM etiquetas WHERE id_pregunta= ?";   
+                var para=[id_pregunta];
+                conexion.query(sql,para, function (err, resultado) {
                     if (err)
                         callback(err);
                     else

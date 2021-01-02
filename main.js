@@ -36,7 +36,6 @@ const ficherosEstaticos = path.join(__dirname, "public");
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
 let daoEtiquetas = new DAOEtiquetas(pool);
-let daoRelacion = new DAORelacion(pool);
 let moment = require("moment");
 
 app.use(express.static(ficherosEstaticos));
@@ -270,43 +269,51 @@ app.get("/preguntas.html", function(request, response) {
             
                 resultado.forEach((p)=>{
                             
-                    daoUser.getUserByID(p.id_usuario, cb_getUser);
+                    
+                    daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
                             
                        /* console.log("entra al for");*/
-                            
-                            
-                        function cb_getUser(err, res) {
+                        /*console.log(p.id_usuario);*/
+                        
+                        function cb_getEtiqueta(error, resul){
                             /*console.log("entra en el function de getUser");*/
                                 
-                            if (err) {
+                            if (error) {
                                 response.status(500);
                                 console.log("ERROR EN LA BASE DE DATOS");
                             } else {
-    
-                                /*console.log("entra en el else");*/
+
+                                daoUser.getUserByID(p.id_usuario, cb_getUser);
+
+                                /*console.log(p.id_pregunta);*/
+                                function cb_getUser(err, res) {
+                                    if (err) {
+                                        response.status(500);
+                                        console.log("ERROR EN LA BASE DE DATOS");
+                                    } else {
+
                                     
-                                var aux = {
-                                    idUsuario: p.id_usuario,
-                                    titulo: p.titulo,
-                                    cuerpo: p.cuerpo,
-                                    fecha: p.fecha,
-                                    nombre:res[0].nombre,
-                                    imagen:res[0].imagen
-                                };
-                                pregunta.push(aux);
+                                        console.log("hola",res);
 
-                               /* console.log("Y ahora x2");
-                                console.log(pregunta);*/
-                    
-                            }
+                                        var aux = {
+                                            idUsuario: p.id_usuario,
+                                            titulo: p.titulo,
+                                            cuerpo: p.cuerpo,
+                                            fecha: p.fecha,
+                                            nombre:res[0].nombre,
+                                            imagen:res[0].imagen,
+                                            etiqueta:[resul.etiqueta]
+                                        };
+                                        pregunta.push(aux);
 
-                           /* console.log("se ha terminado el else");*/
-                             
+                                    
+                                    }
+                                }
+                            } 
                         }
-                           
-                       /* console.log("termina el for");*/
-                            
                 })
+
+                console.log("resultado: ",pregunta)
                         
                 //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
                 daoPreguntas.count(cb_count);
@@ -318,8 +325,9 @@ app.get("/preguntas.html", function(request, response) {
                     } else {
                         var contador= cont[0].Total;
                         /*console.log("FIN");*/
+
                         response.status(200);
-                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador }); 
+                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador}); 
                     }
                     
                 }
