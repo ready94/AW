@@ -404,34 +404,44 @@ app.post("/crearPregunta", function (request, response) {
             }
         }
 
-        if(aux.length > 0){
-            daoEtiquetas.insertEtiquetas(aux, cb_insertEtiquetas);
+        daoPreguntas.insertPregunta(titulo, cuerpo, fecha, cb_insertPregunta);
 
-            function cb_insertEtiquetas(err, resultado) {
-                if (err) {
-                    response.status(500);
-                    console.log("ERROR BBDD" + err); //comen
-                } else if (resultado.length != 0) {
-                    daoPreguntas.insertPregunta(titulo, cuerpo, fecha, cb_insertPregunta);
-                    
-                    function cb_insertPregunta(err, res) {
+        function cb_insertPregunta(err, resultado) {
+            if (err) {
+                response.status(500);
+                console.log("ERROR BBDD" + err); //comen
+            } else if (resultado.length != 0) {
+                if (aux.length > 0) {
+
+                    daoEtiquetas.getUltimoID(cb_getUltimoID);
+
+                    function cb_getUltimoID(err, res) {
                         if (err) {
                             response.status(500);
                             console.log("ERROR BBDD" + err); //comen
                         } else if (res.length != 0) {
-                            daoRelacion.insertRelacion();
-                            //Para hacerlo, hay que recoger los id de la pregunta y de las etiquetas para poder pasárselo a la relación
 
+                            var id = res[0].id_pregunta;
+
+                            for(var i = 0; i < aux.length; i++){
+                                daoEtiquetas.insertEtiquetas(aux[i], id, cb_insertEtiquetas);
+
+                                function cb_insertEtiquetas(err, res2) {
+                                    if (err) {
+                                        response.status(500);
+                                        console.log("ERROR BBDD" + err); //comen
+                                    } 
+                                }
+                            } 
                         }
                     }
-                    
-                } 
+                }
+                else{
+                    response.status(200);
+                    response.redirect("/pag_principal.html");
+                }
             }
         }
-        
-
-        response.status(200);
-        response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
     }
 });
 
