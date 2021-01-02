@@ -19,8 +19,19 @@ class DAOPreguntas{
                 conexion.query("SELECT id_usuario, titulo, cuerpo, fecha FROM preguntas;", function (err, resultado) {
                     if (err)
                         callback(err);
-                    else
-                        callback(null, resultado);
+                    else{
+
+                        var orden= "SELECT * FROM preguntas ORDER BY fecha;";
+                        conexion.query(orden, function (err, resultado) {
+                            if (err)
+                                callback(err);
+                            else{
+                                console.log(resultado);
+                                callback(null, resultado);
+                            }
+                        });//END QUERY    
+                    }
+   
                 });//END QUERY                
                 conexion.release();
             }
