@@ -26,7 +26,7 @@ class DAOPreguntas{
                             if (err)
                                 callback(err);
                             else{
-                                console.log(resultado);
+                                
                                 callback(null, resultado);
                             }
                         });//END QUERY    
@@ -83,13 +83,16 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql =  'SELECT COUNT(id_pregunta) FROM preguntas;'; 
-
+                var sql =  "SELECT count (*) as Total FROM preguntas;"; 
+               
                 conexion.query(sql, function (err, resultado) {
                     if (err)
                         callback(err);
-                    else
+                    else{
+                        console.log(resultado[0]); //comen
                         callback(null, resultado);
+                    }
+                        
                 });//END QUERY                
                 conexion.release();
             }

@@ -46,7 +46,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
 app.use(expressValidator());
 
-// Arrancar el servidor en el puerto 3000
+/*
+****************************************************************************************************************************************************************
+                ARRANCAR EL SERVIDOR EN EL PUERTO 3000
+****************************************************************************************************************************************************************                                                                   
+*/
 app.listen(config.port, function (err) {
     if (err)
         console.log("ERROR al iniciar el servidor");
@@ -92,7 +96,11 @@ app.get("/logout", function(request, response) { // desconecta el usuario loguea
 });
 
 
-// CREAR CUENTA
+/*
+****************************************************************************************************************************************************************
+                       CREAR CUENTA
+****************************************************************************************************************************************************************                                                                   
+*/
 
 // Retorna un entero aleatorio entre min (incluido) y max (excluido)
 // ¡Usando Math.round() te dará una distribución no-uniforme!
@@ -198,6 +206,11 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
 
 });
 
+/*
+****************************************************************************************************************************************************************
+               PAGINA PRINCIPAL
+****************************************************************************************************************************************************************                                                                   
+*/
 app.get("/pag_principal.html", function(request, response) {
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -229,6 +242,11 @@ app.get("/pag_principal.html", function(request, response) {
     }
 });
 
+/*
+****************************************************************************************************************************************************************
+                    PREGUNTAS
+****************************************************************************************************************************************************************                                                                   
+*/
 app.get("/preguntas.html", function(request, response) {
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -243,13 +261,14 @@ app.get("/preguntas.html", function(request, response) {
         //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
         daoPreguntas.count(cb_count);
 
-        function cb_count(error, resultado){
+        function cb_count(error, cont){
             if (error) {
                 response.status(500);
                 console.log("ERROR EN LA BASE DE DATOS");
             } else {
-                var contador= resultado[0];
-                console.log("contador="+ contador)
+                var contador= cont[0].Total;
+               
+                console.log("contador=", contador); //comen
                 daoPreguntas.getPreguntas(cb_getPreguntas);
 
                 function cb_getPreguntas(error, resultado){
@@ -262,7 +281,7 @@ app.get("/preguntas.html", function(request, response) {
                             idUsuario: resultado[0].id_usuario,
                             titulo: resultado[0].titulo,
                             cuerpo: resultado[0].cuerpo,
-                            fecha: resultado[0].fecha
+                            fecha: resultado[0].fecha_alta
                         };
                
                         daoUser.getUserByID(pregunta.idUsuario, cb_getUser);
@@ -296,6 +315,11 @@ app.get("/preguntas.html", function(request, response) {
     }
 });
 
+/*
+****************************************************************************************************************************************************************
+                FORMULAR PREGUNTA
+****************************************************************************************************************************************************************                                                                   
+*/
 app.get("/formular_pregunta.html", function (request, response) {
 
     if (request.session.usuario == undefined) {
@@ -368,6 +392,12 @@ app.post("/crearPregunta", function (request, response) {
     }
 });
 
+/*
+****************************************************************************************************************************************************************
+                FILTRAR POR ETIQUETA
+****************************************************************************************************************************************************************                                                                   
+*/
+
 app.get("/filtrar_etiqueta.html", function (request, response) {
 
     if (request.session.usuario == undefined) {
@@ -386,6 +416,12 @@ app.get("/filtrar_etiqueta.html", function (request, response) {
     }
     
 });
+
+/*
+****************************************************************************************************************************************************************
+                            USUARIOS
+****************************************************************************************************************************************************************                                                                   
+*/
 
 app.get("/usuarios.html", function (request, response) {
 
