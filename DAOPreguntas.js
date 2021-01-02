@@ -61,6 +61,7 @@ class DAOPreguntas{
             else {
 
                 var sql = 'INSERT INTO preguntas (id_usuario, titulo, cuerpo, fecha) VALUES (?, ?, ?, ?, ?);';
+               
                 var para = [id_usuario, titulo, cuerpo, fecha];
 
                 conexion.query(sql, para, function (err, resultado) {
