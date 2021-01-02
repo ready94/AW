@@ -52,4 +52,4 @@ class DAORelacion {
 
 }
 
-module.exports = DAOERelacion;
+module.exports = DAORelacion;

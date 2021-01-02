@@ -15,8 +15,6 @@ body {
     margin: 0 auto;
     max-width: 1300px;
     min-height: 1000px;
-
-   
 }
 
 a{
@@ -96,6 +94,7 @@ header {
 /*----------- mantener nav y buscar fijas ------------*/
 
 #fijo{
+    background-color: #e0dddd;
     position:sticky;
     top: 0;
 }
@@ -121,7 +120,6 @@ nav a:hover{
 /*---------- Barra de buscar ------------------*/
 
 #boton_buscar{
-    
     width: 10%;
     background-color: #5b3924;
     border-radius: 4px;
@@ -181,7 +179,6 @@ nav a:hover{
     border-radius: 4px;
     list-style: none;
     display: flex;
-    flex-wrap: nowrap;
     background-color: white;
 }
 
@@ -199,6 +196,7 @@ nav a:hover{
     margin: 0.25em 0.5em;
     font-size: x-large;
     color:#2e1d12;
+    
 }
 
 textarea{
@@ -215,17 +213,32 @@ textarea{
     cursor: pointer;
 }
 
+/*------- ETIQUETAS ----------------------*/
+
 .etiqueta_preguntas{
     padding: 2px 2px;
-    margin: 0.5em 0.5em;
-    width: auto;
-    box-sizing: border-box;
-    border: 3px solid #2e1d12;;
-    border-radius: 4px;
-    font-size: small;
-    text-align: center;
-    display: inline-block;
+    margin: 0.25em 0.25em;
+    
 }
+
+.boton_etiqueta{
+    float: left;
+    background-color:#c2a878;
+    border-radius: 10px;
+    border: 2px solid black;
+    color: #fff;
+    font-size: 15px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin: 0.25em 0.25em;
+}
+
+.boton_etiqueta:hover {
+    background-color: #eec170;
+    color: #fff;
+}
+
+/*----------------------------------------*/
 
 .info_usu{
     text-align: center;

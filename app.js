@@ -15,7 +15,7 @@ const sessionStore = new MySQLStore(config.mysqlConfig);
 const DAOUsers = require("./DAOUsers");
 const DAOPreguntas = require("./DAOPreguntas");
 const DAOEtiquetas = require("./DAOEtiquetas");
-const DAOERelacion = require("./DAORelacion");
+const DAORelacion = require("./DAORelacion");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -366,6 +366,44 @@ app.post("/crearPregunta", function (request, response) {
         response.status(200);
         response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
     }
+});
+
+app.get("/filtrar_etiqueta.html", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var usuario = {
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        response.status(200);
+        response.render("filtrar_etiqueta", { perfil: usuario }); 
+            
+    }
+    
+});
+
+app.get("/usuarios.html", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var usuario = {
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        response.status(200);
+        response.render("usuarios", { perfil: usuario }); 
+            
+    }
+    
 });
 
 /* No sabemos como funciona esto hulio

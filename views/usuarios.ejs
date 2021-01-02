@@ -1,79 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <link rel="stylesheet" type="text/css" media="screen" href="../public/css/pag_principal.css">
-    <link rel="icon" type="image/png" href="../img/icon1.png">
-    <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
-    <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
-    <!--Iconos diseñados por <a href="https://smashicons.com/" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>-->
-
-    <meta charset="UTF-8">
-    <title>
-        Cafe con preguntas
-    </title>
-</head>
-
-<!-- La etiqueta body tenía id="scroll" -->
-
-<body>
-
-    <header>
-
-        <div id="cabecera">
-
-            <div id="titulo">
-                <a href="../html/pag_principal.html">
-                    <h1>Café con preguntas</h1>
-                </a>
-            </div>
-
-            <div id="login">
-
-                <img src="../publicd/img/icon4.png" id="icon">
-                <div id="usu">
-
-                    <a href="../html/perfil_usu.html" title="Perfil">
-                        <h3 id="nick">SHAM</h3>
+    <head>
+        <link rel="stylesheet" type="text/css" media="screen" href="../css/pag_principal.css">
+        <link rel="icon" type="image/png" href="../img/icon1.png">
+        <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
+        <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
+        <!--Iconos diseñados por <a href="https://smashicons.com/" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>-->
+    
+        <meta charset="UTF-8">
+        <title>
+            Cafe con preguntas
+        </title>
+    </head>
+    
+    <!-- La etiqueta body tenía id="scroll" -->
+    
+    <body>
+    
+        <header>
+    
+            <div id="cabecera">
+    
+                <div id="titulo">
+                    <a href="../pag_principal.html">
+                        <h1>Café con preguntas</h1>
                     </a>
-
-                    <a class="button" href="#" title="Cerrar sesion">
-                        Cerrar sesión
-                    </a>
-
+                </div>
+    
+                <div id="login">
+    
+                    <img src=<%= perfil.imagen %> id="icon">
+                    <div id="usu">
+    
+                        <a href="../perfil_usu.html" title="Perfil">
+                            <h3 id="nick">
+                                <%= perfil.nombre %>
+                            </h3>
+                        </a>
+    
+                        <a class="button" href="/logout" title="Cerrar sesion">
+                            Cerrar sesión
+                        </a>
+    
+                    </div>
                 </div>
             </div>
+    
+    
+        </header>
+    
+        <div id="fijo">
+            <nav>
+    
+                <a class="button" href="/preguntas.html" title="preguntas">
+                    <b>PREGUNTAS</b>
+                    <img src="../img/flecha-abajo.png">
+                </a>
+    
+    
+                <a class="button" href="/sin_responder.html" title="preguntas sin responder">
+                    <b>SIN RESPONDER</b>
+                    <img src="../img/flecha-abajo.png">
+                </a>
+    
+    
+                <a class="button" href="/usuarios.html" title="usuarios">
+                    <b>USUARIOS</b>
+                    <img src="../img/flecha-abajo.png">
+                </a>
+    
+            </nav>
+    
+            <form action="buscar" method="POST">
+                <input id="boton_buscar" type="button" value="Buscar">
+                <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
+            </form>
         </div>
-
-
-    </header>
-
-    <div id="fijo">
-        <nav>
-
-            <a class="button" href="../html/preguntas.html" title="preguntas">
-                <b>PREGUNTAS</b>
-                <img src="../public/img/flecha-abajo.png">
-            </a>
-
-
-            <a class="button" href="../html/sin_responder.html" title="preguntas sin responder">
-                <b>SIN RESPONDER</b>
-                <img src="../public/img/flecha-abajo.png">
-            </a>
-
-
-            <a class="button" href="../html/usuarios.html" title="usuarios">
-                <b>USUARIOS</b>
-                <img src="../public/img/flecha-abajo.png">
-            </a>
-
-        </nav>
-
-        <form>
-            <input id="buscar" type="text" name="search" placeholder="Buscar...">
-        </form>
-    </div>
 
     <div>
         buscar
