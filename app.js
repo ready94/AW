@@ -251,7 +251,7 @@ app.get("/preguntas.html", function(request, response) {
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
-    } else {
+    } else {    
 
         var usuario = {
             nombre: request.session.nombre,
@@ -277,41 +277,82 @@ app.get("/preguntas.html", function(request, response) {
                         console.log("ERROR EN LA BASE DE DATOS");
                     } else {
                 
-                        var pregunta = {
-                            idUsuario: resultado[0].id_usuario,
-                            titulo: resultado[0].titulo,
-                            cuerpo: resultado[0].cuerpo,
-                            fecha: resultado[0].fecha_alta
-                        };
-               
-                        daoUser.getUserByID(pregunta.idUsuario, cb_getUser);
-
-                        function cb_getUser(err, res) {
-                            if (err) {
-                                response.status(500);
-                                console.log("ERROR EN LA BASE DE DATOS");
-                            } else {
-
-                                var usuarioPregunta = { // valores del usuario
-                                    nombre: res[0].nombre,
-                                    imagen: res[0].imagen
-                                };
-                        // guardamos los valores del usuario logueado actualmente en variables de sesion
-
-                                response.status(200);
-                                response.render("preguntas", { preguntas: resultado, perfil: usuario, usuarioPregunta: usuarioPregunta, contador:contador }); // renderiza la pagina perfil.ejs con los valores del usuario encontrados en la base de datos            
-                            }
+                        var pregunta=[];
+                        for(var i in resultado){
+                            var aux = {
+                                idUsuario: resultado[i].id_usuario,
+                                titulo: resultado[i].titulo,
+                                cuerpo: resultado[i].cuerpo,
+                                fecha: resultado[i].fecha,
+                                nombre:"",
+                                imagen:""
+                            };
+                            pregunta.push(aux);
                         }
+                    
+                        /*console.log("Aqui se salta el for");*/
+                        
+                        for(var j=0; j<contador;j++){
+                            daoUser.getUserByID(pregunta[j].idUsuario, cb_getUser);
+                            
+                            console.log("entra al for");
+                            console.log(pregunta[j].idUsuario);
+                            console.log(j);
+                            
+                            function cb_getUser(err, res) {
+                                console.log("entra en el function de getUser");
+                                console.log(pregunta);
+                                console.log(res);
+                                if (err) {
+                                    response.status(500);
+                                     console.log("ERROR EN LA BASE DE DATOS");
+                                } else {
+    
+                                    console.log("entra en el else");
+                                    console.log("que hay en pregunta?");
+                                    console.log(j);
+                                    console.log(pregunta[j]);
+                                    console.log("y en res?");
+                                    console.log(res[0]);
+                                    
+                                    /*pregunta[j].nombre= res[0].nombre;*/
+
+                                    console.log("y ahora?")
+                                    console.log(pregunta[j]);
+
+                                    /*pregunta[j].imagen= res[0].imagen;*/
+                                    console.log("Y ahora x2");
+                                    console.log(pregunta[j]);
+                                    
+    
+                                        /*
+                                    console.log("resultado completo;");
+                                    /*var usuarioPregunta = { // valores del usuario
+                                         nombre: res[0].nombre,
+                                         imagen: res[0].imagen
+                                    };
+                                    // guardamos los valores del usuario logueado actualmente en variables de sesion
+                                    */
+                                }
+
+                                console.log("se ha terminado el else");
+                            }
+                           
+                            console.log("termina el for");
+                        }
+                        
+                        response.status(200);
+                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador }); 
+                       
+                        
                     }
-
+     
                 }
-              
-            }
-                
-        }
 
-        
-        
+            }
+              
+        }
+   
     }
 });
 

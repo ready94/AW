@@ -64,7 +64,7 @@ class DAOUsers {
                     if (err) {
                         callback(err);
                     } else {
-                        console.log(resultado);
+                        /*console.log(resultado);*/
                         callback(null, resultado);
 
                     }
@@ -86,7 +86,7 @@ class DAOUsers {
                     if (err) {
                         callback(err);
                     } else {
-                        console.log(resultado);
+                      /*  console.log(resultado);*/
                         callback(null, resultado);
 
                     }

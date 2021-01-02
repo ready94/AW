@@ -101,6 +101,75 @@ class DAOPreguntas{
         
     }
 
+    countEtiquetas(callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                var sql =  "SELECT count (*) as TotalEtiquetas FROM preguntas;"; 
+               
+                conexion.query(sql, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else{
+                        console.log(resultado[0]); //comen
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+    }
+
+    countTexto(callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                var sql =  "SELECT count (*) as TotalTexto FROM preguntas;"; 
+               
+                conexion.query(sql, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else{
+                        console.log(resultado[0]); //comen
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+    }
+
+    countSinResponder(callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                var sql =  "SELECT count (*) as TotalSinResponder FROM preguntas;"; 
+               
+                conexion.query(sql, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else{
+                        console.log(resultado[0]); //comen
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+    }
+
 }
 
 module.exports = DAOPreguntas;
