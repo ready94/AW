@@ -231,9 +231,11 @@ app.get("/pag_principal.html", function(request, response) {
                     imagen: resultado[0].imagen
                 };
                 // guardamos los valores del usuario logueado actualmente en variables de sesion
-
+                request.session.idUsuario = resultado[0].id_usuario;
                 request.session.nombre = usuario.nombre;
                 request.session.imagen = usuario.imagen;
+
+                console.log("id usuario logueado: " + request.session.idUsuario);
 
                 response.status(200);
                 response.render("pag_principal", { perfil: usuario });
@@ -267,8 +269,6 @@ app.get("/preguntas.html", function(request, response) {
                 console.log("ERROR EN LA BASE DE DATOS");
             } else {
                 var contador= cont[0].Total;
-               
-                console.log("contador=", contador); //comen
                 daoPreguntas.getPreguntas(cb_getPreguntas);
 
                 function cb_getPreguntas(error, resultado){
@@ -294,35 +294,31 @@ app.get("/preguntas.html", function(request, response) {
                         
                         for(var j=0; j<contador;j++){
                             daoUser.getUserByID(pregunta[j].idUsuario, cb_getUser);
-                            
-                            console.log("entra al for");
-                            console.log(pregunta[j].idUsuario);
-                            console.log(j);
-                            
+            
                             function cb_getUser(err, res) {
-                                console.log("entra en el function de getUser");
+                               /* console.log("entra en el function de getUser");
                                 console.log(pregunta);
-                                console.log(res);
+                                console.log(res);*/
                                 if (err) {
                                     response.status(500);
                                      console.log("ERROR EN LA BASE DE DATOS");
                                 } else {
     
-                                    console.log("entra en el else");
+                                  /*  console.log("entra en el else");
                                     console.log("que hay en pregunta?");
                                     console.log(j);
                                     console.log(pregunta[j]);
                                     console.log("y en res?");
-                                    console.log(res[0]);
+                                    console.log(res[0]);*/
                                     
                                     /*pregunta[j].nombre= res[0].nombre;*/
 
-                                    console.log("y ahora?")
-                                    console.log(pregunta[j]);
+                                  /*  console.log("y ahora?")
+                                    console.log(pregunta[j]);*/
 
                                     /*pregunta[j].imagen= res[0].imagen;*/
-                                    console.log("Y ahora x2");
-                                    console.log(pregunta[j]);
+                                /*    console.log("Y ahora x2");
+                                    console.log(pregunta[j]);*/
                                     
     
                                         /*
@@ -335,10 +331,10 @@ app.get("/preguntas.html", function(request, response) {
                                     */
                                 }
 
-                                console.log("se ha terminado el else");
+                               // console.log("se ha terminado el else");
                             }
                            
-                            console.log("termina el for");
+                            //console.log("termina el for");
                         }
                         
                         response.status(200);
@@ -392,7 +388,7 @@ app.post("/crearPregunta", function (request, response) {
         var fecha = new Date();
         fecha=fecha.toDateString();
 
-        console.log(fecha);
+       // console.log(fecha);
         var aux = [];
 
         if(etiqueta != undefined){
@@ -403,8 +399,8 @@ app.post("/crearPregunta", function (request, response) {
                 }
             }
         }
-
-        daoPreguntas.insertPregunta(titulo, cuerpo, fecha, cb_insertPregunta);
+        console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
+        daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
 
         function cb_insertPregunta(err, resultado) {
             if (err) {
@@ -424,13 +420,17 @@ app.post("/crearPregunta", function (request, response) {
                             var id = res[0].id_pregunta;
 
                             for(var i = 0; i < aux.length; i++){
-                                daoEtiquetas.insertEtiquetas(aux[i], id, cb_insertEtiquetas);
+                                daoEtiquetas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
 
                                 function cb_insertEtiquetas(err, res2) {
                                     if (err) {
                                         response.status(500);
                                         console.log("ERROR BBDD" + err); //comen
                                     } 
+                                    else {
+                                        response.status(200);
+                                        response.redirect("/pag_principal.html");
+                                    }
                                 }
                             } 
                         }
