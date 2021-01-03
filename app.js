@@ -260,97 +260,122 @@ app.get("/preguntas.html", function(request, response) {
             imagen: request.session.imagen
         };
         
-        //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
-        daoPreguntas.count(cb_count);
-
-        function cb_count(error, cont){
+        var pregunta=[];
+        var aux_etiquetas=[];
+        
+        daoPreguntas.getPreguntas(cb_getPreguntas);
+  
+        function cb_getPreguntas(error, resultado){
             if (error) {
                 response.status(500);
                 console.log("ERROR EN LA BASE DE DATOS");
             } else {
-                var contador= cont[0].Total;
-                daoPreguntas.getPreguntas(cb_getPreguntas);
+ 
+                resultado.forEach(p=>{
 
-                function cb_getPreguntas(error, resultado){
+                    console.log("entra al for");
+                            
+                    daoUser.getUserByID(p.id_usuario, cb_getUser);
+                            
+                        console.log("Usuario: ",p.id_usuario);
+                            
+                            
+                        function cb_getUser(err, res) {
+                            console.log("entra en el function de getUser");
+                            console.log("Pregunta:", p.id_pregunta);
+                                
+                            if (err) {
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            } else {
+
+                                console.log("entra en el else getUser");
+                               
+                                var aux = {
+                                    idUsuario: p.id_usuario,
+                                    titulo: p.titulo,
+                                    cuerpo: p.cuerpo,
+                                    fecha: p.fecha,
+                                    nombre:res[0].nombre,
+                                    imagen:res[0].imagen,
+                                    etiqueta: aux_etiquetas
+                                };
+                                pregunta.push(aux);
+    
+                    
+                            }
+
+                            console.log("se ha terminado el else getEtiqetas");
+                             
+                        }
+                           
+                       console.log("termina el for");
+                            
+                })
+
+
+                resultado.forEach((p,i)=>{
+
+                    daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
+                    console.log("hace el daoEtiquetas");
+                    
+                    function cb_getEtiqueta(error, resul){
+                        console.log("entra en el function de getEtiqueta");
+                        
+                        if (error) {
+                            response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");
+                        } else {
+
+                            console.log("con:", p.id_usuario, "y pregunta: ", p.id_pregunta);
+                            console.log(i);
+                            console.log(resul);
+
+                            var aux_etiquetas=[];
+                            for(var x of resul){
+                                aux_etiquetas.push(x.etiqueta);
+                            }
+
+                            if(aux_etiquetas.length>0){
+                                pregunta[i].etiqueta=aux_etiquetas;
+                            }
+
+                            console.log("devuelve: ", pregunta[i]);
+                        }
+                        
+                    }
+                })
+                       
+                
+
+            
+                //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
+                daoPreguntas.count(cb_count);
+
+                function cb_count(error, cont){
                     if (error) {
                         response.status(500);
                         console.log("ERROR EN LA BASE DE DATOS");
                     } else {
-                
-                        var pregunta=[];
-                        for(var i in resultado){
-                            var aux = {
-                                idUsuario: resultado[i].id_usuario,
-                                titulo: resultado[i].titulo,
-                                cuerpo: resultado[i].cuerpo,
-                                fecha: resultado[i].fecha,
-                                nombre:"",
-                                imagen:""
-                            };
-                            pregunta.push(aux);
-                        }
-                    
-                        /*console.log("Aqui se salta el for");*/
-                        
-                        for(var j=0; j<contador;j++){
-                            daoUser.getUserByID(pregunta[j].idUsuario, cb_getUser);
-            
-                            function cb_getUser(err, res) {
-                               /* console.log("entra en el function de getUser");
-                                console.log(pregunta);
-                                console.log(res);*/
-                                if (err) {
-                                    response.status(500);
-                                     console.log("ERROR EN LA BASE DE DATOS");
-                                } else {
-    
-                                  /*  console.log("entra en el else");
-                                    console.log("que hay en pregunta?");
-                                    console.log(j);
-                                    console.log(pregunta[j]);
-                                    console.log("y en res?");
-                                    console.log(res[0]);*/
-                                    
-                                    /*pregunta[j].nombre= res[0].nombre;*/
-
-                                  /*  console.log("y ahora?")
-                                    console.log(pregunta[j]);*/
-
-                                    /*pregunta[j].imagen= res[0].imagen;*/
-                                /*    console.log("Y ahora x2");
-                                    console.log(pregunta[j]);*/
-                                    
-    
-                                        /*
-                                    console.log("resultado completo;");
-                                    /*var usuarioPregunta = { // valores del usuario
-                                         nombre: res[0].nombre,
-                                         imagen: res[0].imagen
-                                    };
-                                    // guardamos los valores del usuario logueado actualmente en variables de sesion
-                                    */
-                                }
-
-                               // console.log("se ha terminado el else");
-                            }
-                           
-                            //console.log("termina el for");
-                        }
-                        
+                        var contador= cont[0].Total;
+                       
+                        console.log("FIN");
                         response.status(200);
                         response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador }); 
-                       
-                        
                     }
-     
+                    
                 }
-
+         
             }
-              
+            
+                       
         }
-   
+         
     }
+            
 });
+
+
 
 /*
 ****************************************************************************************************************************************************************

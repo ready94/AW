@@ -258,6 +258,7 @@ app.get("/preguntas.html", function(request, response) {
         };
         
         var pregunta=[];
+        var aux_etiquetas=[];
         
         daoPreguntas.getPreguntas(cb_getPreguntas);
   
@@ -266,8 +267,8 @@ app.get("/preguntas.html", function(request, response) {
                 response.status(500);
                 console.log("ERROR EN LA BASE DE DATOS");
             } else {
-            
-                resultado.forEach((p)=>{
+ 
+                resultado.forEach(p=>{
 
                     console.log("entra al for");
                             
@@ -286,41 +287,18 @@ app.get("/preguntas.html", function(request, response) {
                             } else {
 
                                 console.log("entra en el else getUser");
-                                daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
-                                console.log("hace el daoEtiquetas");
-                                var aux_etiquetas=[];
-                                function cb_getEtiqueta(error, resul){
-                                    console.log("entra en el function de getEtiqueta");
-                                    
-                                    if (error) {
-                                        response.status(500);
-                                        console.log("ERROR EN LA BASE DE DATOS");
-                                    } else {
+                               
+                                var aux = {
+                                    idUsuario: p.id_usuario,
+                                    titulo: p.titulo,
+                                    cuerpo: p.cuerpo,
+                                    fecha: p.fecha,
+                                    nombre:res[0].nombre,
+                                    imagen:res[0].imagen,
+                                    etiqueta: aux_etiquetas
+                                };
+                                pregunta.push(aux);
     
-                                        console.log("con:", p.id_usuario, "y pregunta: ", p.id_pregunta)
-    
-                                        for(var x of resul){
-                                            aux_etiquetas.push(x.etiqueta);
-                                        }
-
-                                        var aux = {
-                                            idUsuario: p.id_usuario,
-                                            titulo: p.titulo,
-                                            cuerpo: p.cuerpo,
-                                            fecha: p.fecha,
-                                            nombre:res[0].nombre,
-                                            imagen:res[0].imagen,
-                                            etiqueta: aux_etiquetas
-                                        };
-                                        pregunta.push(aux);
-        
-                                        
-                                        console.log("devuelve: ");
-                                    }
-                                    
-                                }
-     
-                                
                     
                             }
 
@@ -331,8 +309,41 @@ app.get("/preguntas.html", function(request, response) {
                        console.log("termina el for");
                             
                 })
+
+
+                resultado.forEach((p,i)=>{
+
+                    daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
+                    console.log("hace el daoEtiquetas");
+                    
+                    function cb_getEtiqueta(error, resul){
+                        console.log("entra en el function de getEtiqueta");
+                        
+                        if (error) {
+                            response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");
+                        } else {
+
+                            console.log("con:", p.id_usuario, "y pregunta: ", p.id_pregunta);
+                            console.log(i);
+                            console.log(resul);
+
+                            var aux_etiquetas=[];
+                            for(var x of resul){
+                                aux_etiquetas.push(x.etiqueta);
+                            }
+
+                            if(aux_etiquetas.length>0){
+                                pregunta[i].etiqueta=aux_etiquetas;
+                            }
+
+                            console.log("devuelve: ", pregunta[i]);
+                        }
+                        
+                    }
+                })
                        
-                console.log("fin for each");
+                
 
             
                 //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
@@ -344,7 +355,7 @@ app.get("/preguntas.html", function(request, response) {
                         console.log("ERROR EN LA BASE DE DATOS");
                     } else {
                         var contador= cont[0].Total;
-                        console.log(pregunta)
+                       
                         console.log("FIN");
                         response.status(200);
                         response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador }); 
@@ -398,7 +409,7 @@ app.post("/crearPregunta", function (request, response) {
         var fecha = new Date();
         fecha=fecha.toDateString();
 
-        console.log(fecha);
+       // console.log(fecha);
         var aux = [];
 
         if(etiqueta != undefined){
@@ -409,35 +420,49 @@ app.post("/crearPregunta", function (request, response) {
                 }
             }
         }
+        console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
+        daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
 
-        if(aux.length > 0){
-            daoEtiquetas.insertEtiquetas(aux, cb_insertEtiquetas);
+        function cb_insertPregunta(err, resultado) {
+            if (err) {
+                response.status(500);
+                console.log("ERROR BBDD" + err); //comen
+            } else if (resultado.length != 0) {
+                if (aux.length > 0) {
 
-            function cb_insertEtiquetas(err, resultado) {
-                if (err) {
-                    response.status(500);
-                    console.log("ERROR BBDD" + err); //comen
-                } else if (resultado.length != 0) {
-                    daoPreguntas.insertPregunta(titulo, cuerpo, fecha, cb_insertPregunta);
-                    
-                    function cb_insertPregunta(err, res) {
+                    daoEtiquetas.getUltimoID(cb_getUltimoID);
+
+                    function cb_getUltimoID(err, res) {
                         if (err) {
                             response.status(500);
                             console.log("ERROR BBDD" + err); //comen
                         } else if (res.length != 0) {
-                            daoRelacion.insertRelacion();
-                            //Para hacerlo, hay que recoger los id de la pregunta y de las etiquetas para poder pasárselo a la relación
 
+                            var id = res[0].id_pregunta;
+
+                            for(var i = 0; i < aux.length; i++){
+                                daoEtiquetas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
+
+                                function cb_insertEtiquetas(err, res2) {
+                                    if (err) {
+                                        response.status(500);
+                                        console.log("ERROR BBDD" + err); //comen
+                                    } 
+                                    else {
+                                        response.status(200);
+                                        response.redirect("/pag_principal.html");
+                                    }
+                                }
+                            } 
                         }
                     }
-                    
-                } 
+                }
+                else{
+                    response.status(200);
+                    response.redirect("/pag_principal.html");
+                }
             }
         }
-        
-
-        response.status(200);
-        response.render("formular_pregunta", { errorMsg: null }); // renderiza la pagina login.ejs
     }
 });
 
