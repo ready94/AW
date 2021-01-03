@@ -269,72 +269,88 @@ app.get("/preguntas.html", function(request, response) {
             
                 resultado.forEach((p)=>{
                             
-                    
-                    daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
-                            
-                       /* console.log("entra al for");*/
-                        /*console.log(p.id_usuario);*/
+                    console.log("entra al for");
+
+                    daoUser.getUserByID(p.id_usuario, cb_getUser);
+
                         
-                        function cb_getEtiqueta(error, resul){
-                            /*console.log("entra en el function de getUser");*/
+                        console.log("Usuario: ",p.id_usuario);
+                    
+                    function cb_getUser(err, res) {
+                        
+                        console.log("entra en el function de getUser")
                                 
-                            if (error) {
-                                response.status(500);
-                                console.log("ERROR EN LA BASE DE DATOS");
-                            } else {
+                        if (err) {
+                            response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");
+                        } else {
 
-                                daoUser.getUserByID(p.id_usuario, cb_getUser);
+                            daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
+                    
+                                console.log("Pregunta:",p.id_pregunta);
 
-                                /*console.log(p.id_pregunta);*/
-                                function cb_getUser(err, res) {
-                                    if (err) {
-                                        response.status(500);
-                                        console.log("ERROR EN LA BASE DE DATOS");
-                                    } else {
+                            function cb_getEtiqueta(error, resul){
 
-                                    
-                                        console.log("hola",res);
+                                console.log("entra en el function de getEtiqueta");
 
-                                        var aux = {
-                                            idUsuario: p.id_usuario,
-                                            titulo: p.titulo,
-                                            cuerpo: p.cuerpo,
-                                            fecha: p.fecha,
-                                            nombre:res[0].nombre,
-                                            imagen:res[0].imagen,
-                                            etiqueta:[resul.etiqueta]
-                                        };
-                                        pregunta.push(aux);
+                                if (error) {
+                                    response.status(500);
+                                    console.log("ERROR EN LA BASE DE DATOS");
+                                } else {
 
-                                    
+                                    console.log("entra en el else con usuario:", p.id_usuario, "y pregunta: ", p.id_pregunta)
+
+                                    var aux_etiquetas=[];
+                                    for(var x of resul){
+                                        aux_etiquetas.push(x.etiqueta);
                                     }
+            
+                                   /* console.log(" etiqueta:" , aux_etiquetas);*/
+
+                                    var aux = {
+                                        idUsuario: p.id_usuario,
+                                        titulo: p.titulo,
+                                        cuerpo: p.cuerpo,
+                                        fecha: p.fecha,
+                                        nombre:res[0].nombre,
+                                        imagen:res[0].imagen,
+                                        etiqueta:aux_etiquetas
+                                    };
+                                    pregunta.push(aux);
+
+                                       /* console.log(pregunta);*/
                                 }
-                            } 
-                        }
+                            }
+                        } 
+                    }
+                
                 })
 
                 console.log("resultado: ",pregunta)
                         
-                //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
-                daoPreguntas.count(cb_count);
+            //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
+            daoPreguntas.count(cb_count);
 
-                function cb_count(error, cont){
-                    if (error) {
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
-                    } else {
-                        var contador= cont[0].Total;
-                        /*console.log("FIN");*/
+            function cb_count(error, cont){
+                if (error) {
+                    response.status(500);
+                    console.log("ERROR EN LA BASE DE DATOS");
+                } else {
+                    var contador= cont[0].Total;
 
-                        response.status(200);
-                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador}); 
-                    }
-                    
+                    console.log("contador: ",contador);
+                    console.log("FIN");
+
+                    response.status(200);
+                    response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador}); 
                 }
+                
+            }
          
             }
      
-                       
+                   
+           
         }
 
            

@@ -103,11 +103,11 @@
                     <textarea maxlength="150" disabled><%= p.cuerpo%></textarea>
                     
                     <div class="etiqueta_preguntas">
-                        
+                        <%for(var x of p.etiqueta){ %> 
                         <a class="boton_etiqueta" href="/filtrar_etiqueta.html">
-                            etiqueta
+                            <%= x %> 
                         </a>
-                        
+                        <% };%>
                        
                     </div>
                 
