@@ -189,13 +189,14 @@ nav a:hover{
 .info_pregunta{
     float: left;
     width: 90%;
-    cursor: pointer;
+    cursor: auto;
 }
 
 .titulo_pregunta{
     margin: 0.25em 0.5em;
     font-size: xx-large;
     color:#2e1d12;
+    cursor: pointer;
     
 }
 
@@ -210,7 +211,6 @@ textarea{
     color:rgb(0, 0, 0);
     background-color: white;
     overflow-y: hidden;
-    cursor: pointer;
 }
 
 /*------- ETIQUETAS ----------------------*/
@@ -244,7 +244,7 @@ textarea{
     text-align: center;
     float: left;
     width: 50%;
-    cursor: pointer;
+    cursor: auto;
     border-left:2px solid rgb(104, 104, 104);
 }
 
@@ -252,6 +252,10 @@ textarea{
     width: 50px;
     height: 50px;
     padding: 15px;
+}
+
+.nombre_usu{
+    cursor: pointer;
 }
 
 

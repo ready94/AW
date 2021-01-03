@@ -86,7 +86,7 @@
 
         <div id="barra_info">
             <div id="contador">
-                Preguntas totales <%= contador %>
+                Preguntas totales 
             </div>
             <a class="button" href="/formular_pregunta.html" title="formular">
                 <b>Formular una pregunta</b>
@@ -97,8 +97,8 @@
         <ul>
             <% preguntas.forEach(function(p){ %>
             <li class="pregunta">
-                <a class="info_pregunta" href="/formular_pregunta.html"> 
-                    <div class="titulo_pregunta"><%=p.titulo %></div>
+                <div class="info_pregunta" > 
+                    <a class="titulo_pregunta" href="/formular_pregunta.html"><%=p.titulo %></a>
                     
                     <textarea maxlength="150" disabled><%= p.cuerpo%></textarea>
                     
@@ -111,22 +111,22 @@
                        
                     </div>
                 
-                </a>
+                </div>
 
-                <a class="info_usu" href="/usuarios.html">
+                <div class="info_usu" >
                     <div class="fecha_usu">
                         Formulada el 
                         <%= p.fecha%>
-                        <!-- <%=preguntas[0].fecha.getDate() %> / <%=preguntas[0].fecha.getMonth() %> /<%=preguntas[0].fecha.getFullYear() %>-->
+                        <!-- /*<%=preguntas[0].fecha.getDate() %> / <%=preguntas[0].fecha.getMonth() %> /<%=preguntas[0].fecha.getFullYear() %>*/-->
                     </div>
                     
                     <img class="imagen_usu" src=<%= p.imagen %>>
-                    <div class="nombre_usu">
+                    <a class="nombre_usu" href="/usuarios.html">
                        <%= p.nombre%>
-                    </div>
+                    </a>
                    
                     
-                </a>
+                </div>
             </li>
             <% }); %>
         </ul>

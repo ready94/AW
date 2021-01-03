@@ -268,96 +268,99 @@ app.get("/preguntas.html", function(request, response) {
             } else {
             
                 resultado.forEach((p)=>{
-                            
+
                     console.log("entra al for");
-
+                            
                     daoUser.getUserByID(p.id_usuario, cb_getUser);
-
-                        
+                            
                         console.log("Usuario: ",p.id_usuario);
-                    
-                    function cb_getUser(err, res) {
-                        
-                        console.log("entra en el function de getUser")
+                            
+                            
+                        function cb_getUser(err, res) {
+                            console.log("entra en el function de getUser");
+                            console.log("Pregunta:", p.id_pregunta);
                                 
-                        if (err) {
-                            response.status(500);
-                            console.log("ERROR EN LA BASE DE DATOS");
-                        } else {
+                            if (err) {
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            } else {
 
-                            daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
-                    
-                                console.log("Pregunta:",p.id_pregunta);
+                                console.log("entra en el else getUser");
+                                daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiqueta);
+                                console.log("hace el daoEtiquetas");
+                                var aux_etiquetas=[];
+                                function cb_getEtiqueta(error, resul){
+                                    console.log("entra en el function de getEtiqueta");
+                                    
+                                    if (error) {
+                                        response.status(500);
+                                        console.log("ERROR EN LA BASE DE DATOS");
+                                    } else {
+    
+                                        console.log("con:", p.id_usuario, "y pregunta: ", p.id_pregunta)
+    
+                                        for(var x of resul){
+                                            aux_etiquetas.push(x.etiqueta);
+                                        }
 
-                            function cb_getEtiqueta(error, resul){
-
-                                console.log("entra en el function de getEtiqueta");
-
-                                if (error) {
-                                    response.status(500);
-                                    console.log("ERROR EN LA BASE DE DATOS");
-                                } else {
-
-                                    console.log("entra en el else con usuario:", p.id_usuario, "y pregunta: ", p.id_pregunta)
-
-                                    var aux_etiquetas=[];
-                                    for(var x of resul){
-                                        aux_etiquetas.push(x.etiqueta);
+                                        var aux = {
+                                            idUsuario: p.id_usuario,
+                                            titulo: p.titulo,
+                                            cuerpo: p.cuerpo,
+                                            fecha: p.fecha,
+                                            nombre:res[0].nombre,
+                                            imagen:res[0].imagen,
+                                            etiqueta: aux_etiquetas
+                                        };
+                                        pregunta.push(aux);
+        
+                                        
+                                        console.log("devuelve: ");
                                     }
-            
-                                   /* console.log(" etiqueta:" , aux_etiquetas);*/
-
-                                    var aux = {
-                                        idUsuario: p.id_usuario,
-                                        titulo: p.titulo,
-                                        cuerpo: p.cuerpo,
-                                        fecha: p.fecha,
-                                        nombre:res[0].nombre,
-                                        imagen:res[0].imagen,
-                                        etiqueta:aux_etiquetas
-                                    };
-                                    pregunta.push(aux);
-
-                                       /* console.log(pregunta);*/
+                                    
                                 }
+     
+                                
+                    
                             }
-                        } 
-                    }
-                
+
+                            console.log("se ha terminado el else getEtiqetas");
+                             
+                        }
+                           
+                       console.log("termina el for");
+                            
                 })
+                       
+                console.log("fin for each");
 
-                console.log("resultado: ",pregunta)
-                        
-            //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
-            daoPreguntas.count(cb_count);
+            
+                //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
+                daoPreguntas.count(cb_count);
 
-            function cb_count(error, cont){
-                if (error) {
-                    response.status(500);
-                    console.log("ERROR EN LA BASE DE DATOS");
-                } else {
-                    var contador= cont[0].Total;
-
-                    console.log("contador: ",contador);
-                    console.log("FIN");
-
-                    response.status(200);
-                    response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador}); 
+                function cb_count(error, cont){
+                    if (error) {
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    } else {
+                        var contador= cont[0].Total;
+                        console.log(pregunta)
+                        console.log("FIN");
+                        response.status(200);
+                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador:contador }); 
+                    }
+                    
                 }
-                
-            }
          
             }
-     
-                   
-           
+            
+                       
         }
-
-           
-                
+         
     }
             
 });
+
 
 /*
 ****************************************************************************************************************************************************************
