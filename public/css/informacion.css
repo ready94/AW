@@ -34,14 +34,12 @@ header {
 }
 
 #titulo {
-    
     padding: 30px;
     font-size: 35px;
     flex: left;
 }
 
 #titulo a{
-    text-decoration: none;
     color:rgb(0, 0, 0);
     cursor:pointer;
 }
@@ -96,6 +94,7 @@ header {
 /*----------- mantener nav y buscar fijas ------------*/
 
 #fijo{
+    background-color: #e0dddd;
     position:sticky;
     top: 0;
 }
@@ -121,7 +120,6 @@ nav a:hover{
 /*---------- Barra de buscar ------------------*/
 
 #boton_buscar{
-    
     width: 10%;
     background-color: #5b3924;
     border-radius: 4px;
@@ -148,3 +146,6 @@ nav a:hover{
     background-position: 10px 10px; 
     background-repeat: no-repeat;
 }
+
+/*------------ Caracteristicas propias ------------------------*/
+

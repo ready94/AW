@@ -231,6 +231,7 @@ app.get("/pag_principal.html", function(request, response) {
                 };
                 // guardamos los valores del usuario logueado actualmente en variables de sesion
 
+                request.session.idUsuario = resultado[0].id_usuario;
                 request.session.nombre = usuario.nombre;
                 request.session.imagen = usuario.imagen;
 
@@ -450,7 +451,7 @@ app.post("/crearPregunta", function (request, response) {
                                     } 
                                     else {
                                         response.status(200);
-                                        response.redirect("/pag_principal.html");
+                                        response.redirect("/preguntas.html");
                                     }
                                 }
                             } 
@@ -459,7 +460,7 @@ app.post("/crearPregunta", function (request, response) {
                 }
                 else{
                     response.status(200);
-                    response.redirect("/pag_principal.html");
+                    response.redirect("/preguntas.html");
                 }
             }
         }
