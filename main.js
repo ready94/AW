@@ -259,7 +259,7 @@ app.get("/preguntas.html", function(request, response) {
         };
         
         var pregunta=[];
-        var aux_etiquetas=[];
+        //var aux_etiquetas=[];
         
         daoPreguntas.getPreguntas(cb_getPreguntas);
   
@@ -296,7 +296,7 @@ app.get("/preguntas.html", function(request, response) {
                                     fecha: p.fecha,
                                     nombre:res[0].nombre,
                                     imagen:res[0].imagen,
-                                    etiqueta: aux_etiquetas
+                                    etiqueta:""
                                 };
                                 pregunta.push(aux);
     
@@ -413,10 +413,10 @@ app.post("/crearPregunta", function (request, response) {
        // console.log(fecha);
         var aux = [];
 
-        if(etiqueta != undefined){
+        if(etiqueta != ""){
             var etiquetas = etiqueta.split("@");
             for(var i = 0; i < 5; i++){
-                if(etiquetas[i] != undefined){
+                if(etiquetas[i] != ""){
                     aux.push(etiquetas[i]);
                 }
             }
@@ -516,6 +516,62 @@ app.get("/usuarios.html", function (request, response) {
     }
     
 });
+
+/*
+****************************************************************************************************************************************************************
+                    PERFIL  USUARIOS
+****************************************************************************************************************************************************************                                                                   
+*/
+
+app.get("/perfil_usu.html", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var usuario = {
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        response.status(200);
+        response.render("perfil_usu", { perfil: usuario }); 
+            
+    }
+    
+});
+
+
+
+
+/*
+****************************************************************************************************************************************************************
+                    INFOR PREGUNTA
+****************************************************************************************************************************************************************                                                                   
+*/
+
+app.get("/informacion_pregunta.html", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var usuario = {
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        response.status(200);
+        response.render("informacion_pregunta", { perfil: usuario }); 
+            
+    }
+    
+});
+
+
+
 
 /* No sabemos como funciona esto hulio
 app.get("/reset", function(request, response) {
