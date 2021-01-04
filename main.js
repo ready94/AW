@@ -226,12 +226,13 @@ app.get("/pag_principal.html", function(request, response) {
             } else {
 
                 var usuario = { // valores del usuario
+                    id: resultado[0].id_usuario,
                     nombre: resultado[0].nombre,
                     imagen: resultado[0].imagen
                 };
                 // guardamos los valores del usuario logueado actualmente en variables de sesion
 
-                request.session.idUsuario = resultado[0].id_usuario;
+                request.session.idUsuario = usuario.id;
                 request.session.nombre = usuario.nombre;
                 request.session.imagen = usuario.imagen;
 
@@ -293,7 +294,7 @@ app.get("/preguntas.html", function(request, response) {
                                     idUsuario: p.id_usuario,
                                     titulo: p.titulo,
                                     cuerpo: p.cuerpo,
-                                    fecha: p.fecha,
+                                    fecha: p.fecha, //.toDateString(),
                                     nombre:res[0].nombre,
                                     imagen:res[0].imagen,
                                     etiqueta:""
@@ -333,10 +334,10 @@ app.get("/preguntas.html", function(request, response) {
                             for(var x of resul){
                                 aux_etiquetas.push(x.etiqueta);
                             }
-
+                            /*
                             if(aux_etiquetas.length>0){
                                 pregunta[i].etiqueta=aux_etiquetas;
-                            }
+                            }*/
 
                             console.log("devuelve: ", pregunta[i]);
                         }
@@ -373,7 +374,6 @@ app.get("/preguntas.html", function(request, response) {
             
 });
 
-
 /*
 ****************************************************************************************************************************************************************
                 FORMULAR PREGUNTA
@@ -408,7 +408,7 @@ app.post("/crearPregunta", function (request, response) {
         var cuerpo = request.body.cuerpo;
         var etiqueta = request.body.etiqueta;
         var fecha = new Date();
-        fecha=fecha.toDateString();
+       // fecha=fecha.toDateString();
 
        // console.log(fecha);
         var aux = [];
@@ -523,7 +523,7 @@ app.get("/usuarios.html", function (request, response) {
 ****************************************************************************************************************************************************************                                                                   
 */
 
-app.get("/perfil_usu.html", function (request, response) {
+app.get("/perfil_usu/:idUsuario", function (request, response) {
 
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -535,15 +535,37 @@ app.get("/perfil_usu.html", function (request, response) {
             imagen: request.session.imagen
         };
 
-        response.status(200);
-        response.render("perfil_usu", { perfil: usuario }); 
-            
+       
+        daoUser.getUserByID(request.params.idUsuario,cb_getPreguntas);
+
+        function cb_getPreguntas(err, resultado){
+
+            if(err){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+
+                
+                var aux={
+                    nombre: resultado[0].nombre,
+                    imagen: resultado[0].imagen,
+                    fecha: resultado[0].fecha_alta.toDateString(),
+                    preguntas: resultado[0].num_preguntas,
+                    respuestas: resultado[0].num_respuestas,
+                    reputacion: resultado[0].reputacion,
+                    medallas: resultado[0].medallas
+                }
+
+                response.status(200);
+                response.render("perfil_usu", { perfil: usuario , bio: aux}); 
+                
+            }
+        }
+
+       
     }
     
 });
-
-
-
 
 /*
 ****************************************************************************************************************************************************************
@@ -551,7 +573,7 @@ app.get("/perfil_usu.html", function (request, response) {
 ****************************************************************************************************************************************************************                                                                   
 */
 
-app.get("/informacion_pregunta.html", function (request, response) {
+app.get("/informacion_pregunta/:idPregunta", function (request, response) {
 
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -563,9 +585,74 @@ app.get("/informacion_pregunta.html", function (request, response) {
             imagen: request.session.imagen
         };
 
+        console.log("heeeey",request.params.idPregunta);
+        daoPreguntas.getByIdPregunta(request.params.idPregunta, cb_getByIdPreguntas);
+
+        var aux1=[];
+        var aux2=[];
+        var etiquetas=[];
+
+        function cb_getByIdPreguntas(err, resultado){
+
+            if(err){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+
+               // console.log("heeeey",resultado);
+                var aux = {
+                    idUsuario: resultado[0].id_usuario,
+                    titulo:resultado[0].titulo,
+                    cuerpo: resultado[0].cuerpo,
+                    fecha: resultado[0].fecha_alta
+                };
+                aux1.push(aux);
+
+                console.log(aux1[0].idUsuario);
+                daoUser.getUserByID(aux1[0].idUsuario,cb_getIdUser);
+
+        
+                function cb_getIdUser(err,resul){
+
+                if(err){
+                    response.status(500);
+                    console.log("ERROR EN LA BASE DE DATOS");
+                }else{
+
+                    console.log("hola", resul);
+                    aux2= {
+                        nombre: resul[0].nombre,
+                        imagen: resul[0].imagen
+                    };
+
+                }
+            }
+
+            console.log("heeeey",request.params.idPregunta);
+            daoEtiquetas.getEtiquetas(request.params.idPregunta, cb_getEtiqueta);
+        
+            function cb_getEtiqueta(err, res){
+
+                if(err){
+                    response.status(500);
+                    console.log("ERROR EN LA BASE DE DATOS");
+                }else{
+
+                    for(var x of res){
+                        etiquetas.push(x.etiqueta);
+                    }
+               
+                }
+            }
+               
+            }
+        }
+
         response.status(200);
-        response.render("informacion_pregunta", { perfil: usuario }); 
-            
+        response.render("informacion_pregunta", { perfil: usuario , pregunta: aux1, usu:aux2, etiquetas:etiquetas}); 
+        
+
+       
     }
     
 });

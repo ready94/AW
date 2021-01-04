@@ -34,14 +34,12 @@ header {
 }
 
 #titulo {
-    
     padding: 30px;
     font-size: 35px;
     flex: left;
 }
 
 #titulo a{
-    text-decoration: none;
     color:rgb(0, 0, 0);
     cursor:pointer;
 }
@@ -96,6 +94,7 @@ header {
 /*----------- mantener nav y buscar fijas ------------*/
 
 #fijo{
+    background-color: #e0dddd;
     position:sticky;
     top: 0;
 }
@@ -121,7 +120,6 @@ nav a:hover{
 /*---------- Barra de buscar ------------------*/
 
 #boton_buscar{
-    
     width: 10%;
     background-color: #5b3924;
     border-radius: 4px;
@@ -147,4 +145,116 @@ nav a:hover{
     background-image: url(../img/buscar.png);
     background-position: 10px 10px; 
     background-repeat: no-repeat;
+}
+
+/*------------ Caracteristicas propias ------------------------*/
+
+#fondo{
+    margin-top: 2.5em;
+    max-width:600px;
+    margin-left: auto;
+    margin-left: 20%;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+}
+
+#estadisticas{
+    margin: 1em 0.5em 0.5em 0.5em;
+    width: 100%;
+    display: flex;
+    font-family: 'VT323', monospace;
+}
+
+#perfil{
+    word-wrap: break-word;
+    float: left;
+    width: 30%;
+    box-sizing: border-box;
+    border-radius: 10%;
+    border: solid 2px rgb(104, 104, 104);
+    background-color: white;
+    text-align: center;
+    margin: 0.25em;
+}
+
+#imagen_usu{
+    width: 50px;
+    height: 50px;
+    padding: 15px;
+}
+
+#perfil_ranking{
+    text-align: center;
+    float: left;
+    width: 70%;
+}
+
+.barra{
+    box-sizing: border-box;
+    border-radius: 10%;
+    border: solid 2px rgb(104, 104, 104);
+    text-align: center;
+    background-color: #a57d4a;
+}
+
+#ranking{
+    margin: 1em 0.5em 0.5em 0.5em;
+    border: 1px solid black;
+    height: 50%;
+}
+
+table{
+    margin: 1em 0.5em 0.5em 0.5em;
+   /* border: 1px solid black;*/
+    width: 100%;
+    text-align: center;
+}
+
+td{
+    height: 70px;
+}
+
+#medallas{
+    font-family: 'VT323', monospace;
+    margin: 1em 0.5em 0.5em 0.5em;
+}
+
+#columnas{
+    margin: 1em 0.5em 0.5em 0.5em;
+    -webkit-column-count: 3; 
+    column-count: 3;
+}
+
+#oro{
+    word-wrap: break-word;
+    width: 100%;
+    height: 55px;
+    box-sizing: border-box;
+    border-radius: 10%;
+    border: solid 2px #947807;
+    background-color: #ECC00D;
+    text-align: center;
+}
+
+#plata{
+    word-wrap: break-word;
+    width: 100%;
+    height: 55px;
+    box-sizing: border-box;
+    border-radius: 10%;
+    border: solid 2px #797776;
+    background-color: #ACA9A7;
+    text-align: center;
+}
+
+#bronce{
+    word-wrap: break-word;
+    width: 100%;
+    height: 55px;
+    box-sizing: border-box;
+    border-radius: 10%;
+    border: solid 2px #724c32;
+    background-color: #9E6136;
+    text-align: center;
 }

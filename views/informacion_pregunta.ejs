@@ -2,7 +2,7 @@
 <html lang="es">
 
     <head>
-        <link rel="stylesheet" type="text/css" media="screen" href="../css/pag_principal.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="../css/informacion.css">
         <link rel="icon" type="image/png" href="../img/icon1.png">
         <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
         <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
@@ -10,7 +10,7 @@
     
         <meta charset="UTF-8">
         <title>
-            Cafe con preguntas
+            Café con preguntas
         </title>
     </head>
     
@@ -33,7 +33,7 @@
                     <img src=<%= perfil.imagen %> id="icon">
                     <div id="usu">
     
-                        <a href="../perfil_usu.html" title="Perfil">
+                        <a title="Perfil" href=<%="../perfil_usu/" + perfil.id %>>
                             <h3 id="nick">
                                 <%= perfil.nombre %>
                             </h3>
@@ -78,10 +78,56 @@
             </form>
         </div>
 
+
+        <div id="fondo">
+
+            <div>
+                <h1><%= pregunta.titulo %></h1>
+            </div>
     
-
-   
-
+            <div>
+                Visita x veces
+            </div>
+    
+            <div>
+                Votos a favooor/votooos en contraaa
+            </div>
+    
+            <div id="pregunta">
+                <div id="info_pregunta" > 
+                    
+                    
+                    <div id="textarea"><%= pregunta.cuerpo %></div>
+                    
+                    <div id="etiqueta_preguntas">
+                       
+                        <a id="boton_etiqueta" href="/filtrar_etiqueta.html">
+                           
+                        </a>
+                        
+                       
+                    </div>
+                
+                </div>
+    
+                <div id="info_usu" >
+                    <div class="fecha_usu">
+                        <%= usu[0].fecha%>
+                    </div>
+                    
+                    <img id="imagen_usu" src="../img/icon1.png">
+                    <a id="nombre_usu" href="/usuarios.html">fuyu</a>
+                   
+                   
+                    
+                </div>
+            </div>
+    
+            <div>
+                Respuestas ya no es para el 4
+            </div>
+        </div>
+       
 
 </body>
 

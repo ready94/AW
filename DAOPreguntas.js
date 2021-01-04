@@ -38,6 +38,28 @@ class DAOPreguntas{
         });//END GET CONEXION
     }
 
+    getByIdPregunta(id, callback){
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                callback(err);
+            } else {
+                // devuelve el usuario entero cuyo email es el pasado por parametro
+                var sql = "SELECT * FROM preguntas WHERE id_pregunta = ?;";
+                var para = [id];
+                conexion.query(sql, para, function (err, resultado) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        console.log(resultado);
+                        callback(null, resultado);
+
+                    }
+                }); //END QUERY
+                conexion.release();
+            }
+        }); //END GET CONEXION
+    }
+
     //Recoge todas las preguntas almacenadas en la BBDD que contengan un texto específico
     getPreguntasPorTexto(){
 

@@ -33,7 +33,7 @@
                     <img src=<%= perfil.imagen %> id="icon">
                     <div id="usu">
     
-                        <a href="../perfil_usu.html" title="Perfil">
+                        <a title="Perfil" href=<%="../perfil_usu/" + perfil.id %> >
                             <h3 id="nick">
                                 <%= perfil.nombre %>
                             </h3>
@@ -98,7 +98,7 @@
             <% preguntas.forEach(function(p){ %>
             <li class="pregunta">
                 <div class="info_pregunta" > 
-                    <a class="titulo_pregunta" href="/formular_pregunta.html"><%=p.titulo %></a>
+                    <a class="titulo_pregunta" href=<%="/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
                     
                     <textarea maxlength="150" disabled><%= p.cuerpo%></textarea>
                     

@@ -2,7 +2,7 @@
 <html lang="es">
 
     <head>
-        <link rel="stylesheet" type="text/css" media="screen" href="../css/pag_principal.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="../css/perfil_usu.css">
         <link rel="icon" type="image/png" href="../img/icon1.png">
         <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
         <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
@@ -33,7 +33,7 @@
                     <img src=<%= perfil.imagen %> id="icon">
                     <div id="usu">
     
-                        <a href="../perfil_usu.html" title="Perfil">
+                        <a title="Perfil" href=<%="../perfil_usu/" + perfil.id %> >
                             <h3 id="nick">
                                 <%= perfil.nombre %>
                             </h3>
@@ -78,13 +78,63 @@
             </form>
         </div>
         
-    <div>
-        buscar
-    </div>
+   
+        <div id="fondo">
+            <div id="estadisticas">
+                <div id="perfil">
+                    <img id="imagen_usu" src=<%= bio.imagen %> >
 
-    <div>
-        ranking y datos de ese usu
-    </div>
+                    <div>
+                        <%= bio.nombre %>
+                    </div>
+                    <div>
+                        <%= bio.fecha%>
+                    </div>
+                </div>
+
+                <div id="perfil_ranking">
+                    <div class="barra">
+                        Estadísticas
+                    </div>
+                    
+                        <table>
+                            <tr>
+                                <td></td>
+                                <td>Reputacion</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Preguntas</td>
+                                <td></td>
+                                <td>Respuestas</td>
+                            </tr>
+                        </table>
+                    </div>
+               
+
+            </div>
+
+            <div id="medallas">
+                <div class="barra">
+                    Medallas
+                </div>
+                <div id="columnas">
+                    <div class="box">
+                        <div id="bronce">BRONCE </div>
+                        <div>Meritos</div>
+                    </div>
+                    <div class="box">
+                        <div id="plata">PLATA</div>
+                        <div>Meritos</div>
+                    </div>
+                    <div class="box">
+                        <div id="oro">ORO</div>
+                        <div>Meritos</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
 
 
