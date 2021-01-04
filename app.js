@@ -457,7 +457,7 @@ app.post("/crearPregunta", function (request, response) {
         var cuerpo = request.body.cuerpo;
         var etiqueta = request.body.etiqueta;
         var fecha = new Date();
-        fecha = fecha.toDateString();
+        
 
         // console.log(fecha);
         var aux = [];
