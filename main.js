@@ -255,6 +255,7 @@ app.get("/preguntas.html", function (request, response) {
     } else {
 
         var usuario = {
+            id: resultado[0].id_usuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
@@ -292,6 +293,7 @@ app.get("/preguntas.html", function (request, response) {
 
                             var aux = {
                                 idUsuario: p.id_usuario,
+                                idPregunta: p.id_pregunta,
                                 titulo: p.titulo,
                                 cuerpo: p.cuerpo,
                                 fecha: p.fecha,
@@ -436,6 +438,7 @@ app.get("/formular_pregunta.html", function (request, response) {
     } else {
 
         var usuario = {
+            id: resultado[0].id_usuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
@@ -526,7 +529,7 @@ app.post("/crearPregunta", function (request, response) {
 ****************************************************************************************************************************************************************                                                                   
 */
 
-app.get("/filtrar_etiqueta.html", function (request, response) {
+app.get("/filtrar_etiqueta/:idEtiqueta", function (request, response) {
 
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -547,6 +550,129 @@ app.get("/filtrar_etiqueta.html", function (request, response) {
 
 /*
 ****************************************************************************************************************************************************************
+                FILTRAR POR TEXTO
+****************************************************************************************************************************************************************                                                                   
+*/
+
+app.post("/buscarTexto", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var usuario = {
+            id: request.session.idUsuario,
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        var texto = request.body.search;
+
+        console.log("search=",texto);
+
+        //----------- contador
+
+        var contador;
+        daoPreguntas.countTexto(texto,cb_countTexto);
+
+        function cb_countTexto(error,resultado){
+            if(error){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+                console.log("entra en el contador");
+                contador=resultado[0].TotalTexto;
+            }
+        }
+
+        console.log("sale del contador");
+
+        //------------ obtencion de pregunta
+        daoPreguntas.getPreguntasPorTexto(texto, cb_getPreguntasPorTexto);
+
+        function cb_getPreguntasPorTexto(error,resultado){
+            if(error){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+
+                var pregunta=[];
+
+                console.log("entra al get preguntas");
+                //console.log("preguntas poor texto",resultado)
+                //console.log("Usuario:",resultado[0].id_usuario)
+
+                resultado.forEach((p)=>{
+                    console.log("Usuario:",p.id_usuario)
+                    daoUser.getUserByID(p.id_usuario,cb_getUserByID);
+
+                function cb_getUserByID(err,resul){
+                    if(err){
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    }else{
+                        console.log("user", resul);
+                        console.log("añadir etiquetas");
+
+                        daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiquetas);
+
+                        function cb_getEtiquetas(e,res){
+                            if(e){
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            }else{
+
+                                console.log("entra en el get etiquetas");
+                                console.log("etiqueta",res);
+                                console.log(res[0].etiqueta);
+
+                                var etiqueta=[];
+
+                                for(var i of res){
+                                    etiqueta.push(i.etiqueta);
+                                }
+
+                                var aux={
+                                    idPregunta: p.id_pregunta,
+                                    idUsuario: p.id_usuario,
+                                    titulo: p.titulo,
+                                    cuerpo: p.cuerpo,
+                                    fecha: p.fecha,
+                                    nombre: resul[0].nombre,
+                                    imagen: resul[0].imagen,
+                                    etiqueta:etiqueta
+                                }
+                                pregunta.push(aux);
+
+                                console.log("RESULTADO TOTAL:",pregunta);
+
+                               
+                            }
+                        }
+
+                   
+                       
+                    }
+                }
+                })
+
+
+                console.log("fin");
+                console.log("holi",pregunta);
+                response.status(200);
+                response.render("filtrar_texto", { perfil: usuario,texto:texto,contador:contador,preguntas:pregunta }); 
+                console.log("despues del render");
+            }
+        }
+     
+    }
+    
+});
+
+
+/*
+****************************************************************************************************************************************************************
                             USUARIOS
 ****************************************************************************************************************************************************************                                                                   
 */
@@ -559,6 +685,7 @@ app.get("/usuarios.html", function (request, response) {
     } else {
 
         var usuario = {
+            id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
@@ -584,11 +711,12 @@ app.get("/perfil_usu/:idUsuario", function (request, response) {
     } else {
 
         var usuario = {
+            id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
 
-       
+        console.log("id:", request.params.idUsuario);
         daoUser.getUserByID(request.params.idUsuario,cb_getPreguntas);
 
         function cb_getPreguntas(err, resultado){
@@ -634,76 +762,62 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
     } else {
 
         var usuario = {
+            id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
 
-        console.log("heeeey",request.params.idPregunta);
-        daoPreguntas.getByIdPregunta(request.params.idPregunta, cb_getByIdPreguntas);
+        daoPreguntas.getByIdPregunta(request.params.idPregunta,cb_getByIdPreguntas);
 
-        var aux1=[];
-        var aux2=[];
-        var etiquetas=[];
+        function cb_getByIdPreguntas(error,resultado){
 
-        function cb_getByIdPreguntas(err, resultado){
-
-            if(err){
+            if(error){
                 response.status(500);
                 console.log("ERROR EN LA BASE DE DATOS");
             }else{
+                
+                daoUser.getUserByID(resultado[0].id_usuario,cb_getUserByID);
 
-               // console.log("heeeey",resultado);
-                var aux = {
-                    idUsuario: resultado[0].id_usuario,
-                    titulo:resultado[0].titulo,
-                    cuerpo: resultado[0].cuerpo,
-                    fecha: resultado[0].fecha_alta
-                };
-                aux1.push(aux);
+                function cb_getUserByID(err,resul){
+                    if(err){
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    }else{
 
-                console.log(aux1[0].idUsuario);
-                daoUser.getUserByID(aux1[0].idUsuario,cb_getIdUser);
+                        daoEtiquetas.getEtiquetas(request.params.idPregunta,cb_getEtiquetas);
 
-        
-                function cb_getIdUser(err,resul){
+                        function cb_getEtiquetas(e,res){
+                            if(e){
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            }else{
 
-                if(err){
-                    response.status(500);
-                    console.log("ERROR EN LA BASE DE DATOS");
-                }else{
+                                var etiqueta=[];
 
-                    console.log("hola", resul);
-                    aux2= {
-                        nombre: resul[0].nombre,
-                        imagen: resul[0].imagen
-                    };
+                                for(var i of res){
+                                    etiqueta.push(i.etiqueta);
+                                }
 
-                }
-            }
+                                var pregunta={
+                                    idUsuario: resultado[0].id_usuario,
+                                    titulo: resultado[0].titulo,
+                                    cuerpo: resultado[0].cuerpo,
+                                    fecha: resultado[0].fecha.toDateString(),
+                                    nombre: resul[0].nombre,
+                                    imagen: resul[0].imagen,
+                                    etiqueta: etiqueta
+                                }
 
-            console.log("heeeey",request.params.idPregunta);
-            daoEtiquetas.getEtiquetas(request.params.idPregunta, cb_getEtiqueta);
-        
-            function cb_getEtiqueta(err, res){
+                                console.log(pregunta);
+                                response.status(200);
+                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario });
 
-                if(err){
-                    response.status(500);
-                    console.log("ERROR EN LA BASE DE DATOS");
-                }else{
-
-                    for(var x of res){
-                        etiquetas.push(x.etiqueta);
+                            }
+                        }
                     }
-               
                 }
-            }
-               
             }
         }
-
-        response.status(200);
-        response.render("informacion_pregunta", { perfil: usuario , pregunta: aux1, usu:aux2, etiquetas:etiquetas}); 
-        
 
        
     }

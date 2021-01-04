@@ -30,7 +30,7 @@
     
                 <div id="login">
     
-                    <img src=<%= perfil.imagen %> id="icon">
+                    <img id="icon" src=<%= perfil.imagen %> >
                     <div id="usu">
     
                         <a title="Perfil" href=<%="../perfil_usu/" + perfil.id %>>
@@ -72,7 +72,7 @@
     
             </nav>
     
-            <form action="buscar" method="POST">
+            <form action="/buscarTexto" method="POST">
                 <input id="boton_buscar" type="button" value="Buscar">
                 <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
             </form>
@@ -100,11 +100,11 @@
                     <div id="textarea"><%= pregunta.cuerpo %></div>
                     
                     <div id="etiqueta_preguntas">
-                       
+                       <% for(var etiqueta of pregunta.etiqueta){%>
                         <a id="boton_etiqueta" href="/filtrar_etiqueta.html">
-                           
+                        <%= etiqueta %>
                         </a>
-                        
+                        <% }; %>
                        
                     </div>
                 
@@ -112,11 +112,14 @@
     
                 <div id="info_usu" >
                     <div class="fecha_usu">
-                        <%= usu[0].fecha%>
+                        <%= pregunta.fecha%>
                     </div>
                     
-                    <img id="imagen_usu" src="../img/icon1.png">
-                    <a id="nombre_usu" href="/usuarios.html">fuyu</a>
+                    <img id="imagen_usu" src=<%=pregunta.imagen %>>
+
+                    <a id="nombre_usu" href=<%="/perfil_usu/" + pregunta.idUsuario %>>
+                        <%= pregunta.nombre%>
+                    </a>
                    
                    
                     

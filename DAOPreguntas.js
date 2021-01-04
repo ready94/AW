@@ -61,7 +61,27 @@ class DAOPreguntas{
     }
 
     //Recoge todas las preguntas almacenadas en la BBDD que contengan un texto específico
-    getPreguntasPorTexto(){
+    getPreguntasPorTexto(texto, callback){
+
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                callback(err);
+            }else {
+ 
+                var sql = "SELECT * FROM preguntas WHERE titulo LIKE '%"+texto+"%' OR cuerpo LIKE '%"+texto+"%';";
+                
+                conexion.query(sql, function (err, resultado) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        //console.log(resultado);
+                        callback(null, resultado);
+
+                    }
+                }); //END QUERY
+            conexion.release();
+            }
+        }); //END GET CONEXION
 
     }
 
@@ -146,20 +166,20 @@ class DAOPreguntas{
         });//END GET CONEXION
     }
 
-    countTexto(callback){
+    countTexto(texto,callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
             //contador de preguntas
-                var sql =  "SELECT count (*) as TotalTexto FROM preguntas;"; 
+                var sql =  "SELECT count (*) as TotalTexto FROM preguntas WHERE titulo LIKE '%"+texto+"%' OR cuerpo LIKE '%"+texto+"%';"; 
                
                 conexion.query(sql, function (err, resultado) {
                     if (err)
                         callback(err);
                     else{
-                        console.log(resultado[0]); //comen
+                       // console.log(resultado[0]); //comen
                         callback(null, resultado);
                     }
                         
