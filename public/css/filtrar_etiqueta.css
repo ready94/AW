@@ -152,3 +152,111 @@ nav a:hover{
 
 /*----------- caracteristicas propias -------------------------*/
 
+#fondo{
+    margin-top: 0.5em;
+    max-width:600px;
+    margin-left: auto;
+    margin-left: 20%;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+}
+
+#barra_info{
+    font-family: 'VT323', monospace;
+    display: inline-block;
+    width: 98.5%;
+    height: 2.5em;
+    margin: 1em 0.5em 0.5em 0.5em;
+}
+
+#contador{
+    float:right;
+}
+
+.pregunta{
+    margin: 1em 0.5em 0.5em 0.5em;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid rgb(104, 104, 104);
+    border-radius: 4px;
+    list-style: none;
+    display: flex;
+    background-color: white;
+}
+
+.pregunta a{
+    color: black;
+}
+
+.info_pregunta{
+    float: left;
+    width: 90%;
+    cursor: auto;
+}
+
+.titulo_pregunta{
+    margin: 0.25em 0.5em;
+    font-size: xx-large;
+    color:#2e1d12;
+    cursor: pointer;
+    
+}
+
+textarea{
+    width: 100%;
+    height: auto;
+    margin: 0.25em 0.25em 0em 0.5em;
+    resize: none;
+    border: none;
+    font-size: 16px;
+    font-style: italic;
+    color:rgb(0, 0, 0);
+    background-color: white;
+    overflow-y: hidden;
+}
+
+/*------- ETIQUETAS ----------------------*/
+
+.etiqueta_preguntas{
+    padding: 2px 2px;
+    margin: 0.25em 0.25em;
+    
+}
+
+.boton_etiqueta{
+    float: left;
+    background-color:#c2a878;
+    border-radius: 10px;
+    border: 2px solid black;
+    color: #fff;
+    font-size: 15px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin: 0.25em 0.25em;
+}
+
+.boton_etiqueta:hover {
+    background-color: #eec170;
+    color: #fff;
+}
+
+/*----------------------------------------*/
+
+.info_usu{
+    text-align: center;
+    float: left;
+    width: 50%;
+    cursor: auto;
+    border-left:2px solid rgb(104, 104, 104);
+}
+
+.imagen_usu{
+    width: 50px;
+    height: 50px;
+    padding: 15px;
+}
+
+.nombre_usu{
+    cursor: pointer;
+}
