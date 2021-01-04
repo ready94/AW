@@ -537,6 +537,7 @@ app.get("/filtrar_etiqueta/:idEtiqueta", function (request, response) {
     } else {
 
         var usuario = {
+            id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };

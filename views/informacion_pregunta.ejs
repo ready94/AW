@@ -101,7 +101,7 @@
                     
                     <div id="etiqueta_preguntas">
                        <% for(var etiqueta of pregunta.etiqueta){%>
-                        <a id="boton_etiqueta" href="/filtrar_etiqueta.html">
+                        <a id="boton_etiqueta" href=<%="/filtrar_etiqueta/" + pregunta.id_etiqueta %>>
                         <%= etiqueta %>
                         </a>
                         <% }; %>
