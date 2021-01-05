@@ -73,7 +73,7 @@
             </nav>
     
             <form action="/buscarTexto" method="POST">
-                <input id="boton_buscar" type="button" value="Buscar">
+                <input id="boton_buscar" name="search" type="button" value="Buscar">
                 <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
             </form>
         </div>
@@ -119,8 +119,10 @@
                             <%= p.fecha%>
                             
                         </div>
-                        
-                        <img class="imagen_usu" src=<%= p.imagen %>>
+                        <div class="imagen_usu">
+                            <img  width="50" height="50" src=<%= p.imagen %>>
+                        </div>
+                       
                         <a class="nombre_usu" href="/usuarios.html">
                            <%= p.nombre%>
                         </a>

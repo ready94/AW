@@ -115,7 +115,9 @@
                         <%= pregunta.fecha%>
                     </div>
                     
-                    <img id="imagen_usu" src=<%=pregunta.imagen %>>
+                    <div class="imagen_usu">
+                        <img  width="50" height="50" src=<%= p.imagen %>>
+                    </div>
 
                     <a id="nombre_usu" href=<%="/perfil_usu/" + pregunta.idUsuario %>>
                         <%= pregunta.nombre%>
