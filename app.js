@@ -255,7 +255,7 @@ app.get("/preguntas.html", function (request, response) {
     } else {
 
         var usuario = {
-            id: resultado[0].id_usuario,
+            id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
@@ -474,7 +474,7 @@ app.post("/crearPregunta", function (request, response) {
             }
         }
         console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
-        daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
+        daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, new Date(), cb_insertPregunta);
 
         function cb_insertPregunta(err, resultado) {
             if (err) {

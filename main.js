@@ -255,7 +255,7 @@ app.get("/preguntas.html", function (request, response) {
     } else {
 
         var usuario = {
-            id: resultado[0].id_usuario,
+            id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
