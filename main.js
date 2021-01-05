@@ -575,6 +575,88 @@ app.post("/buscarTexto", function (request, response) {
         //----------- contador
 
         var contador;
+        daoPreguntas.getAllPreguntas(texto,function(error,resultado){
+
+            if(error){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+                
+                var pregunta=[];
+                
+
+                resultado.forEach((p)=>{
+                    daoEtiquetas.getEtiquetas(p.id_pregunta,function(err,resul){
+                        
+                        if(err){
+                            response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");
+                        }else{
+
+                            console.log(p.id_pregunta);
+                            var etiqueta=[];
+                            for(var x of resul){
+                                etiqueta.push(x.etiqueta);
+                            }
+
+                            var aux={
+                                idPregunta: p.id_pregunta,
+                                idUsuario: p.id_usuario,
+                                titulo: p.titulo,
+                                cuerpo: p.cuerpo,
+                                fecha: p.fecha,
+                                nombre: p.nombre,
+                                imagen: p.imagen,
+                                etiqueta:etiqueta
+                            }
+                            pregunta.push(aux);
+
+                            console.log(pregunta);
+                        }
+                        
+                    })
+                })
+                
+                daoPreguntas.countTexto(texto,function(e,res){
+                    if (error) {
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    } else {
+                        
+                        contador=res[0].TotalTexto;
+                        response.status(200);
+                        response.render("filtrar_texto", { perfil: usuario,texto:texto,contador:contador,pregunta:pregunta }); 
+                        console.log("despues del render");
+                    }
+                })
+
+            }
+        });
+
+    }
+});
+
+/*
+app.post("/buscarTexto", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var usuario = {
+            id: request.session.idUsuario,
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        var texto = request.body.search;
+
+        console.log("search=",texto);
+
+        //----------- contador
+
+        var contador;
         daoPreguntas.countTexto(texto,cb_countTexto);
 
         function cb_countTexto(error,resultado){
@@ -662,7 +744,7 @@ app.post("/buscarTexto", function (request, response) {
                 console.log("fin");
                 console.log("holi",pregunta);
                 response.status(200);
-                response.render("filtrar_texto", { perfil: usuario,texto:texto,contador:contador,preguntas:pregunta }); 
+                response.render("./filtrar_texto", { perfil: usuario,texto:texto,contador:contador,preguntas:pregunta }); 
                 console.log("despues del render");
             }
         }
@@ -670,7 +752,7 @@ app.post("/buscarTexto", function (request, response) {
     }
     
 });
-
+*/
 
 /*
 ****************************************************************************************************************************************************************

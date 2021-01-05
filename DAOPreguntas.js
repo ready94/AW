@@ -9,7 +9,7 @@ class DAOPreguntas{
     //Recoge todas las preguntas almacenadas en la BBDD
     getPreguntas(callback) {
         this.pool.getConnection(function (err, conexion) {
-
+            
             if (err)
                 callback(err);
             else {
@@ -17,6 +17,7 @@ class DAOPreguntas{
                 var sql =  "SELECT  id_pregunta,id_usuario, titulo, cuerpo, fecha FROM preguntas;";  //seleciona todas las preguntas de la base de datos  
 
                 conexion.query(sql, function (err, resultado) {
+                    conexion.release();
                     if (err)
                         callback(err);
                     else{
@@ -33,13 +34,14 @@ class DAOPreguntas{
                     }
    
                 });//END QUERY                
-                conexion.release();
+               
             }
         });//END GET CONEXION
     }
 
     getByIdPregunta(id, callback){
         this.pool.getConnection(function (err, conexion) {
+            
             if (err) {
                 callback(err);
             } else {
@@ -47,6 +49,7 @@ class DAOPreguntas{
                 var sql = "SELECT * FROM preguntas WHERE id_pregunta = ?;";
                 var para = [id];
                 conexion.query(sql, para, function (err, resultado) {
+                    conexion.release();
                     if (err) {
                         callback(err);
                     } else {
@@ -55,14 +58,14 @@ class DAOPreguntas{
 
                     }
                 }); //END QUERY
-                conexion.release();
+                
             }
         }); //END GET CONEXION
     }
 
     //Recoge todas las preguntas almacenadas en la BBDD que contengan un texto específico
     getPreguntasPorTexto(texto, callback){
-
+        
         this.pool.getConnection(function (err, conexion) {
             if (err) {
                 callback(err);
@@ -71,6 +74,7 @@ class DAOPreguntas{
                 var sql = "SELECT * FROM preguntas WHERE titulo LIKE '%"+texto+"%' OR cuerpo LIKE '%"+texto+"%';";
                 
                 conexion.query(sql, function (err, resultado) {
+                    conexion.release();
                     if (err) {
                         callback(err);
                     } else {
@@ -79,7 +83,7 @@ class DAOPreguntas{
 
                     }
                 }); //END QUERY
-            conexion.release();
+            
             }
         }); //END GET CONEXION
 
@@ -97,7 +101,7 @@ class DAOPreguntas{
 
     insertPregunta(id_usuario, titulo, cuerpo, fecha, callback){
         this.pool.getConnection(function (err, conexion) {
-
+            
             if (err)
                 callback(err);
             else {
@@ -107,6 +111,7 @@ class DAOPreguntas{
                 var para = [id_usuario, titulo, cuerpo, fecha];
 
                 conexion.query(sql, para, function (err, resultado) {
+                    conexion.release();
                     if (err)
                         callback(err);
                     else {
@@ -114,14 +119,39 @@ class DAOPreguntas{
                         callback(null, resultado);
                     }
                 });//END QUERY                
-                conexion.release();
+                
+            }
+        });//END GET CONEXION
+    }
+
+    getAllPreguntas(texto,callback){
+        this.pool.getConnection(function (err, conexion) {
+            
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+            
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.titulo LIKE '%"+texto+"%' OR p.cuerpo LIKE '%"+texto+"%' ORDER BY p.fecha;"; 
+            
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        //console.log(resultado);
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                
             }
         });//END GET CONEXION
     }
 
     count(callback){
         this.pool.getConnection(function (err, conexion) {
-
+            
             if (err)
                 callback(err);
             else {
@@ -129,6 +159,7 @@ class DAOPreguntas{
                 var sql =  "SELECT count (*) as Total FROM preguntas;"; 
                
                 conexion.query(sql, function (err, resultado) {
+                    conexion.release();
                     if (err)
                         callback(err);
                     else{
@@ -137,7 +168,7 @@ class DAOPreguntas{
                     }
                         
                 });//END QUERY                
-                conexion.release();
+                
             }
         });//END GET CONEXION
         
@@ -145,7 +176,7 @@ class DAOPreguntas{
 
     countEtiquetas(callback){
         this.pool.getConnection(function (err, conexion) {
-
+            
             if (err)
                 callback(err);
             else {
@@ -153,6 +184,7 @@ class DAOPreguntas{
                 var sql =  "SELECT count (*) as TotalEtiquetas FROM preguntas;"; 
                
                 conexion.query(sql, function (err, resultado) {
+                    conexion.release();
                     if (err)
                         callback(err);
                     else{
@@ -161,14 +193,14 @@ class DAOPreguntas{
                     }
                         
                 });//END QUERY                
-                conexion.release();
+                
             }
         });//END GET CONEXION
     }
 
     countTexto(texto,callback){
         this.pool.getConnection(function (err, conexion) {
-
+            
             if (err)
                 callback(err);
             else {
@@ -176,6 +208,7 @@ class DAOPreguntas{
                 var sql =  "SELECT count (*) as TotalTexto FROM preguntas WHERE titulo LIKE '%"+texto+"%' OR cuerpo LIKE '%"+texto+"%';"; 
                
                 conexion.query(sql, function (err, resultado) {
+                    conexion.release();
                     if (err)
                         callback(err);
                     else{
@@ -184,7 +217,7 @@ class DAOPreguntas{
                     }
                         
                 });//END QUERY                
-                conexion.release();
+                
             }
         });//END GET CONEXION
     }
@@ -199,6 +232,7 @@ class DAOPreguntas{
                 var sql =  "SELECT count (*) as TotalSinResponder FROM preguntas;"; 
                
                 conexion.query(sql, function (err, resultado) {
+                    conexion.release();
                     if (err)
                         callback(err);
                     else{
@@ -207,7 +241,7 @@ class DAOPreguntas{
                     }
                         
                 });//END QUERY                
-                conexion.release();
+                
             }
         });//END GET CONEXION
     }
