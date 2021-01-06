@@ -168,6 +168,10 @@ nav a:hover{
     background-color: white;
 }
 
+.pregunta a{
+    color: black;
+}
+
 #info_pregunta{
     float: left;
     width: 70%;

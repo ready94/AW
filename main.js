@@ -260,169 +260,66 @@ app.get("/preguntas.html", function (request, response) {
             imagen: request.session.imagen
         };
 
-        var pregunta = [];
-        //var aux_etiquetas=[];
+        //----------- contador
+        var contador;
+        daoPreguntas.getPreguntas(function(error,resultado){
 
-        daoPreguntas.getPreguntas(cb_getPreguntas);
-
-        function cb_getPreguntas(error, resultado) {
-            if (error) {
+            if(error){
                 response.status(500);
                 console.log("ERROR EN LA BASE DE DATOS");
-            } else {
+            }else{
+                
+                var pregunta=[];
 
-                resultado.forEach(p => {
-
-                    console.log("entra al for");
-
-                    daoUser.getUserByID(p.id_usuario, cb_getUser);
-
-                    console.log("Usuario: ", p.id_usuario);
-
-
-                    function cb_getUser(err, res) {
-                        console.log("entra en el function de getUser");
-                        console.log("Pregunta:", p.id_pregunta);
-
-                        if (err) {
+                resultado.forEach((p)=>{
+                    daoEtiquetas.getEtiquetas(p.id_pregunta,function(err,resul){
+                        
+                        if(err){
                             response.status(500);
                             console.log("ERROR EN LA BASE DE DATOS");
-                        } else {
+                        }else{
 
-                            console.log("entra en el else getUser");
+                            console.log(p.id_pregunta);
+                            var etiqueta=[];
+                            for(var x of resul){
+                                etiqueta.push(x.etiqueta);
+                            }
 
-                            var aux = {
-                                idUsuario: p.id_usuario,
-                                idPregunta: p.id_pregunta,
+                            var aux={
+                                id_pregunta: p.id_pregunta,
+                                id_usuario: p.id_usuario,
                                 titulo: p.titulo,
                                 cuerpo: p.cuerpo,
                                 fecha: p.fecha,
-                                nombre: res[0].nombre,
-                                imagen: res[0].imagen,
-                                etiqueta: ""
-                            };
+                                nombre: p.nombre,
+                                imagen: p.imagen,
+                                etiqueta:etiqueta
+                            }
                             pregunta.push(aux);
 
-
+                            //console.log(pregunta);
                         }
-                        for (var j = 0; j < 8; j++) {
-                            console.log("pregunta2 " + j + ": ", pregunta[j]);
-                        }
-                        console.log("se ha terminado el else getEtiqetas");
-
-                    }
-
-                    
-
-                    
-
-                    console.log("termina el for");
-
-                    
-
+                        
+                    })
                 })
-
-               
-                console.log("ME VOY A CAGAR EN TODO LO CAGABLE HOSTIA PUTA YA ", pregunta);
-                /*resultado.forEach((p, i) => {
-
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, cb_getEtiqueta);
-                    console.log("hace el daoEtiquetas");
-
-                    function cb_getEtiqueta(error, resul) {
-                        console.log("entra en el function de getEtiqueta");
-
-                        if (error) {
-                            response.status(500);
-                            console.log("ERROR EN LA BASE DE DATOS");
-                        } else {
-
-                            console.log("con:", p.id_usuario, "y pregunta: ", p.id_pregunta);
-                            console.log(i);
-                            console.log(resul);
-
-                            var aux_etiquetas = [];
-                            for (var x of resul) {
-                                aux_etiquetas.push(x.etiqueta);
-                            }
-
-                            if (aux_etiquetas != undefined && pregunta[i].etiqueta == undefined){
-                                if (aux_etiquetas.length > 0) {
-                                    pregunta[i].etiqueta = aux_etiquetas;
-                                }
-                            }
-                            
-
-                            console.log("devuelve: ", pregunta[i]);
-                        }
-
-                    }
-                })*/
-
-
-
-
-                //ESTO ES PA HACER EL COUNTER DE LAS PREGUNTAS
-                daoPreguntas.count(cb_count);
-
-                function cb_count(error, cont) {
+                
+                daoPreguntas.count(function(e,res){
                     if (error) {
                         response.status(500);
                         console.log("ERROR EN LA BASE DE DATOS");
                     } else {
-                        var contador = cont[0].Total;
                         
-                        console.log("FIN");
-
-
-
-                        resultado.forEach((p, i) => {
-
-                            daoEtiquetas.getEtiquetas(p.id_pregunta, cb_getEtiqueta);
-                            console.log("hace el daoEtiquetas");
-
-                            function cb_getEtiqueta(error, resul) {
-                                console.log("entra en el function de getEtiqueta");
-
-                                if (error) {
-                                    response.status(500);
-                                    console.log("ERROR EN LA BASE DE DATOS");
-                                } else {
-
-                                    console.log("con:", p.id_usuario, "y pregunta: ", p.id_pregunta);
-                                    console.log(i);
-                                    console.log(resul);
-
-                                    var aux_etiquetas = [];
-                                    for (var x of resul) {
-                                        aux_etiquetas.push(x.etiqueta);
-                                    }
-
-                                    if (aux_etiquetas.length > 0) {
-                                        pregunta[i].etiqueta = aux_etiquetas;
-                                    }
-
-
-                                    console.log("devuelve: ", pregunta[i]);
-                                }
-
-                            }
-                        })
-
-                        console.log("ME VOY A CAGAR EN TODO LO CAGABLE HOSTIA PUTA YA x 2", pregunta);
-                        response.status(200);
-                        response.render("preguntas", { preguntas: pregunta, perfil: usuario, contador: contador });
+                        contador=res[0].Total;
+                        //response.status(200);
+                        response.render("preguntas", { perfil: usuario,contador:contador,pregunta:pregunta }); 
+                        //console.log("despues del render");
                     }
-
-                }
+                })
 
             }
-
-
-        }
+        });
 
     }
-
 });
 
 /*
@@ -438,7 +335,7 @@ app.get("/formular_pregunta.html", function (request, response) {
     } else {
 
         var usuario = {
-            id: resultado[0].id_usuario,
+            id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
@@ -449,6 +346,8 @@ app.get("/formular_pregunta.html", function (request, response) {
     }
 
 });
+
+//**************************************************************************************************************************************************************
 
 app.post("/crearPregunta", function (request, response) {
 
@@ -479,7 +378,7 @@ app.post("/crearPregunta", function (request, response) {
         function cb_insertPregunta(err, resultado) {
             if (err) {
                 response.status(500);
-                console.log("ERROR BBDD" + err); //comen
+                console.log("ERROR BBDD" + err); 
             } else if (resultado.length != 0) {
                 if (aux.length > 0) {
 
@@ -488,7 +387,7 @@ app.post("/crearPregunta", function (request, response) {
                     function cb_getUltimoID(err, res) {
                         if (err) {
                             response.status(500);
-                            console.log("ERROR BBDD" + err); //comen
+                            console.log("ERROR BBDD" + err); 
                         } else if (res.length != 0) {
 
                             var id = res[0].id_pregunta;
@@ -515,7 +414,7 @@ app.post("/crearPregunta", function (request, response) {
                     response.redirect("/preguntas.html");
                 }*/
 
-                response.status(200);
+                //response.status(200);
                 response.redirect("/preguntas.html");
 
             }
@@ -525,11 +424,11 @@ app.post("/crearPregunta", function (request, response) {
 
 /*
 ****************************************************************************************************************************************************************
-                FILTRAR POR ETIQUETA
+                    SIN RESPONDER
 ****************************************************************************************************************************************************************                                                                   
 */
 
-app.get("/filtrar_etiqueta/:idEtiqueta", function (request, response) {
+app.get("/sin_responder.html", function (request, response) {
 
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -543,7 +442,95 @@ app.get("/filtrar_etiqueta/:idEtiqueta", function (request, response) {
         };
 
         response.status(200);
-        response.render("filtrar_etiqueta", { perfil: usuario }); 
+        response.render("sin_responder", { perfil: usuario }); 
+            
+    }
+    
+});
+
+
+/*
+****************************************************************************************************************************************************************
+                FILTRAR POR ETIQUETA
+****************************************************************************************************************************************************************                                                                   
+*/
+
+app.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var usuario = {
+            id: request.session.idUsuario,
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        var etiqueta= request.params.Etiqueta;
+        console.log(request.params.Etiqueta);
+
+        var contador;
+        daoPreguntas.getPreguntasByEtiqueta(request.params.Etiqueta,function(error,resultado){
+            if(error){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+                
+                var pregunta=[];
+                
+
+                resultado.forEach((p)=>{
+                    daoEtiquetas.getEtiquetas(p.id_pregunta,function(err,resul){
+                        
+                        if(err){
+                            response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");
+                        }else{
+
+                            //console.log(p.id_pregunta);
+                            var etiqueta=[];
+                            for(var x of resul){
+                                etiqueta.push(x.etiqueta);
+                            }
+
+                            var aux={
+                                id_pregunta: p.id_pregunta,
+                                id_usuario: p.id_usuario,
+                                titulo: p.titulo,
+                                cuerpo: p.cuerpo,
+                                fecha: p.fecha,
+                                nombre: p.nombre,
+                                imagen: p.imagen,
+                                etiqueta:etiqueta
+                            }
+                            pregunta.push(aux);
+
+                            //console.log(pregunta);
+                        }
+                        
+                    })
+                })
+                
+                daoPreguntas.countEtiquetas(request.params.Etiqueta,function(e,res){
+                    if (error) {
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    } else {
+                        //console.log(res);
+                        contador=res[0].TotalEtiquetas;
+                        //response.status(200);
+                        //console.log(pregunta);
+                        response.render("filtrar_etiqueta", { perfil: usuario,etiqueta:etiqueta,contador:contador,pregunta:pregunta }); 
+                        console.log("despues del render");
+                    }
+                })
+
+            }
+        })
+
+      
             
     }
     
@@ -575,7 +562,7 @@ app.post("/buscarTexto", function (request, response) {
         //----------- contador
 
         var contador;
-        daoPreguntas.getAllPreguntas(texto,function(error,resultado){
+        daoPreguntas.getPreguntasPorTexto(texto,function(error,resultado){
 
             if(error){
                 response.status(500);
@@ -600,8 +587,8 @@ app.post("/buscarTexto", function (request, response) {
                             }
 
                             var aux={
-                                idPregunta: p.id_pregunta,
-                                idUsuario: p.id_usuario,
+                                id_pregunta: p.id_pregunta,
+                                id_usuario: p.id_usuario,
                                 titulo: p.titulo,
                                 cuerpo: p.cuerpo,
                                 fecha: p.fecha,
@@ -611,7 +598,7 @@ app.post("/buscarTexto", function (request, response) {
                             }
                             pregunta.push(aux);
 
-                            console.log(pregunta);
+                            //console.log(pregunta);
                         }
                         
                     })
@@ -624,7 +611,8 @@ app.post("/buscarTexto", function (request, response) {
                     } else {
                         
                         contador=res[0].TotalTexto;
-                        response.status(200);
+                        //response.status(200);
+                        console.log(pregunta);
                         response.render("filtrar_texto", { perfil: usuario,texto:texto,contador:contador,pregunta:pregunta }); 
                         console.log("despues del render");
                     }
@@ -813,14 +801,14 @@ app.get("/perfil_usu/:idUsuario", function (request, response) {
                 var aux={
                     nombre: resultado[0].nombre,
                     imagen: resultado[0].imagen,
-                    fecha: resultado[0].fecha_alta.toDateString(),
+                    fecha: resultado[0].fecha_alta,
                     preguntas: resultado[0].num_preguntas,
                     respuestas: resultado[0].num_respuestas,
                     reputacion: resultado[0].reputacion,
                     medallas: resultado[0].medallas
                 }
 
-                response.status(200);
+                
                 response.render("perfil_usu", { perfil: usuario , bio: aux}); 
                 
             }
@@ -850,8 +838,47 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
             imagen: request.session.imagen
         };
 
-        daoPreguntas.getByIdPregunta(request.params.idPregunta,cb_getByIdPreguntas);
+        console.log(request.params.idPregunta);
+        daoPreguntas.getPreguntaInformacion(request.params.idPregunta,function(error,resultado){
 
+            if(error){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+
+                daoEtiquetas.getEtiquetas(request.params.idPregunta,function(error,res){
+                    if(error){
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    }else{
+
+                        var etiqueta=[];
+
+                        for(var i of res){
+                            etiqueta.push(i.etiqueta);
+                        }
+
+                        console.log(resultado);
+                        var pregunta={
+                            id_pregunta:resultado[0].id_pregunta,
+                            id_usuario: resultado[0].id_usuario,
+                            titulo: resultado[0].titulo,
+                            cuerpo: resultado[0].cuerpo,
+                            fecha: resultado[0].fecha,
+                            nombre: resultado[0].nombre,
+                            imagen: resultado[0].imagen,
+                            etiqueta: etiqueta
+                        }
+
+                        console.log(pregunta);
+                        //response.status(200);
+                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario });
+                    }
+                });
+            }
+            
+        });
+/*
         function cb_getByIdPreguntas(error,resultado){
 
             if(error){
@@ -892,7 +919,7 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                                 }
 
                                 console.log(pregunta);
-                                response.status(200);
+                                //response.status(200);
                                 response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario });
 
                             }
@@ -900,7 +927,7 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                     }
                 }
             }
-        }
+        }*/
 
        
     }

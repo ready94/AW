@@ -81,7 +81,7 @@
         <div id="fondo">
 
             <div>
-                <h1>Todas las preguntas</h1>
+                <h1>Resultados de la etiqueta [<%= etiqueta%>]</h1>
             </div>
     
             <div id="barra_info">
@@ -95,7 +95,7 @@
             </div>
     
             <ul>
-                <% preguntas.forEach(function(p){ %>
+                <% pregunta.forEach(function(p){ %>
                 <li class="pregunta">
                     <div class="info_pregunta" > 
                         <a class="titulo_pregunta" href=<%="/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
@@ -104,7 +104,7 @@
                         
                         <div class="etiqueta_preguntas">
                             <%for(var x of p.etiqueta){ %> 
-                            <a class="boton_etiqueta" href=<%="/filtrar_etiqueta/" + pregunta.id_etiqueta %>>
+                            <a class="boton_etiqueta" href=<%="/filtrar_etiqueta/" + x %>>
                                 <%= x %> 
                             </a>
                             <% };%>
@@ -123,7 +123,7 @@
                         <div class="imagen_usu">
                             <img  width="50" height="50" src=<%= p.imagen %>>
                         </div>
-                        <a class="nombre_usu" href="/usuarios.html">
+                        <a class="nombre_usu" href=<%="../perfil_usu/"+ p.id_usuario %>>
                            <%= p.nombre%>
                         </a>
                        

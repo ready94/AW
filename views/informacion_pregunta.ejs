@@ -100,9 +100,9 @@
                     <div id="textarea"><%= pregunta.cuerpo %></div>
                     
                     <div id="etiqueta_preguntas">
-                       <% for(var etiqueta of pregunta.etiqueta){%>
-                        <a id="boton_etiqueta" href=<%="/filtrar_etiqueta/" + pregunta.id_etiqueta %>>
-                        <%= etiqueta %>
+                       <% for(var x of pregunta.etiqueta){%>
+                        <a id="boton_etiqueta" href=<%="/filtrar_etiqueta/" + x %>>
+                        <%= x %>
                         </a>
                         <% }; %>
                        
@@ -116,10 +116,10 @@
                     </div>
                     
                     <div class="imagen_usu">
-                        <img  width="50" height="50" src=<%= p.imagen %>>
+                        <img  width="50" height="50" src=<%= pregunta.imagen %>>
                     </div>
 
-                    <a id="nombre_usu" href=<%="/perfil_usu/" + pregunta.idUsuario %>>
+                    <a id="nombre_usu" href=<%="/perfil_usu/" + pregunta.id_usuario %>>
                         <%= pregunta.nombre%>
                     </a>
                    

@@ -98,13 +98,13 @@
                 <% pregunta.forEach(p=>{ %>
                 <li class="pregunta">
                     <div class="info_pregunta" > 
-                        <a class="titulo_pregunta" href=<%="/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
+                        <a class="titulo_pregunta" href=<%="../informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
                         
                         <textarea maxlength="150" disabled><%= p.cuerpo%></textarea>
                         
                         <div class="etiqueta_preguntas">
                             <%for(var x of p.etiqueta){ %> 
-                            <a class="boton_etiqueta" href=<%="/filtrar_etiqueta/" + pregunta.id_pregunta %>>
+                            <a class="boton_etiqueta" href=<%="../filtrar_etiqueta/" + x %>>
                                 <%= x %> 
                             </a>
                             <% };%>
@@ -123,7 +123,7 @@
                             <img  width="50" height="50" src=<%= p.imagen %>>
                         </div>
                        
-                        <a class="nombre_usu" href="/usuarios.html">
+                        <a class="nombre_usu" href=<%="../perfil_usu/"+ p.id_usuario %>>
                            <%= p.nombre%>
                         </a>
                        

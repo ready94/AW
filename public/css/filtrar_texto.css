@@ -213,8 +213,9 @@ textarea{
     font-style: italic;
     color:rgb(0, 0, 0);
     background-color: white;
-    overflow-y: hidden;
+    overflow: hidden;
     word-wrap: break-word;
+    text-overflow: clip;
 }
 
 /*------- ETIQUETAS ----------------------*/
@@ -260,4 +261,5 @@ textarea{
     padding: 15px 15px;
     margin-top: 10px;
     cursor: pointer;
+
 }

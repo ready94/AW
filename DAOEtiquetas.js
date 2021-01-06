@@ -72,7 +72,7 @@ class DAOEtiquetas {
             if (err)
                 callback(err);
             else {
-                var sql = 'SELECT etiqueta FROM etiquetas WHERE etiqueta=' + etiqueta + "';'";
+                 const sql= 'SELECT etiqueta FROM etiquetas WHERE etiqueta=' + etiqueta + "';'";
                 conexion.query(sql, function (err, resultado) {
                     if (err)
                         callback(err);
@@ -84,6 +84,8 @@ class DAOEtiquetas {
                 conexion.release();
             }
         });//END GET CONEXION
+
+        
     }
 
 }
