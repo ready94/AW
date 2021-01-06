@@ -112,7 +112,7 @@
     
                 <div id="info_usu" >
                     <div class="fecha_usu">
-                        <%= pregunta.fecha%>
+                        Formulada el <%= pregunta.fecha%>
                     </div>
                     
                     <div class="imagen_usu">
@@ -131,6 +131,37 @@
             <div>
                 Respuestas
             </div>
+
+            <ul>
+                <% respuesta.forEach((r)=>{ %>
+                <li id="respuestas">
+                        <div id="info_pregunta" > 
+                            
+                            <div class="votos"> votos</div>
+                            <div id="cuerpo"><%= r.cuerpo %></div>
+
+                        </div>
+            
+                        <div id="info_usu" >
+                            <div class="fecha_usu">
+                               Respondida el <%= r.fecha%>
+                            </div>
+                            
+                            <div class="imagen_usu">
+                                <img  width="50" height="50" src=<%= r.imagen %>>
+                            </div>
+        
+                            <a id="nombre_usu" href=<%="/perfil_usu/" + r.id_usuario %>>
+                                <%= r.nombre%>
+                            </a>
+                           
+                           
+                            
+                        </div>
+                </li>
+                <%}); %>
+            </ul>
+            
 
             <div id="responder">
                 <div>

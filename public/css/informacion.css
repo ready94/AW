@@ -243,6 +243,18 @@ nav a:hover{
 /*--------------------------------------------------------------------------------------------*/
 /*-------- respuestas --------------*/
 
+#visitas{
+    box-sizing: border-box;
+    border: none;
+    background-color:#cdb78f ;
+}
+
+.votos{
+    box-sizing: border-box;
+    border: none;
+    background-color:#eec170 ;
+}
+
 /*--------- responder pregunta ------*/
 
 textarea{

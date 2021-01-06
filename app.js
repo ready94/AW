@@ -15,7 +15,7 @@ const sessionStore = new MySQLStore(config.mysqlConfig);
 const DAOUsers = require("./DAOUsers");
 const DAOPreguntas = require("./DAOPreguntas");
 const DAOEtiquetas = require("./DAOEtiquetas");
-const DAORelacion = require("./DAORelacion");
+const DAORespuestas = requiere("./DAORespuestas");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -36,6 +36,7 @@ const ficherosEstaticos = path.join(__dirname, "public");
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
 let daoEtiquetas = new DAOEtiquetas(pool);
+let daoRespuestas= new DAORespuestas(pool);
 let moment = require("moment");
 
 app.use(express.static(ficherosEstaticos));
@@ -441,8 +442,66 @@ app.get("/sin_responder.html", function (request, response) {
             imagen: request.session.imagen
         };
 
-        response.status(200);
-        response.render("sin_responder", { perfil: usuario }); 
+        var contador;
+        daoPreguntas.getPreguntasSinResponder(function(error,resultado){
+
+            if(error){
+                response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");
+            }else{
+                
+                var pregunta=[];
+
+                resultado.forEach((p)=>{
+                    daoEtiquetas.getEtiquetas(p.id_pregunta,function(err,resul){
+                        
+                        if(err){
+                            response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");
+                        }else{
+
+                            //console.log(p.id_pregunta);
+                            var etiqueta=[];
+                            for(var x of resul){
+                                etiqueta.push(x.etiqueta);
+                            }
+
+                            var aux={
+                                id_pregunta: p.id_pregunta,
+                                id_usuario: p.id_usuario,
+                                titulo: p.titulo,
+                                cuerpo: p.cuerpo,
+                                fecha: p.fecha,
+                                nombre: p.nombre,
+                                imagen: p.imagen,
+                                etiqueta:etiqueta
+                            }
+                            pregunta.push(aux);
+
+                            //console.log(pregunta);
+                        }
+                        
+                    })
+                })
+                
+                daoPreguntas.countSinResponder(function(e,res){
+                    if (error) {
+                        response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");
+                    } else {
+                        
+                        contador=res[0].TotalSinResponder;
+                        //response.status(200);
+                        console.log(pregunta);
+                        response.render("sin_responder", {  perfil: usuario,contador:contador,pregunta:pregunta }); 
+                    }
+                })
+
+            }
+        });
+
+
+        
             
     }
     
@@ -870,14 +929,118 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                             etiqueta: etiqueta
                         }
 
-                        console.log(pregunta);
-                        //response.status(200);
-                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario });
-                    }
+
+                        daoRespuestas.getRespuestaByPregunta(pregunta.id_pregunta,function(err,resul){
+
+                            if(error){
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            }else{
+
+                                var respuesta=[];
+                                resul.forEach((r)=>{
+
+                                    var aux={
+                                        texto:r.texto,
+                                        fecha_respuesta:r.fecha_respuesta,
+                                        nombre:r.nombre,
+                                        imagen:r.imagen
+                                    }
+                                    respuesta.push(aux);
+                                })
+
+                                console.log(respuesta);
+                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario,respuesta:respuesta });
+                           
+                            }
+
+                        })
+                  }
                 });
             }
             
         });
+
+
+/*
+****************************************************************************************************************************************************************
+                RESPONDER PREGUNTA
+****************************************************************************************************************************************************************                                                                   
+*/
+
+app.post("/responderPregunta", function (request, response) {
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+        var titulo = request.body.titulo;
+        var cuerpo = request.body.cuerpo;
+        var etiqueta = request.body.etiqueta;
+        var fecha = new Date();
+        
+
+        // console.log(fecha);
+        var aux = [];
+
+        if (etiqueta != "") {
+            var etiquetas = etiqueta.split("@");
+            for (var i = 0; i < 5; i++) {
+                if (etiquetas[i] != "" && etiquetas[i] != undefined) {
+                    aux.push(etiquetas[i]);
+                }
+            }
+        }
+        console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
+        daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
+
+        function cb_insertPregunta(err, resultado) {
+            if (err) {
+                response.status(500);
+                console.log("ERROR BBDD" + err); 
+            } else if (resultado.length != 0) {
+                if (aux.length > 0) {
+
+                    daoEtiquetas.getUltimoID(cb_getUltimoID);
+
+                    function cb_getUltimoID(err, res) {
+                        if (err) {
+                            response.status(500);
+                            console.log("ERROR BBDD" + err); 
+                        } else if (res.length != 0) {
+
+                            var id = res[0].id_pregunta;
+
+                            for (var i = 0; i < aux.length; i++) {
+                                daoEtiquetas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
+
+                                function cb_insertEtiquetas(err, res2) {
+                                    if (err) {
+                                        response.status(500);
+                                        console.log("ERROR BBDD" + err); //comen
+                                    }
+                                    /*else {
+                                        response.status(200);
+                                        response.redirect("/preguntas.html");
+                                    }*/
+                                }
+                            }
+                        }
+                    }
+                }
+               /* else {
+                    response.status(200);
+                    response.redirect("/preguntas.html");
+                }*/
+
+                //response.status(200);
+                response.redirect("/preguntas.html");
+
+            }
+        }
+    }
+});
+
 /*
         function cb_getByIdPreguntas(error,resultado){
 

@@ -15,7 +15,7 @@ const sessionStore = new MySQLStore(config.mysqlConfig);
 const DAOUsers = require("./DAOUsers");
 const DAOPreguntas = require("./DAOPreguntas");
 const DAOEtiquetas = require("./DAOEtiquetas");
-const DAORelacion = require("./DAORelacion");
+const DAORespuestas = requiere("./DAORespuestas");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -36,6 +36,7 @@ const ficherosEstaticos = path.join(__dirname, "public");
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
 let daoEtiquetas = new DAOEtiquetas(pool);
+let daoRespuestas= new DAORespuestas(pool);
 let moment = require("moment");
 
 app.use(express.static(ficherosEstaticos));
@@ -928,10 +929,33 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                             etiqueta: etiqueta
                         }
 
-                        console.log(pregunta);
-                        //response.status(200);
-                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario });
-                    }
+
+                        daoRespuestas.getRespuestaByPregunta(pregunta.id_pregunta,function(err,resul){
+
+                            if(error){
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            }else{
+
+                                var respuesta=[];
+                                resul.forEach((r)=>{
+
+                                    var aux={
+                                        texto:r.texto,
+                                        fecha_respuesta:r.fecha_respuesta,
+                                        nombre:r.nombre,
+                                        imagen:r.imagen
+                                    }
+                                    respuesta.push(aux);
+                                })
+
+                                console.log(respuesta);
+                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario,respuesta:respuesta });
+                           
+                            }
+
+                        })
+                  }
                 });
             }
             
