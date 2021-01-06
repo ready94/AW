@@ -89,7 +89,7 @@
                 Visita x veces
             </div>
     
-            <div id="votos">
+            <div class="votos">
                 Votos a favooor/votooos en contraaa
             </div>
     
@@ -129,29 +129,29 @@
             </div>
     
             <div>
-                Respuestas
+                Respuestas <%= contador%>
             </div>
 
             <ul>
                 <% respuesta.forEach((r)=>{ %>
-                <li id="respuestas">
-                        <div id="info_pregunta" > 
+                <li class="respuesta">
+                        <div class="info_respuesta" > 
                             
                             <div class="votos"> votos</div>
-                            <div id="cuerpo"><%= r.cuerpo %></div>
+                            <div class="texto"><%= r.texto %></div>
 
                         </div>
             
                         <div id="info_usu" >
                             <div class="fecha_usu">
-                               Respondida el <%= r.fecha%>
+                               Respondida el <%= r.fecha_respuesta%>
                             </div>
                             
                             <div class="imagen_usu">
                                 <img  width="50" height="50" src=<%= r.imagen %>>
                             </div>
         
-                            <a id="nombre_usu" href=<%="/perfil_usu/" + r.id_usuario %>>
+                            <a class="nombre_usu" href=<%="/perfil_usu/" + r.id_usuario %>>
                                 <%= r.nombre%>
                             </a>
                            
@@ -168,8 +168,9 @@
                     Tu respuesta
                 </div>
 
-                <form action="/responderPregunta">
-                    <textarea class="linea" name="cuerpo" cols="73" rows="10" required></textarea><br>
+                <form method="POST" action="/responderPregunta">
+                    <textarea class="linea" name="texto" cols="73" rows="10" required></textarea><br>
+                    <input type="hidden" name="id" value=<%= pregunta.id_pregunta %>>
                     <input class="button" type="submit" value="Publica tu respuesta">
                 </form>
             </div>

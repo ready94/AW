@@ -61,6 +61,7 @@ class DAOUsers {
                 var sql = 'SELECT * FROM usuario WHERE email = ?;'
                 var para = [email]
                 conexion.query(sql, para, function(err, resultado) {
+                    conexion.release();
                     if (err) {
                         callback(err);
                     } else {
@@ -69,7 +70,7 @@ class DAOUsers {
 
                     }
                 }); //END QUERY
-                conexion.release();
+                
             }
         }); //END GET CONEXION
     }
@@ -83,6 +84,7 @@ class DAOUsers {
                 var sql = 'SELECT * FROM usuario WHERE id_usuario = ?;';
                 var para = [idUsuario];
                 conexion.query(sql, para, function (err, resultado) {
+                    conexion.release();
                     if (err) {
                         callback(err);
                     } else {
@@ -91,7 +93,7 @@ class DAOUsers {
 
                     }
                 }); //END QUERY
-                conexion.release();
+                
             }
         }); //END GET CONEXION
     }
@@ -109,6 +111,7 @@ class DAOUsers {
                     var para = [user.nombre, user.email, user.password, user.imagen, user.fecha_alta, 0, 0, 0, 0];
 
                     conexion.query(sql, para, function(err, resultado) {
+                        conexion.release();
                         if (err) {
                             callback(err);
                         } else {
@@ -116,7 +119,7 @@ class DAOUsers {
                             callback(null, resultado);
                         }
                     }); //END QUERY                
-                    conexion.release();
+                    
                 }
             }); //END GET CONEXION
 

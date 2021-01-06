@@ -159,16 +159,13 @@ nav a:hover{
     font-family: 'VT323', monospace;
 }
 
-
-
-
 #pregunta{
     margin: 1em 0.5em 0.5em 0.5em;
     width: 100%;
     border: 2px solid rgb(104, 104, 104);
     border-radius: 4px;
     display: flex;
-    background-color: white;
+    background-color: white; 
 }
 
 #info_pregunta{
@@ -178,11 +175,11 @@ nav a:hover{
 }
 
 #cuerpo{
+    font-family: 'VT323', monospace;
     width: 90%;
     height: auto;
-    margin: 0.25em 0.25em 0em 0.5em;
-    font-size: 16px;
-    font-style: italic;
+    margin: 0.25em 0.5em 0em 0.5em;
+    font-size: 21px;
     color:rgb(0, 0, 0);
     word-wrap: break-word;
 }
@@ -219,7 +216,7 @@ nav a:hover{
     float: left;
     width: 30%;
     cursor: auto;
-    border-left:2px solid rgb(104, 104, 104);
+    /*border-left:2px solid rgb(104, 104, 104);*/
     padding: 10px 10px
 }
 .info_usu a{
@@ -244,15 +241,46 @@ nav a:hover{
 /*-------- respuestas --------------*/
 
 #visitas{
+    width: 100%;
+    margin: 1em 0.5em 0.5em 0.5em;
     box-sizing: border-box;
     border: none;
     background-color:#cdb78f ;
 }
 
 .votos{
+    width: 100%;
+    margin: 0.5em;
     box-sizing: border-box;
     border: none;
     background-color:#eec170 ;
+}
+
+.respuesta{
+    margin: 1em 0.5em 0.5em 0.5em;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid rgb(104, 104, 104);
+    border-radius: 4px;
+    list-style: none;
+    display: flex;
+    background-color: white;
+}
+
+.info_respuesta{
+    float: left;
+    width: 70%;
+    cursor: auto;
+}
+
+.texto{
+    font-family: 'VT323', monospace;
+    width: 90%;
+    height: auto;
+    margin: 0.25em 0.5em 0em 0.5em;
+    font-size: 21px;
+    color:rgb(0, 0, 0);
+    word-wrap: break-word;
 }
 
 /*--------- responder pregunta ------*/
@@ -266,6 +294,7 @@ textarea{
     border:black 1px solid;
     padding:10px 36px;
     resize: none;
+    word-wrap: break-word;
 }
 
 
