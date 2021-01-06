@@ -15,7 +15,7 @@ const sessionStore = new MySQLStore(config.mysqlConfig);
 const DAOUsers = require("./DAOUsers");
 const DAOPreguntas = require("./DAOPreguntas");
 const DAOEtiquetas = require("./DAOEtiquetas");
-const DAORespuestas = requiere("./DAORespuestas");
+const DAORespuestas = require("./DAORespuestas");
 
 // Creación de la sesion
 const middlewareSession = session({
