@@ -134,7 +134,7 @@ class DAOPreguntas{
                     if (err)
                         callback(err);
                     else{
-                        console.log(resultado);
+                        //console.log(resultado);
                         callback(null, resultado);
 
                     }
@@ -147,8 +147,30 @@ class DAOPreguntas{
     }
 
     //Recoge todas las preguntas almacenadas en la BBDD que no tengan una respuesta
-    getPreguntasSinResponder() {
+    getPreguntasSinResponder(callback) {
+        this.pool.getConnection(function (err, conexion) {
+            
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+            
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.id_respuesta,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_respuesta=0 ORDER BY p.fecha;"; 
 
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                       // console.log(resultado);
+                        callback(null, resultado);
+
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
     }
 
     insertPregunta(id_usuario, titulo, cuerpo, fecha, callback){
@@ -286,7 +308,7 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql =  "SELECT count (*) as TotalSinResponder FROM preguntas;"; 
+                var sql =  "SELECT count (*) as TotalSinResponder FROM preguntas WHERE id_respuesta=0;"; 
                
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();

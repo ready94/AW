@@ -85,11 +85,11 @@
                 <h1><%= pregunta.titulo %></h1>
             </div>
     
-            <div>
+            <div id="visitas">
                 Visita x veces
             </div>
     
-            <div>
+            <div id="votos">
                 Votos a favooor/votooos en contraaa
             </div>
     
@@ -97,7 +97,7 @@
                 <div id="info_pregunta" > 
                     
                     
-                    <div id="textarea"><%= pregunta.cuerpo %></div>
+                    <div id="cuerpo"><%= pregunta.cuerpo %></div>
                     
                     <div id="etiqueta_preguntas">
                        <% for(var x of pregunta.etiqueta){%>
@@ -129,8 +129,24 @@
             </div>
     
             <div>
-                Respuestas ya no es para el 4
+                Respuestas
             </div>
+
+            <div id="responder">
+                <div>
+                    Tu respuesta
+                </div>
+
+                <form action="/responderPregunta">
+                    <textarea class="linea" name="cuerpo" cols="73" rows="10" required></textarea><br>
+                    <input class="button" type="submit" value="Publica tu respuesta">
+                </form>
+            </div>
+            
+
+
+
+
         </div>
        
 

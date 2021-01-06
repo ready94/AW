@@ -151,13 +151,16 @@ nav a:hover{
 
 #fondo{
     margin-top: 0.5em;
-    max-width:600px;
+    max-width: 725px;
     margin-left: auto;
     margin-left: 20%;
     text-align: left;
     font-size: 20px;
     font-family: 'VT323', monospace;
 }
+
+
+
 
 #pregunta{
     margin: 1em 0.5em 0.5em 0.5em;
@@ -168,25 +171,13 @@ nav a:hover{
     background-color: white;
 }
 
-.pregunta a{
-    color: black;
-}
-
 #info_pregunta{
     float: left;
     width: 70%;
     cursor: auto;
 }
 
-#titulo_pregunta{
-    margin: 0.25em 0.5em;
-    font-size: xx-large;
-    color:#2e1d12;
-    cursor: pointer;
-    
-}
-
-#textarea{
+#cuerpo{
     width: 90%;
     height: auto;
     margin: 0.25em 0.25em 0em 0.5em;
@@ -231,10 +222,12 @@ nav a:hover{
     border-left:2px solid rgb(104, 104, 104);
     padding: 10px 10px
 }
+.info_usu a{
+    color: black;
+}
 
 #fecha_usu{
     margin: 0.25em 0.25em;
-    
 }
 
 .imagen_usu{
@@ -246,4 +239,22 @@ nav a:hover{
     margin-top: 10px;
     cursor: pointer;
 }
+
+/*--------------------------------------------------------------------------------------------*/
+/*-------- respuestas --------------*/
+
+/*--------- responder pregunta ------*/
+
+textarea{
+    text-align: left;
+    font-size: medium;
+    font-family: 'VT323', monospace;
+    margin: 1em 0.5em 1em 0.5em;
+    border-radius:4px;
+    border:black 1px solid;
+    padding:10px 36px;
+    resize: none;
+}
+
+
 

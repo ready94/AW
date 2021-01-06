@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/pag_principal.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/sin_responder.css">
     <link rel="icon" type="image/png" href="../img/icon1.png">
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
     <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
@@ -76,6 +76,62 @@
             <input id="boton_buscar" type="button" value="Buscar">
             <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
         </form>
+    </div>
+
+    <div id="fondo">
+
+        <div>
+            <h1>Preguntas sin responder</h1>
+        </div>
+
+        <div id="barra_info">
+            <div id="contador">
+                Preguntas <%= contador %>
+            </div>
+            <a class="button" href="/formular_pregunta.html" title="formular">
+                <b>Formular una pregunta</b>
+            </a>
+            
+        </div>
+
+        <ul>
+            <% pregunta.forEach(p=>{ %>
+            <li class="pregunta">
+                <div class="info_pregunta" > 
+                    <a class="titulo_pregunta" href=<%="../informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
+                    
+                    <textarea maxlength="150" disabled><%= p.cuerpo%></textarea>
+                    
+                    <div class="etiqueta_preguntas">
+                        <%for(var x of p.etiqueta){ %> 
+                        <a class="boton_etiqueta" href=<%="../filtrar_etiqueta/" + x %>>
+                            <%= x %> 
+                        </a>
+                        <% };%>
+                       
+                    </div>
+                
+                </div>
+
+                <div class="info_usu" >
+                    <div class="fecha_usu">
+                        Formulada el 
+                        <%= p.fecha%>
+                        
+                    </div>
+                    <div class="imagen_usu">
+                        <img  width="50" height="50" src=<%= p.imagen %>>
+                    </div>
+                   
+                    <a class="nombre_usu" href=<%="../perfil_usu/"+ p.id_usuario %>>
+                       <%= p.nombre%>
+                    </a>
+                   
+                    
+                </div>
+            </li>
+            <% }); %>
+        </ul>
     </div>
 
 
