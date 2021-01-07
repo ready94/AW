@@ -40,6 +40,7 @@ header {
 }
 
 #titulo a{
+    text-decoration: none;
     color:rgb(0, 0, 0);
     cursor:pointer;
 }
@@ -168,6 +169,10 @@ nav a:hover{
     background-color: white; 
 }
 
+#pregunta a{
+    color: black;
+}
+
 #info_pregunta{
     float: left;
     width: 70%;
@@ -265,6 +270,10 @@ nav a:hover{
     list-style: none;
     display: flex;
     background-color: white;
+}
+
+.respuesta a{
+    color: black;
 }
 
 .info_respuesta{

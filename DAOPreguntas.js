@@ -155,7 +155,7 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.id_respuesta,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_respuesta=0 ORDER BY p.fecha DESC;"; 
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.respuesta=FALSE ORDER BY p.fecha DESC;"; 
 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -308,7 +308,7 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql =  "SELECT count (*) as TotalSinResponder FROM preguntas WHERE id_respuesta=0;"; 
+                var sql =  "SELECT count (*) as TotalSinResponder FROM preguntas WHERE respuesta=FALSE;"; 
                
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
