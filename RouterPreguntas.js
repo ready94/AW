@@ -199,7 +199,7 @@ preguntas.post("/crearPregunta", function (request, response) {
                  }*/
 
                 //response.status(200);
-                response.redirect("/preguntas.html");
+                response.redirect("/preguntas/preguntas.html");
 
             }
         }
@@ -322,7 +322,6 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
 
                 var pregunta = [];
 
-
                 resultado.forEach((p) => {
                     daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul) {
 
@@ -371,14 +370,9 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
                         console.log("despues del render");
                     }
                 })
-
             }
         })
-
-
-
     }
-
 });
 
 /*
@@ -465,10 +459,8 @@ preguntas.post("/buscarTexto", function (request, response) {
                         console.log("despues del render");
                     }
                 })
-
             }
         });
-
     }
 });
 

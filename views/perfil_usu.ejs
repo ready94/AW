@@ -23,7 +23,7 @@
             <div id="cabecera">
     
                 <div id="titulo">
-                    <a href="../pag_principal.html">
+                    <a href="/usuarios/pag_principal.html">
                         <h1>Café con preguntas</h1>
                     </a>
                 </div>
@@ -33,13 +33,13 @@
                     <img src=<%= perfil.imagen %> id="icon">
                     <div id="usu">
     
-                        <a title="Perfil" href=<%="../perfil_usu/" + perfil.id %> >
+                        <a title="Perfil" href=<%="/usuarios/perfil_usu/" + perfil.id %> >
                             <h3 id="nick">
                                 <%= perfil.nombre %>
                             </h3>
                         </a>
     
-                        <a class="button" href="/logout" title="Cerrar sesion">
+                        <a class="button" href="/login/logout" title="Cerrar sesion">
                             Cerrar sesión
                         </a>
     
@@ -47,38 +47,34 @@
                 </div>
             </div>
     
-    
         </header>
     
         <div id="fijo">
             <nav>
     
-                <a class="button" href="/preguntas.html" title="preguntas">
+                <a class="button" href="/preguntas/preguntas.html" title="preguntas">
                     <b>PREGUNTAS</b>
                     <img src="../img/flecha-abajo.png">
                 </a>
     
-    
-                <a class="button" href="/sin_responder.html" title="preguntas sin responder">
+                <a class="button" href="/preguntas/sin_responder.html" title="preguntas sin responder">
                     <b>SIN RESPONDER</b>
                     <img src="../img/flecha-abajo.png">
                 </a>
     
-    
-                <a class="button" href="/usuarios.html" title="usuarios">
+                <a class="button" href="/usuarios/usuarios.html" title="usuarios">
                     <b>USUARIOS</b>
                     <img src="../img/flecha-abajo.png">
                 </a>
     
             </nav>
     
-            <form action="/buscarTexto" method="POST">
+            <form action="/preguntas/buscarTexto" method="POST">
                 <input id="boton_buscar" type="submit" value="Buscar">
                 <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
             </form>
         </div>
         
-   
         <div id="fondo">
             <div id="estadisticas">
                 <div id="perfil">
@@ -97,21 +93,20 @@
                         Estadísticas
                     </div>
                     
-                        <table>
-                            <tr>
-                                <td></td>
-                                <td>Reputacion</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Preguntas</td>
-                                <td></td>
-                                <td>Respuestas</td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>Reputacion</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Preguntas</td>
+                            <td></td>
+                            <td>Respuestas</td>
+                        </tr>
+                    </table>
+                </div>
                
-
             </div>
 
             <div id="medallas">
@@ -136,8 +131,6 @@
 
         </div>
 
-
-
-</body>
+    </body>
 
 </html>

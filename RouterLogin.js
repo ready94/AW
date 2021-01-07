@@ -58,7 +58,7 @@ login.post("/login", function (request, response) { // peticion a la view login.
         } else if (resultado.length != 0) {
             console.log("USUARIO LOGUEADO CORRECTAMENTE");
             request.session.usuario = email; // usuario logueado actualmente
-            response.redirect("/pag_principal.html"); // redirecion a la pagina perfil que se muestra por pantalla
+            response.redirect("/usuarios/pag_principal.html"); // redirecion a la pagina perfil que se muestra por pantalla
 
         } else {
             console.log("ERROR AL LOGUEAR USUARIO ");
@@ -167,7 +167,7 @@ login.post("/crearCuenta", function (request, response) { // peticion a la view 
                     response.redirect("/login/login.html"); // redirecion a la pagina login si no ha habido errores 
                 } else {
                     console.log("ERROR AL CREAR EL USUARIO "); //comen
-                    response.redirect("/crear_cuenta.html");
+                    response.redirect("/login/crear_cuenta.html");
                 }
             }
         } else {
@@ -186,7 +186,7 @@ login.post("/crearCuenta", function (request, response) { // peticion a la view 
 login.get("/logout", function (request, response) { // desconecta el usuario logueado actualmente
     request.session.destroy();
     console.log("Usuario deslogueado correctamente")
-    response.redirect("/login.html");
+    response.redirect("/login/login.html");
 });
 
 

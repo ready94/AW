@@ -143,7 +143,7 @@ respuestas.post("/responderPregunta", function (request, response) {
                 console.log("ERROR BBDD" + error);
             } else {
                 // console.log(resultado);
-                response.redirect("/preguntas.html");
+                response.redirect("/preguntas/preguntas.html");
             }
         });
 

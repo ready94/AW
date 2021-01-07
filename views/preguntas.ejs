@@ -23,7 +23,7 @@
             <div id="cabecera">
     
                 <div id="titulo">
-                    <a href="../pag_principal.html">
+                    <a href="/usuarios/pag_principal.html">
                         <h1>Café con preguntas</h1>
                     </a>
                 </div>
@@ -33,13 +33,13 @@
                     <img src=<%= perfil.imagen %> id="icon">
                     <div id="usu">
     
-                        <a title="Perfil" href=<%="../perfil_usu/" + perfil.id %> >
+                        <a title="Perfil" href=<%="/usuarios/perfil_usu/" + perfil.id %> >
                             <h3 id="nick">
                                 <%= perfil.nombre %>
                             </h3>
                         </a>
     
-                        <a class="button" href="/logout" title="Cerrar sesion">
+                        <a class="button" href="/login/logout" title="Cerrar sesion">
                             Cerrar sesión
                         </a>
     
@@ -47,94 +47,88 @@
                 </div>
             </div>
     
-    
         </header>
     
         <div id="fijo">
             <nav>
     
-                <a class="button" href="/preguntas.html" title="preguntas">
+                <a class="button" href="/preguntas/preguntas.html" title="preguntas">
                     <b>PREGUNTAS</b>
                     <img src="../img/flecha-abajo.png">
                 </a>
     
-    
-                <a class="button" href="/sin_responder.html" title="preguntas sin responder">
+                <a class="button" href="/preguntas/sin_responder.html" title="preguntas sin responder">
                     <b>SIN RESPONDER</b>
                     <img src="../img/flecha-abajo.png">
                 </a>
     
-    
-                <a class="button" href="/usuarios.html" title="usuarios">
+                <a class="button" href="/usuarios/usuarios.html" title="usuarios">
                     <b>USUARIOS</b>
                     <img src="../img/flecha-abajo.png">
                 </a>
     
             </nav>
     
-            <form action="/buscarTexto" method="POST">
+            <form action="/preguntas/buscarTexto" method="POST">
                 <input id="boton_buscar" type="submit" value="Buscar">
                 <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
             </form>
         </div>
 
-    <div id="fondo">
+        <div id="fondo">
 
-        <div>
-            <h1>Todas las preguntas</h1>
-        </div>
-
-        <div id="barra_info">
-            <div id="contador">
-                Preguntas totales <%= contador %>
+            <div>
+                <h1>Todas las preguntas</h1>
             </div>
-            <a class="button" href="/formular_pregunta.html" title="formular">
-                <b>Formular una pregunta</b>
-            </a>
-            
+
+            <div id="barra_info">
+                <div id="contador">
+                    Preguntas totales <%= contador %>
+                </div>
+                <a class="button" href="/preguntas/formular_pregunta.html" title="formular">
+                    <b>Formular una pregunta</b>
+                </a>
+                
+            </div>
+
+            <ul>
+                <% pregunta.forEach(function(p){ %>
+                <li class="pregunta">
+                    <div class="info_pregunta" > 
+                        <a class="titulo_pregunta" href=<%="/respuestas/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
+                        
+                        <div class="cuerpo"><%= p.cuerpo%></div>
+                        
+                        <div class="etiqueta_preguntas">
+                            <%for(var x of p.etiqueta){ %> 
+                            <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x %>>
+                                <%= x %> 
+                            </a>
+                            <% };%>
+                        
+                        </div>
+                    
+                    </div>
+
+                    <div class="info_usu" >
+                        <div class="fecha_usu">
+                            Formulada el 
+                            <%= p.fecha%>
+                            
+                        </div>
+                        
+                        <div class="imagen_usu">
+                            <img  width="50" height="50" src=<%= p.imagen %>>
+                        </div>
+                        <a class="nombre_usu" href=<%="/usuarios/perfil_usu/"+ p.id_usuario %>>
+                        <%= p.nombre%>
+                        </a>
+                    </div>
+                </li>
+                <% }); %>
+            </ul>
         </div>
 
-        <ul>
-            <% pregunta.forEach(function(p){ %>
-            <li class="pregunta">
-                <div class="info_pregunta" > 
-                    <a class="titulo_pregunta" href=<%="/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
-                    
-                    <div class="cuerpo"><%= p.cuerpo%></div>
-                    
-                    <div class="etiqueta_preguntas">
-                        <%for(var x of p.etiqueta){ %> 
-                        <a class="boton_etiqueta" href=<%="/filtrar_etiqueta/" + x %>>
-                            <%= x %> 
-                        </a>
-                        <% };%>
-                       
-                    </div>
-                
-                </div>
-
-                <div class="info_usu" >
-                    <div class="fecha_usu">
-                        Formulada el 
-                        <%= p.fecha%>
-                        
-                    </div>
-                    
-                    <div class="imagen_usu">
-                        <img  width="50" height="50" src=<%= p.imagen %>>
-                    </div>
-                    <a class="nombre_usu" href=<%="/perfil_usu/"+ p.id_usuario %>>
-                       <%= p.nombre%>
-                    </a>
-                   
-                    
-                </div>
-            </li>
-            <% }); %>
-        </ul>
-    </div>
-
-
-</body>
+    </body>
 
 </html>
