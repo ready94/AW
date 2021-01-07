@@ -100,7 +100,7 @@
                 <div class="info_pregunta" > 
                     <a class="titulo_pregunta" href=<%="/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
                     
-                    <textarea maxlength="150" disabled><%= p.cuerpo%></textarea>
+                    <textarea class="cuerpo" maxlength="150" disabled><%= p.cuerpo%></textarea>
                     
                     <div class="etiqueta_preguntas">
                         <%for(var x of p.etiqueta){ %> 

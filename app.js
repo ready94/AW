@@ -249,6 +249,21 @@ app.get("/pag_principal.html", function(request, response) {
                     PREGUNTAS
 ****************************************************************************************************************************************************************                                                                   
 */
+
+function text_truncate(str, length, ending) {
+    if (length == null) {
+        length = 100;
+    }
+    if (ending == null) {
+        ending = '...';
+    }
+    if (str.length > length) {
+        return str.substring(0, length - ending.length) + ending;
+    } else {
+        return str;
+    }
+};
+
 app.get("/preguntas.html", function (request, response) {
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -285,13 +300,15 @@ app.get("/preguntas.html", function (request, response) {
                             for(var x of resul){
                                 etiqueta.push(x.etiqueta);
                             }
+                            var fecha = new Date(p.fecha);
+                            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth()+1) + "/" + fecha.getFullYear();
 
                             var aux={
                                 id_pregunta: p.id_pregunta,
                                 id_usuario: p.id_usuario,
                                 titulo: p.titulo,
-                                cuerpo: p.cuerpo,
-                                fecha: p.fecha,
+                                cuerpo: text_truncate(p.cuerpo, 147),
+                                fecha: fechaForm,
                                 nombre: p.nombre,
                                 imagen: p.imagen,
                                 etiqueta:etiqueta
@@ -322,6 +339,8 @@ app.get("/preguntas.html", function (request, response) {
 
     }
 });
+
+
 
 /*
 ****************************************************************************************************************************************************************
