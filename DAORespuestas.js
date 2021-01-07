@@ -45,15 +45,16 @@ class DAORespuestas{
                         if (err)
                             callback(err);
                         else{
-                            console.log("primer insert bien");
+                            //console.log("primer insert bien");
                             //console.log(idPre);
-                            const sql2="INSERT INTO preguntas (respuesta) WHERE id_pregunta=? ;";
+                            const sql2="UPDATE preguntas SET respuesta=TRUE WHERE id_pregunta=? ;";
                             var para2=[idPre];
                             conexion.query(sql2,para2, function (err, resultado) {
                                 conexion.release();
                                 if (err)
                                     callback(err);
                                 else{
+                                    //console.log("segundo update");
                                     callback(null, resultado);
                                 }
                             });//END QUERY   
