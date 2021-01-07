@@ -38,13 +38,18 @@ let daoPreguntas = new DAOPreguntas(pool);
 let daoEtiquetas = new DAOEtiquetas(pool);
 let daoRespuestas= new DAORespuestas(pool);
 let moment = require("moment");
+const { response } = require("express");
 
-app.use(express.static(ficherosEstaticos));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.use(express.static(ficherosEstaticos));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
 app.use(expressValidator());
+
+app.use(middlewareNotFound);
+app.use(middlewareServerError);
 
 /*
 ****************************************************************************************************************************************************************
@@ -57,6 +62,30 @@ app.listen(config.port, function (err) {
     else 
         console.log(`Servidor arrancado en el puerto ${config.port}`);
 });
+
+/*
+****************************************************************************************************************************************************************
+                TIENE QUE ESTAR LOGGEADO
+****************************************************************************************************************************************************************                                                                   
+*/
+/*
+function comprobarLogin(request,response,next){
+    console.log("ha entrado")
+    console.log(request.session);
+    if(request == undefined){
+        console.log("no hay usu");
+        response.redirect("/login.html");
+    }else{
+        console.log("hay usu");
+        next();
+    }
+}*/
+
+/*
+****************************************************************************************************************************************************************
+               LOGIN USUARIO
+****************************************************************************************************************************************************************                                                                   
+*/
 
 app.get("/login.html", function(request, response) {
 
@@ -88,6 +117,12 @@ app.post("/login", function(request, response) { // peticion a la view login.ejs
         }
     }
 });
+
+/*
+****************************************************************************************************************************************************************
+                LOGOUT USUARIO
+****************************************************************************************************************************************************************                                                                   
+*/
 
 app.get("/logout", function(request, response) { // desconecta el usuario logueado actualmente
     request.session.destroy();
@@ -211,11 +246,11 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
                PAGINA PRINCIPAL
 ****************************************************************************************************************************************************************                                                                   
 */
-app.get("/pag_principal.html", function(request, response) {
-    if (request.session.usuario == undefined) {
+app.get("/pag_principal.html", comprobarLogin, function(request, response) {
+    /*if (request.session.usuario == undefined) {
         response.redirect("/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
-    } else {
+    } else {*/
         response.locals.email = request.session.usuario;
 
         daoUser.getUser(response.locals.email, cb_getUser);
@@ -241,7 +276,7 @@ app.get("/pag_principal.html", function(request, response) {
                 response.render("pag_principal", { perfil: usuario });
             }
         }
-    }
+   // }
 });
 
 /*
@@ -684,124 +719,6 @@ app.post("/buscarTexto", function (request, response) {
 });
 
 /*
-app.post("/buscarTexto", function (request, response) {
-
-    if (request.session.usuario == undefined) {
-        response.redirect("/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
-    } else {
-
-        var usuario = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
-
-        var texto = request.body.search;
-
-        console.log("search=",texto);
-
-        //----------- contador
-
-        var contador;
-        daoPreguntas.countTexto(texto,cb_countTexto);
-
-        function cb_countTexto(error,resultado){
-            if(error){
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
-            }else{
-                console.log("entra en el contador");
-                contador=resultado[0].TotalTexto;
-            }
-        }
-
-        console.log("sale del contador");
-
-        //------------ obtencion de pregunta
-        daoPreguntas.getPreguntasPorTexto(texto, cb_getPreguntasPorTexto);
-
-        function cb_getPreguntasPorTexto(error,resultado){
-            if(error){
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
-            }else{
-
-                var pregunta=[];
-
-                console.log("entra al get preguntas");
-                //console.log("preguntas poor texto",resultado)
-                //console.log("Usuario:",resultado[0].id_usuario)
-
-                resultado.forEach((p)=>{
-                    console.log("Usuario:",p.id_usuario)
-                    daoUser.getUserByID(p.id_usuario,cb_getUserByID);
-
-                function cb_getUserByID(err,resul){
-                    if(err){
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
-                    }else{
-                        console.log("user", resul);
-                        console.log("añadir etiquetas");
-
-                        daoEtiquetas.getEtiquetas(p.id_pregunta,cb_getEtiquetas);
-
-                        function cb_getEtiquetas(e,res){
-                            if(e){
-                                response.status(500);
-                                console.log("ERROR EN LA BASE DE DATOS");
-                            }else{
-
-                                console.log("entra en el get etiquetas");
-                                console.log("etiqueta",res);
-                                console.log(res[0].etiqueta);
-
-                                var etiqueta=[];
-
-                                for(var i of res){
-                                    etiqueta.push(i.etiqueta);
-                                }
-
-                                var aux={
-                                    idPregunta: p.id_pregunta,
-                                    idUsuario: p.id_usuario,
-                                    titulo: p.titulo,
-                                    cuerpo: p.cuerpo,
-                                    fecha: p.fecha,
-                                    nombre: resul[0].nombre,
-                                    imagen: resul[0].imagen,
-                                    etiqueta:etiqueta
-                                }
-                                pregunta.push(aux);
-
-                                console.log("RESULTADO TOTAL:",pregunta);
-
-                               
-                            }
-                        }
-
-                   
-                       
-                    }
-                }
-                })
-
-
-                console.log("fin");
-                console.log("holi",pregunta);
-                response.status(200);
-                response.render("./filtrar_texto", { perfil: usuario,texto:texto,contador:contador,preguntas:pregunta }); 
-                console.log("despues del render");
-            }
-        }
-     
-    }
-    
-});
-*/
-
-/*
 ****************************************************************************************************************************************************************
                             USUARIOS
 ****************************************************************************************************************************************************************                                                                   
@@ -1008,7 +925,27 @@ app.post("/responderPregunta", function (request, response) {
     }
 });
 
+/*
+****************************************************************************************************************************************************************
+                ERROR 404
+****************************************************************************************************************************************************************                                                                   
+*/
 
+function middlewareNotFound(request,response){
+    response.status(404);
+    response.render("error404",{url:request.url});
+}
+
+/*
+****************************************************************************************************************************************************************
+                ERROR 500
+****************************************************************************************************************************************************************                                                                   
+*/
+
+function middlewareServerError(error,request,response,next){
+    response.status(500);
+    response.render("error500",{mensaje:error.message,pila:error.stack});
+}
 
 
 
