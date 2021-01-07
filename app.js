@@ -912,6 +912,7 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                     }else{
 
                         var etiqueta=[];
+                        var contador;
 
                         for(var i of res){
                             etiqueta.push(i.etiqueta);
@@ -929,6 +930,14 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                             etiqueta: etiqueta
                         }
 
+                        daoRespuestas.countRespuestas(pregunta.id_pregunta,function(e,r){
+                            if(error){
+                                response.status(500);
+                                console.log("ERROR EN LA BASE DE DATOS");
+                            }else{
+                                contador=r[0].TotalRespuestas;
+                            }
+                        })
 
                         daoRespuestas.getRespuestaByPregunta(pregunta.id_pregunta,function(err,resul){
 
@@ -937,6 +946,7 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                                 console.log("ERROR EN LA BASE DE DATOS");
                             }else{
 
+                                console.log(resul);
                                 var respuesta=[];
                                 resul.forEach((r)=>{
 
@@ -950,7 +960,7 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
                                 })
 
                                 console.log(respuesta);
-                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario,respuesta:respuesta });
+                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario,respuesta:respuesta,contador:contador });
                            
                             }
 
@@ -961,6 +971,8 @@ app.get("/informacion_pregunta/:idPregunta", function (request, response) {
             
         });
 
+    }
+});
 
 /*
 ****************************************************************************************************************************************************************
@@ -974,128 +986,28 @@ app.post("/responderPregunta", function (request, response) {
         response.redirect("/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
-        var titulo = request.body.titulo;
-        var cuerpo = request.body.cuerpo;
-        var etiqueta = request.body.etiqueta;
+
+        var texto = request.body.texto;
+        var idPregunta = request.body.id;
         var fecha = new Date();
         
 
-        // console.log(fecha);
-        var aux = [];
+        console.log(idPregunta);
 
-        if (etiqueta != "") {
-            var etiquetas = etiqueta.split("@");
-            for (var i = 0; i < 5; i++) {
-                if (etiquetas[i] != "" && etiquetas[i] != undefined) {
-                    aux.push(etiquetas[i]);
-                }
-            }
-        }
-        console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
-        daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
-
-        function cb_insertPregunta(err, resultado) {
-            if (err) {
+        //console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
+        daoRespuestas.insertRespuesta(idPregunta,request.session.idUsuario, texto, fecha, function(error,resultado){
+            if (error) {
                 response.status(500);
-                console.log("ERROR BBDD" + err); 
-            } else if (resultado.length != 0) {
-                if (aux.length > 0) {
-
-                    daoEtiquetas.getUltimoID(cb_getUltimoID);
-
-                    function cb_getUltimoID(err, res) {
-                        if (err) {
-                            response.status(500);
-                            console.log("ERROR BBDD" + err); 
-                        } else if (res.length != 0) {
-
-                            var id = res[0].id_pregunta;
-
-                            for (var i = 0; i < aux.length; i++) {
-                                daoEtiquetas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
-
-                                function cb_insertEtiquetas(err, res2) {
-                                    if (err) {
-                                        response.status(500);
-                                        console.log("ERROR BBDD" + err); //comen
-                                    }
-                                    /*else {
-                                        response.status(200);
-                                        response.redirect("/preguntas.html");
-                                    }*/
-                                }
-                            }
-                        }
-                    }
-                }
-               /* else {
-                    response.status(200);
-                    response.redirect("/preguntas.html");
-                }*/
-
-                //response.status(200);
-                response.redirect("/preguntas.html");
-
-            }
-        }
-    }
-});
-
-/*
-        function cb_getByIdPreguntas(error,resultado){
-
-            if(error){
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                console.log("ERROR BBDD" + error); 
             }else{
-                
-                daoUser.getUserByID(resultado[0].id_usuario,cb_getUserByID);
-
-                function cb_getUserByID(err,resul){
-                    if(err){
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
-                    }else{
-
-                        daoEtiquetas.getEtiquetas(request.params.idPregunta,cb_getEtiquetas);
-
-                        function cb_getEtiquetas(e,res){
-                            if(e){
-                                response.status(500);
-                                console.log("ERROR EN LA BASE DE DATOS");
-                            }else{
-
-                                var etiqueta=[];
-
-                                for(var i of res){
-                                    etiqueta.push(i.etiqueta);
-                                }
-
-                                var pregunta={
-                                    idUsuario: resultado[0].id_usuario,
-                                    titulo: resultado[0].titulo,
-                                    cuerpo: resultado[0].cuerpo,
-                                    fecha: resultado[0].fecha.toDateString(),
-                                    nombre: resul[0].nombre,
-                                    imagen: resul[0].imagen,
-                                    etiqueta: etiqueta
-                                }
-
-                                console.log(pregunta);
-                                //response.status(200);
-                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario });
-
-                            }
-                        }
-                    }
-                }
+               // console.log(resultado);
+                response.redirect("/preguntas.html");
             }
-        }*/
+        });
 
-       
     }
-    
 });
+
 
 
 

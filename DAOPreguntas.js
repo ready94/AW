@@ -17,7 +17,7 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario ORDER BY p.fecha;"; 
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario ORDER BY p.fecha DESC;"; 
 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -67,7 +67,7 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_pregunta="+id+" ORDER BY p.fecha;"; 
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_pregunta="+id+" ORDER BY p.fecha DESC;"; 
             
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -95,7 +95,7 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.titulo LIKE '%"+texto+"%' OR p.cuerpo LIKE '%"+texto+"%' ORDER BY p.fecha;"; 
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.titulo LIKE '%"+texto+"%' OR p.cuerpo LIKE '%"+texto+"%' ORDER BY p.fecha DESC;"; 
             
             
             
@@ -126,7 +126,7 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT * FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario JOIN etiquetas AS e ON p.id_pregunta=e.id_pregunta AND e.etiqueta='"+etiqueta+"' ORDER BY p.fecha;"; 
+            const sql = "SELECT * FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario JOIN etiquetas AS e ON p.id_pregunta=e.id_pregunta AND e.etiqueta='"+etiqueta+"' ORDER BY p.fecha DESC;"; 
              
             //const sql2="SELECT * FROM usuario AS u JOIN preguntas AS p ON p.id_usuario=u.id_usuario ORDER BY p.fecha;"; 
                 conexion.query(sql, function (err, resultado) {
@@ -155,7 +155,7 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.id_respuesta,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_respuesta=0 ORDER BY p.fecha;"; 
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.id_respuesta,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_respuesta=0 ORDER BY p.fecha DESC;"; 
 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();

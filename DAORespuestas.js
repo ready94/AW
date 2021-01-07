@@ -13,7 +13,7 @@ class DAORespuestas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT r.texto,r.fecha_respuesta,u.nombre,u.imagen FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario  WHERE id_pregunta="+id+" ORDER BY r.fecha_respuesta;"; 
+            const sql = "SELECT r.texto,r.fecha_respuesta,u.nombre,u.imagen FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario  WHERE id_pregunta="+id+" ORDER BY r.fecha_respuesta DESC;"; 
 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -41,14 +41,24 @@ class DAORespuestas{
                 const sql = "INSERT INTO respuestas (id_pregunta,id_usuario,texto,fecha_respuesta) VALUES (?,?,?,?);"; 
                 var para=[idPre,idUsu,texto,fecha];
                     conexion.query(sql,para, function (err, resultado) {
-                        conexion.release();
+                        
                         if (err)
                             callback(err);
                         else{
-                            //console.log(resultado);
-                            callback(null, resultado);
+                            console.log("primer insert bien");
+                            //console.log(idPre);
+                            const sql2="INSERT INTO preguntas (respuesta) WHERE id_pregunta=? ;";
+                            var para2=[idPre];
+                            conexion.query(sql2,para2, function (err, resultado) {
+                                conexion.release();
+                                if (err)
+                                    callback(err);
+                                else{
+                                    callback(null, resultado);
+                                }
+                            });//END QUERY   
 
-                        }
+                        }   
                         
                     });//END QUERY                
                 
