@@ -151,7 +151,7 @@ nav a:hover{
 
 #fondo{
     margin-top: 0.5em;
-    max-width:600px;
+    max-width:725px;
     margin-left: auto;
     margin-left: 20%;
     text-align: left;
@@ -188,7 +188,7 @@ nav a:hover{
 
 .info_pregunta{
     float: left;
-    width: 100%;
+    width: 70%;
     cursor: auto;
 }
 
@@ -201,11 +201,9 @@ nav a:hover{
 }
 
 .cuerpo{
-    width: 90%;
-    height: 35%;
+    width: 70%;
+    height: auto;
     margin: 0.25em 0.25em 0em 0.5em;
-    resize: none;
-    border: none;
     font-size: 16px;
     font-style: italic;
     color:rgb(0, 0, 0);
@@ -245,7 +243,7 @@ nav a:hover{
 .info_usu{
     text-align: center;
     float: left;
-    width: 50%;
+    width: 30%;
     cursor: auto;
     border-left:2px solid rgb(104, 104, 104);
 }

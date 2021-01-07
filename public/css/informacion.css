@@ -187,6 +187,7 @@ nav a:hover{
     font-size: 21px;
     color:rgb(0, 0, 0);
     word-wrap: break-word;
+    white-space: pre-line;
 }
 
 /*------- ETIQUETAS ----------------------*/
@@ -221,7 +222,6 @@ nav a:hover{
     float: left;
     width: 30%;
     cursor: auto;
-    /*border-left:2px solid rgb(104, 104, 104);*/
     padding: 10px 10px
 }
 .info_usu a{
