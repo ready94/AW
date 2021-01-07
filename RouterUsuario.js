@@ -8,7 +8,7 @@ var mysqlSession = require("express-mysql-session");
 var MySQLStore = mysqlSession(session);
 var sessionStore = new MySQLStore(config.mysqlConfig);
 
-var usuario = express.Router();
+var user = express.Router();
 
 var DAOUsers = require("./DAOUsers");
 var pool = mysql.createPool(config.mysqlConfig);
@@ -20,7 +20,7 @@ var daoUser = new DAOUsers(pool);
                PAGINA PRINCIPAL
 ****************************************************************************************************************************************************************                                                                   
 */
-usuario.get("/pag_principal.html", function (request, response) {
+user.get("/pag_principal.html", function (request, response) {
     console.log("pagina principal");
     if (request.session.usuario == undefined) {
         response.redirect("/login/login.html");
@@ -61,7 +61,7 @@ usuario.get("/pag_principal.html", function (request, response) {
 ****************************************************************************************************************************************************************                                                                   
 */
 
-usuario.get("/usuarios.html", function (request, response) {
+user.get("/usuarios.html", function (request, response) {
 
     if (request.session.usuario == undefined) {
         response.redirect("/login/login.html");
@@ -87,7 +87,7 @@ usuario.get("/usuarios.html", function (request, response) {
 ****************************************************************************************************************************************************************                                                                   
 */
 
-usuario.get("/perfil_usu/:idUsuario", function (request, response) {
+user.get("/perfil_usu/:idUsuario", function (request, response) {
 
     if (request.session.usuario == undefined) {
         response.redirect("/login/login.html");
@@ -130,4 +130,4 @@ usuario.get("/perfil_usu/:idUsuario", function (request, response) {
 
 });
 
-module.exports = usuario;
+module.exports = user;
