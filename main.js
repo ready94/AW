@@ -48,8 +48,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
 app.use(expressValidator());
 
-app.use(middlewareNotFound);
-app.use(middlewareServerError);
+//app.use(comprobarLogin);
+//app.use(middlewareNotFound);
+//app.use(middlewareServerError);
 
 /*
 ****************************************************************************************************************************************************************
@@ -68,18 +69,18 @@ app.listen(config.port, function (err) {
                 TIENE QUE ESTAR LOGGEADO
 ****************************************************************************************************************************************************************                                                                   
 */
-/*
+
 function comprobarLogin(request,response,next){
     console.log("ha entrado")
-    console.log(request.session);
-    if(request == undefined){
+    console.log(request.session.usuario);
+    if(request.session.usuario){
         console.log("no hay usu");
-        response.redirect("/login.html");
+        next();
     }else{
         console.log("hay usu");
-        next();
+        response.redirect("/login.html");
     }
-}*/
+}
 
 /*
 ****************************************************************************************************************************************************************
@@ -246,11 +247,13 @@ app.post("/crearCuenta", function(request, response) { // peticion a la view log
                PAGINA PRINCIPAL
 ****************************************************************************************************************************************************************                                                                   
 */
-app.get("/pag_principal.html", comprobarLogin, function(request, response) {
-    /*if (request.session.usuario == undefined) {
+app.get("/pag_principal.html", function(request, response) {
+    console.log("pagina principal");
+    if (request.session.usuario == undefined) {
         response.redirect("/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
-    } else {*/
+    } else {
+
         response.locals.email = request.session.usuario;
 
         daoUser.getUser(response.locals.email, cb_getUser);
@@ -276,7 +279,7 @@ app.get("/pag_principal.html", comprobarLogin, function(request, response) {
                 response.render("pag_principal", { perfil: usuario });
             }
         }
-   // }
+    }
 });
 
 /*
@@ -284,6 +287,18 @@ app.get("/pag_principal.html", comprobarLogin, function(request, response) {
                     PREGUNTAS
 ****************************************************************************************************************************************************************                                                                   
 */
+
+function text_truncate(str, length, ending) {
+    if (ending == null) {
+        ending = '...';
+    }
+    if (str.length > length) {
+        return str.substring(0, length - ending.length) + ending;
+    } else {
+        return str;
+    }
+};
+
 app.get("/preguntas.html", function (request, response) {
     if (request.session.usuario == undefined) {
         response.redirect("/login.html");
@@ -321,12 +336,15 @@ app.get("/preguntas.html", function (request, response) {
                                 etiqueta.push(x.etiqueta);
                             }
 
+                            var fecha = new Date(p.fecha);
+                            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth()+1) + "/" + fecha.getFullYear();
+
                             var aux={
                                 id_pregunta: p.id_pregunta,
                                 id_usuario: p.id_usuario,
                                 titulo: p.titulo,
-                                cuerpo: p.cuerpo,
-                                fecha: p.fecha,
+                                cuerpo: text_truncate(p.cuerpo, 147),
+                                fecha: fechaForm,
                                 nombre: p.nombre,
                                 imagen: p.imagen,
                                 etiqueta:etiqueta
@@ -948,7 +966,6 @@ function middlewareServerError(error,request,response,next){
 }
 
 
-
 /* No sabemos como funciona esto hulio
 app.get("/reset", function(request, response) {
     response.status(200);
@@ -957,8 +974,5 @@ app.get("/reset", function(request, response) {
     response.end("Has reiniciado el contador");
 });
 */
-
-
-
 
 // Definición de las funciones callback
