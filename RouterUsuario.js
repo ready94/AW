@@ -110,11 +110,13 @@ user.get("/perfil_usu/:idUsuario", function (request, response) {
                 console.log("ERROR EN LA BASE DE DATOS");
             } else {
 
+                var fecha = new Date(resultado[0].fecha_alta);
+                var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
                 var aux = {
                     nombre: resultado[0].nombre,
                     imagen: resultado[0].imagen,
-                    fecha: resultado[0].fecha_alta,
+                    fecha:fechaForm,
                     preguntas: resultado[0].num_preguntas,
                     respuestas: resultado[0].num_respuestas,
                     reputacion: resultado[0].reputacion,

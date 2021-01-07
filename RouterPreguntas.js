@@ -73,7 +73,7 @@ preguntas.get("/preguntas.html", function (request, response) {
                                 id_pregunta: p.id_pregunta,
                                 id_usuario: p.id_usuario,
                                 titulo: p.titulo,
-                                cuerpo: text_truncate(p.cuerpo, 147),
+                                cuerpo: text_truncate(p.cuerpo, 150),
                                 fecha: fechaForm,
                                 nombre: p.nombre,
                                 imagen: p.imagen,
@@ -249,12 +249,15 @@ preguntas.get("/sin_responder.html", function (request, response) {
                                 etiqueta.push(x.etiqueta);
                             }
 
+                            var fecha = new Date(p.fecha);
+                            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
                             var aux = {
                                 id_pregunta: p.id_pregunta,
                                 id_usuario: p.id_usuario,
                                 titulo: p.titulo,
-                                cuerpo: p.cuerpo,
-                                fecha: p.fecha,
+                                cuerpo: text_truncate(p.cuerpo, 150),
+                                fecha: fechaForm,
                                 nombre: p.nombre,
                                 imagen: p.imagen,
                                 etiqueta: etiqueta
@@ -334,12 +337,15 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
                                 etiqueta.push(x.etiqueta);
                             }
 
+                            var fecha = new Date(p.fecha);
+                            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
                             var aux = {
                                 id_pregunta: p.id_pregunta,
                                 id_usuario: p.id_usuario,
                                 titulo: p.titulo,
-                                cuerpo: p.cuerpo,
-                                fecha: p.fecha,
+                                cuerpo: text_truncate(p.cuerpo, 150),
+                                fecha: fechaForm,
                                 nombre: p.nombre,
                                 imagen: p.imagen,
                                 etiqueta: etiqueta
@@ -425,12 +431,15 @@ preguntas.post("/buscarTexto", function (request, response) {
                                 etiqueta.push(x.etiqueta);
                             }
 
+                            var fecha = new Date(p.fecha);
+                            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
                             var aux = {
                                 id_pregunta: p.id_pregunta,
                                 id_usuario: p.id_usuario,
                                 titulo: p.titulo,
-                                cuerpo: p.cuerpo,
-                                fecha: p.fecha,
+                                cuerpo: text_truncate(p.cuerpo, 150),
+                                fecha: fechaForm,
                                 nombre: p.nombre,
                                 imagen: p.imagen,
                                 etiqueta: etiqueta
