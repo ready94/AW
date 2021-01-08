@@ -8,7 +8,7 @@ var session = require("express-session");
 var mysqlSession = require("express-mysql-session");
 var MySQLStore = mysqlSession(session);
 var sessionStore = new MySQLStore(config.mysqlConfig);
-
+var alert = require("alert");
 var login = express.Router();
 
 var DAOUsers = require("./DAOUsers");
