@@ -67,7 +67,7 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_pregunta="+id+" ORDER BY p.fecha DESC;"; 
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha, p.visitas,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_pregunta="+id+" ORDER BY p.fecha DESC;"; 
             
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -197,36 +197,6 @@ class DAOPreguntas{
             }
         });//END GET CONEXION
     }
-
-    /*
-    getAllPreguntas(texto,callback){
-        this.pool.getConnection(function (err, conexion) {
-            
-            if (err)
-                callback(err);
-            else {
-            //contador de preguntas
-            
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.titulo LIKE '%"+texto+"%' OR p.cuerpo LIKE '%"+texto+"%' ORDER BY p.fecha;"; 
-            
-            
-            
-                conexion.query(sql, function (err, resultado) {
-                    conexion.release();
-                    if (err)
-                        callback(err);
-                    else{
-                        console.log(resultado);
-                        callback(null, resultado);
-
-                    }
-                        
-                });//END QUERY                
-                
-            }
-        });//END GET CONEXION
-    }*/
-
     count(callback){
         this.pool.getConnection(function (err, conexion) {
             
@@ -316,6 +286,54 @@ class DAOPreguntas{
                         callback(err);
                     else{
                         console.log(resultado[0]); //comen
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
+    }
+
+    actualizarVisitas(visitas,id,callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                var sql ="UPDATE preguntas SET visitas="+visitas+" WHERE id_pregunta="+id+";"; 
+               
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        //console.log(resultado[0]); //comen
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
+    }
+
+    actualizarVotos(id,voto,callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                var sql ="UPDATE preguntas SET TotalPuntos+="+voto+" WHERE id_pregunta="+id+";"; 
+               
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        //console.log(resultado[0]); //comen
                         callback(null, resultado);
                     }
                         

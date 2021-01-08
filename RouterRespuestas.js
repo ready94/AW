@@ -13,6 +13,7 @@ var respuestas = express.Router();
 var DAOPreguntas = require("./DAOPreguntas");
 var DAOEtiquetas = require("./DAOEtiquetas");
 var DAORespuestas = require("./DAORespuestas");
+const { nextTick } = require("process");
 
 var pool = mysql.createPool(config.mysqlConfig);
 
@@ -40,6 +41,8 @@ respuestas.get("/informacion_pregunta/:idPregunta", function (request, response)
         };
 
         console.log(request.params.idPregunta);
+
+
         daoPreguntas.getPreguntaInformacion(request.params.idPregunta, function (error, resultado) {
 
             if (error) {
@@ -67,10 +70,13 @@ respuestas.get("/informacion_pregunta/:idPregunta", function (request, response)
                             titulo: resultado[0].titulo,
                             cuerpo: resultado[0].cuerpo,
                             fecha: resultado[0].fecha,
+                            visitas: resultado[0].visitas+1,
                             nombre: resultado[0].nombre,
                             imagen: resultado[0].imagen,
                             etiqueta: etiqueta
                         }
+
+                        console.log(pregunta);
 
                         daoRespuestas.countRespuestas(pregunta.id_pregunta, function (e, r) {
                             if (error) {
@@ -102,8 +108,16 @@ respuestas.get("/informacion_pregunta/:idPregunta", function (request, response)
                                 })
 
                                 console.log(respuesta);
-                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
 
+                                daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(e,resultado){
+                                    if (error) {
+                                        next(error);
+                                    } else {
+                                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
+                                    }
+                                     
+                                })
+                               
                             }
 
                         })
@@ -147,6 +161,41 @@ respuestas.post("/responderPregunta", function (request, response) {
             }
         });
 
+    }
+});
+
+/*
+****************************************************************************************************************************************************************
+                VOTAR PREGUNTA
+****************************************************************************************************************************************************************                                                                   
+*/
+
+respuestas.post("/votar",function(request,response){
+
+    if (request.session.usuario == undefined) {
+        response.redirect("/login/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+        var voto; var reputacion;
+        if(document.getElementById("condiciones")){
+            console.log("ok");
+            voto=1;
+            reputacion=10;
+        }else if(document.getElementById("privacidad")){
+            console.log("la cagaste vurlankaste");
+            voto=-1;
+            reputacion=-2;
+        }else{
+           console.log("nothing de nothing");
+        }
+
+        daoPreguntas.actualizarVotos(request.body.id,voto, function(error,resultado){
+            if (error) {
+                next(error)
+            } else {
+                response.redirect("/respuestas/informacion_pregunta/:"+request.body.id);
+            }
+        })
     }
 });
 
