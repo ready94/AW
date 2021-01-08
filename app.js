@@ -123,7 +123,8 @@ function middlewareServerError(error,request,response,next){
     response.render("error500",{mensaje:error.message,pila:error.stack});
 }
 
-
+app.use(middlewareNotFound);
+app.use(middlewareServerError);
 /* No sabemos como funciona esto hulio
 app.get("/reset", function(request, response) {
     response.status(200);

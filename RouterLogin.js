@@ -136,11 +136,10 @@ login.post("/crearCuenta", function (request, response) { // peticion a la view 
         icon = request.filter.path;
     }
 
-
     if (validarPass(password, password2)) {
         //Expresion regular para validar contraseña
-        //primer caracter una letra
-        var passw = /^[A-Za-z]\w{3,16}$/;
+        //Tiene que contener al menos un dígito, una mayúscula y una minúscula
+        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
         if (password.match(passw)) {
 
