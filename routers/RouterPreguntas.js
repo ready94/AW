@@ -44,21 +44,23 @@ preguntas.get("/preguntas.html", function (request, response) {
 
         //----------- contador
         var contador;
-        daoPreguntas.getPreguntas(function (error, resultado) {
+        daoPreguntas.getPreguntas(function (error, resultado, next) {
 
             if (error) {
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                next(error);
+                /*response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");*/
             } else {
 
                 var pregunta = [];
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul) {
+                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
-                            response.status(500);
-                            console.log("ERROR EN LA BASE DE DATOS");
+                            next(err);
+                            /*response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");*/
                         } else {
 
                             console.log(p.id_pregunta);
@@ -88,10 +90,11 @@ preguntas.get("/preguntas.html", function (request, response) {
                     })
                 })
 
-                daoPreguntas.count(function (e, res) {
+                daoPreguntas.count(function (e, res, next) {
                     if (error) {
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
+                        /*response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");*/
+                        next(err);
                     } else {
 
                         contador = res[0].Total;
@@ -160,19 +163,21 @@ preguntas.post("/crearPregunta", function (request, response) {
         console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
         daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
 
-        function cb_insertPregunta(err, resultado) {
+        function cb_insertPregunta(err, resultado, next) {
             if (err) {
-                response.status(500);
-                console.log("ERROR BBDD" + err);
+                /*response.status(500);
+                console.log("ERROR BBDD" + err);*/
+                next(err);
             } else if (resultado.length != 0) {
                 if (aux.length > 0) {
 
                     daoEtiquetas.getUltimoID(cb_getUltimoID);
 
-                    function cb_getUltimoID(err, res) {
+                    function cb_getUltimoID(err, res, next) {
                         if (err) {
-                            response.status(500);
-                            console.log("ERROR BBDD" + err);
+                            /*response.status(500);
+                            console.log("ERROR BBDD" + err);*/
+                            next(err);
                         } else if (res.length != 0) {
 
                             var id = res[0].id_pregunta;
@@ -180,10 +185,11 @@ preguntas.post("/crearPregunta", function (request, response) {
                             for (var i = 0; i < aux.length; i++) {
                                 daoEtiquetas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
 
-                                function cb_insertEtiquetas(err, res2) {
+                                function cb_insertEtiquetas(err, res2, next) {
                                     if (err) {
-                                        response.status(500);
-                                        console.log("ERROR BBDD" + err); //comen
+                                        next(err);
+                                        /*response.status(500);
+                                        console.log("ERROR BBDD" + err); *///comen
                                     }
                                     /*else {
                                         response.status(200);
@@ -227,21 +233,23 @@ preguntas.get("/sin_responder.html", function (request, response) {
         };
 
         var contador;
-        daoPreguntas.getPreguntasSinResponder(function (error, resultado) {
+        daoPreguntas.getPreguntasSinResponder(function (error, resultado, next) {
 
             if (error) {
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                /*response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");*/
+                next(error);
             } else {
 
                 var pregunta = [];
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul) {
+                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
-                            response.status(500);
-                            console.log("ERROR EN LA BASE DE DATOS");
+                            /*response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");*/
+                            next(err);
                         } else {
 
                             //console.log(p.id_pregunta);
@@ -271,10 +279,11 @@ preguntas.get("/sin_responder.html", function (request, response) {
                     })
                 })
 
-                daoPreguntas.countSinResponder(function (e, res) {
+                daoPreguntas.countSinResponder(function (e, res, next) {
                     if (error) {
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
+                        /*response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");*/
+                        next(error);
                     } else {
 
                         contador = res[0].TotalSinResponder;
@@ -315,20 +324,22 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
         console.log(request.params.Etiqueta);
 
         var contador;
-        daoPreguntas.getPreguntasByEtiqueta(request.params.Etiqueta, function (error, resultado) {
+        daoPreguntas.getPreguntasByEtiqueta(request.params.Etiqueta, function (error, resultado, next) {
             if (error) {
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                /*response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");*/
+                next(error);
             } else {
 
                 var pregunta = [];
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul) {
+                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
-                            response.status(500);
-                            console.log("ERROR EN LA BASE DE DATOS");
+                            /*response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");*/
+                            next(err);
                         } else {
 
                             //console.log(p.id_pregunta);
@@ -358,10 +369,11 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
                     })
                 })
 
-                daoPreguntas.countEtiquetas(request.params.Etiqueta, function (e, res) {
+                daoPreguntas.countEtiquetas(request.params.Etiqueta, function (e, res, next) {
                     if (error) {
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
+                       /* response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");*/
+                        next(error);
                     } else {
                         //console.log(res);
                         contador = res[0].TotalEtiquetas;
@@ -402,22 +414,24 @@ preguntas.post("/buscarTexto", function (request, response) {
         //----------- contador
 
         var contador;
-        daoPreguntas.getPreguntasPorTexto(texto, function (error, resultado) {
+        daoPreguntas.getPreguntasPorTexto(texto, function (error, resultado, next) {
 
             if (error) {
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                /*response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");*/
+                next(error);
             } else {
 
                 var pregunta = [];
 
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul) {
+                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
-                            response.status(500);
-                            console.log("ERROR EN LA BASE DE DATOS");
+                            /*response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS");*/
+                            next(err);
                         } else {
 
                             console.log(p.id_pregunta);
@@ -447,10 +461,11 @@ preguntas.post("/buscarTexto", function (request, response) {
                     })
                 })
 
-                daoPreguntas.countTexto(texto, function (e, res) {
+                daoPreguntas.countTexto(texto, function (e, res, next) {
                     if (error) {
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
+                        /*response.status(500);
+                        console.log("ERROR EN LA BASE DE DATOS");*/
+                        next(error);
                     } else {
 
                         contador = res[0].TotalTexto;
@@ -464,10 +479,5 @@ preguntas.post("/buscarTexto", function (request, response) {
         });
     }
 });
-
-
-
-
-
 
 module.exports = preguntas;

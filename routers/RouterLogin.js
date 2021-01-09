@@ -50,11 +50,12 @@ login.post("/login", function (request, response) { // peticion a la view login.
 
     daoUser.isUserCorrect(email, password, cd_isUserCorrect) // comprobacion si el user esta en la base de datos
 
-    function cd_isUserCorrect(err, resultado) {
+    function cd_isUserCorrect(err, resultado, next) {
         if (err) {
-            response.status(500);
+            /*response.status(500);
             console.log("ERROR CON LA BASE DE DATOS " + err);
-            response.render("login", { errorMsg: null })
+            response.render("login", { errorMsg: null })*/
+            next(err);
         } else if (resultado.length != 0) {
             console.log("USUARIO LOGUEADO CORRECTAMENTE");
             request.session.usuario = email; // usuario logueado actualmente
@@ -153,14 +154,15 @@ login.post("/crearCuenta", function (request, response) { // peticion a la view 
 
             daoUser.insertUser(usuario, cd_insertUser); //insertamos el usuario en la BBDD
 
-            function cd_insertUser(err, resultado) {
+            function cd_insertUser(err, resultado, next) {
                 if (err) {
-                    response.status(500);
+                    next(err);
+                    /*response.status(500);
                     console.log("ERROR BBDD" + err); //comen
                     if (err.sqlState == 2300) {
                         alert("Email ya existente");
                     };
-                    response.render("crear_cuenta", { errorMsg: null })
+                    response.render("crear_cuenta", { errorMsg: null })*/
                 } else if (resultado.length != 0) {
                     console.log("USUARIO CREADO CORRECTAMENTE"); //comen
                     response.redirect("/login/login.html"); // redirecion a la pagina login si no ha habido errores 
