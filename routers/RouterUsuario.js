@@ -25,7 +25,7 @@ var daoEtiquetas= new DAOEtiquetas(pool);
                PAGINA PRINCIPAL
 ****************************************************************************************************************************************************************                                                                   
 */
-user.get("/pag_principal.html", function (request, response, next) {
+user.get("/pag_principal.html", function (request, response) {
     console.log("pagina principal");
     if (request.session.usuario == undefined) {
         response.redirect("/login/login.html");
@@ -36,7 +36,7 @@ user.get("/pag_principal.html", function (request, response, next) {
 
         daoUser.getUser(response.locals.email, cb_getUser);
 
-        function cb_getUser(error, resultado) {
+        function cb_getUser(error, resultado,next) {
             if (error) {
                 next(error);
                 /*response.status(500);
@@ -80,9 +80,9 @@ user.get("/usuarios.html", function (request, response) {
             imagen: request.session.imagen
         };
 
-        daoUser.getAllUser(function(error,resultado){
+        daoUser.getAllUser(function(error,resultado,next){
             if (error) {
-                next();
+                next(error);
             } else {
 
                 var usuario=[];
@@ -154,11 +154,10 @@ user.get("/perfil_usu/:idUsuario", function (request, response) {
         console.log("id:", request.params.idUsuario);
         daoUser.getUserByID(request.params.idUsuario, cb_getPreguntas);
 
-        function cb_getPreguntas(err, resultado) {
+        function cb_getPreguntas(err, resultado,next) {
 
             if (err) {
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                next(err);
             } else {
 
                 var fecha = new Date(resultado[0].fecha_alta);

@@ -45,17 +45,15 @@ respuestas.get("/informacion_pregunta/:idPregunta", function (request, response)
         console.log(request.params.idPregunta);
 
 
-        daoPreguntas.getPreguntaInformacion(request.params.idPregunta, function (error, resultado) {
+        daoPreguntas.getPreguntaInformacion(request.params.idPregunta, function (error, resultado,next) {
 
             if (error) {
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                next(error);
             } else {
 
-                daoEtiquetas.getEtiquetas(request.params.idPregunta, function (error, res) {
+                daoEtiquetas.getEtiquetas(request.params.idPregunta, function (error, res,next) {
                     if (error) {
-                        response.status(500);
-                        console.log("ERROR EN LA BASE DE DATOS");
+                        next(error)
                     } else {
 
                         var etiqueta = [];
@@ -80,20 +78,18 @@ respuestas.get("/informacion_pregunta/:idPregunta", function (request, response)
 
                         console.log(pregunta);
 
-                        daoRespuestas.countRespuestas(pregunta.id_pregunta, function (e, r) {
+                        daoRespuestas.countRespuestas(pregunta.id_pregunta, function (e, r,next) {
                             if (error) {
-                                response.status(500);
-                                console.log("ERROR EN LA BASE DE DATOS");
+                                next(error)
                             } else {
                                 contador = r[0].TotalRespuestas;
                             }
                         })
 
-                        daoRespuestas.getRespuestaByPregunta(pregunta.id_pregunta, function (err, resul) {
+                        daoRespuestas.getRespuestaByPregunta(pregunta.id_pregunta, function (err, resul,next) {
 
                             if (error) {
-                                response.status(500);
-                                console.log("ERROR EN LA BASE DE DATOS");
+                                next(error);
                             } else {
 
                                 console.log(resul);
@@ -153,10 +149,9 @@ respuestas.post("/responderPregunta", function (request, response) {
         console.log(idPregunta);
 
         //console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
-        daoRespuestas.insertRespuesta(idPregunta, request.session.idUsuario, texto, fecha, function (error, resultado) {
+        daoRespuestas.insertRespuesta(idPregunta, request.session.idUsuario, texto, fecha, function (error, resultado,next) {
             if (error) {
-                response.status(500);
-                console.log("ERROR BBDD" + error);
+                next(error);
             } else {
                 // console.log(resultado);
                 response.redirect("/preguntas/preguntas.html");
@@ -181,12 +176,12 @@ respuestas.post("/votar",function(request,response){
         var voto; var reputacion;
         var id = request.body.id;
 
-        daoPreguntas.getVotos(id, function (error, resultado) {
+        daoPreguntas.getVotos(id, function (error, resultado,next) {
             if (error) {
-                //next(error);
+                next(error);
                 
-                response.status(500);
-                console.log("ERROR BBDD" + error);
+                
+                
             } else {
 
                 voto = resultado[0].TotalPuntos;
