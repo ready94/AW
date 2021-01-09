@@ -12,10 +12,10 @@ const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
 
-const DAOUsers = require("./DAOUsers");
-const DAOPreguntas = require("./DAOPreguntas");
-const DAOEtiquetas = require("./DAOEtiquetas");
-const DAORespuestas = require("./DAORespuestas");
+const DAOUsers = require("./models/DAOUsers");
+const DAOPreguntas = require("./models/DAOPreguntas");
+const DAOEtiquetas = require("./models/DAOEtiquetas");
+const DAORespuestas = require("./models/DAORespuestas");
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -33,10 +33,10 @@ const pool = mysql.createPool(config.mysqlConfig);
 
 const ficherosEstaticos = path.join(__dirname, "public");
 
-const loginRouter = require("./RouterLogin.js");
-const preguntasRouter = require("./RouterPreguntas.js");
-const respuestasRouter = require("./RouterRespuestas.js");
-const usuariosRouter = require("./RouterUsuario.js");
+const loginRouter = require("./routers/RouterLogin.js");
+const preguntasRouter = require("./routers/RouterPreguntas.js");
+const respuestasRouter = require("./routers/RouterRespuestas.js");
+const usuariosRouter = require("./routers/RouterUsuario.js");
 
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);

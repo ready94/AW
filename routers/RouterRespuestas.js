@@ -1,4 +1,4 @@
-var config = require("./config");
+var config = require(".././config");
 var mysql = require("mysql");
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -10,9 +10,11 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 
 var respuestas = express.Router();
 
-var DAOPreguntas = require("./DAOPreguntas");
-var DAOEtiquetas = require("./DAOEtiquetas");
-var DAORespuestas = require("./DAORespuestas");
+var DAOPreguntas = require(".././models/DAOPreguntas");
+var DAOEtiquetas = require(".././models/DAOEtiquetas");
+var DAORespuestas = require(".././models/DAORespuestas");
+const ControllerRespuestas = require("../controllers/ControllerRespuestas.js");
+
 const { nextTick } = require("process");
 
 var pool = mysql.createPool(config.mysqlConfig);

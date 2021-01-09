@@ -1,4 +1,4 @@
-var config = require("./config");
+var config = require(".././config");
 var mysql = require("mysql");
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -10,8 +10,9 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 
 var preguntas = express.Router();
 
-var DAOPreguntas = require("./DAOPreguntas");
-var DAOEtiquetas = require("./DAOEtiquetas");
+var DAOPreguntas = require(".././models/DAOPreguntas");
+var DAOEtiquetas = require(".././models/DAOEtiquetas");
+const ControllerPreguntas = require("../controllers/ControllerPreguntas.js");
 
 var pool = mysql.createPool(config.mysqlConfig);
 

@@ -85,11 +85,11 @@
                 Visita <%= pregunta.visitas%>
             </div>
 
-            <form action="/respuestas/votar" method="POST">
+            <form action="/respuestas/votar" method="POST" onsubmit="enviar.disabled = true;" >
                 <input type="hidden" name="id" value=<%= pregunta.id_pregunta %>>
                 <input type="checkbox" value="ok" name="voto" id="votacion"> OK
                 <input type="checkbox" value="ko" name="voto" id="votacion"/> no OK
-                <input type="submit" value="Enviar">
+                <input type="submit" name="enviar" value="Enviar">
             </form>
     
             <div class="votos">

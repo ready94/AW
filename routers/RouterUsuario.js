@@ -1,4 +1,4 @@
-var config = require("./config");
+var config = require(".././config");
 var mysql = require("mysql");
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -10,7 +10,9 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 
 var user = express.Router();
 
-var DAOUsers = require("./DAOUsers");
+var DAOUsers = require(".././models/DAOUsers");
+const ControllerUsuario = require("../controllers/ControllerUsuario.js");
+
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoUser = new DAOUsers(pool);
@@ -20,7 +22,7 @@ var daoUser = new DAOUsers(pool);
                PAGINA PRINCIPAL
 ****************************************************************************************************************************************************************                                                                   
 */
-user.get("/pag_principal.html", function (request, response) {
+user.get("/pag_principal.html", function (request, response, next) {
     console.log("pagina principal");
     if (request.session.usuario == undefined) {
         response.redirect("/login/login.html");
@@ -33,8 +35,9 @@ user.get("/pag_principal.html", function (request, response) {
 
         function cb_getUser(error, resultado) {
             if (error) {
-                response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");
+                next(error);
+                /*response.status(500);
+                console.log("ERROR EN LA BASE DE DATOS");*/
             } else {
 
                 var usuario = { // valores del usuario

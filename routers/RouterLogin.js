@@ -1,5 +1,5 @@
 
-var config = require("./config");
+var config = require(".././config");
 var mysql = require("mysql");
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -11,11 +11,11 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 var alert = require("alert");
 var login = express.Router();
 
-var DAOUsers = require("./DAOUsers");
+var DAOUsers = require(".././models/DAOUsers");
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoUser = new DAOUsers(pool);
-
+const ControllerLogin = require("../controllers/ControllerLogin.js");
 
 /*
 ****************************************************************************************************************************************************************
