@@ -2,7 +2,7 @@
 <html lang="es">
 
     <head>
-        <link rel="stylesheet" type="text/css" media="screen" href="../css/pag_principal.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/usuarios.css">
         <link rel="icon" type="image/png" href="../img/icon1.png">
         <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
         <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
@@ -75,19 +75,38 @@
                 <input id="boton_buscar" type="submit" value="Buscar">
                 <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
             </form>
+
+            <form action="/preguntas/buscarUsuario" method="POST">
+                <input id="boton_filtrar" type="submit" value="Buscar">
+                <input id="filtrar" type="text" name="search" placeholder="Filtrar por usuario">
+            </form>
+    
+            
+    
+            <div class="grid_container">
+                <% usuario.forEach(function(u){%>
+                    <div class="info_usu" >
+                        <div class="imagen_usu">
+                            <img  width="50" height="50" src=<%= u.imagen %>>
+                        </div>
+                        <a class="nombre_usu" href=<%="/usuarios/perfil_usu/"+ u.id_usuario %>>
+                        <%= u.nombre%>
+                        </a>
+                        <div>
+                            <%= u.reputacion%>
+                        </div>
+
+
+                    </div>
+
+                <% }); %>
+                
+            </div>
+
+
         </div>
 
-        <div>
-            buscar
-        </div>
-
-        <div>
-            mini buscar que lo llamaremos filtrar
-        </div>
-
-        <div>
-            tabla? con todos los usuarios
-        </div>
+        
 
     </body>
 

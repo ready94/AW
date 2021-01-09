@@ -83,11 +83,83 @@ class DAOEtiquetas {
                 });//END QUERY                
                 conexion.release();
             }
-        });//END GET CONEXION
-
-        
+        });//END GET CONEXION 
     }
 
+   /* etiquetaMaxRepe(idUser,callback){
+
+        this.pool.getConnection(function (error, conexion) {
+
+            if(error){
+                callback(error);
+            }else{
+                console.log("maxRepe");
+                console.log(idUser);
+                this.getEtiquetaUser(idUser,function(error,resultado){
+                    console.log("holi");
+                    if(error){
+                        callback(error);
+                    }else{
+        
+                        
+                })
+            }
+
+        });//END GET CONEXION
+        
+      
+    }*/
+
+
+    getEtiquetaUser(idUser,callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                
+                const sql= "SELECT etiqueta FROM etiquetas WHERE id_usuario=" + idUser + " ORDER BY etiqueta;";
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else {
+
+                        console.log("etiquetas:",resultado);
+                        var etiqueta=[];
+                        resultado.forEach((e)=>{
+                            etiqueta.push(e);
+                        })
+        
+                        var max=0;
+                        var cont=0;
+                        var aux=etiqueta[0];
+                        console.log(aux);
+                        for(var i=1; i< etiqueta.length;i++){
+                            if(etiqueta[i]==etiqueta[i--]){
+                                cont++;
+                                if(cont>max){
+                                    max=cont;  
+                                    aux=etiqueta[i];
+                                }
+                                
+                            }
+                            else{
+                                cont=1;
+                            }
+                        }
+        
+                        console.log("etiqueta",aux);
+                        callback(null,aux);
+                    }
+                
+                });//END QUERY                
+               
+            }
+        });//END GET CONEXION
+    }
+
+    
 }
 
 module.exports = DAOEtiquetas;
