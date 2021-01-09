@@ -11,9 +11,12 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 var user = express.Router();
 
 var DAOUsers = require("./DAOUsers");
+const DAOEtiquetas = require("./DAOEtiquetas");
+const { nextTick } = require("process");
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoUser = new DAOUsers(pool);
+var daoEtiquetas= new DAOEtiquetas(pool);
 
 /*
 ****************************************************************************************************************************************************************
@@ -68,14 +71,59 @@ user.get("/usuarios.html", function (request, response) {
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
-        var usuario = {
+        var perfil = {
             id: request.session.idUsuario,
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
 
-        response.status(200);
-        response.render("usuarios", { perfil: usuario });
+        daoUser.getAllUser(function(error,resultado){
+            if (error) {
+                next();
+            } else {
+
+                var usuario=[];
+
+                resultado.forEach((u) => {
+                    //console.log("foreach");
+                    daoEtiquetas.getEtiquetaUser(u.id_usuario, function (err, resul) {
+
+                        if (err) {
+                            response.status(500);
+                            console.log("ERROR EN LA BASE DE DATOS"+ err);
+                        } else {
+
+                            /*console.log(p.id_pregunta);
+                            var etiqueta = [];
+                            for (var x of resul) {
+                                etiqueta.push(x.etiqueta);
+                            }*/
+                            var aux = {
+                                id_usuario: u.id_usuario,
+                                nombre: u.nombre,
+                                imagen: u.imagen,
+                                reputacion:u.reputacion,
+                               etiqueta: resul
+                            }
+                            console.log(aux);
+                            usuario.push(aux);
+
+                            //console.log(pregunta);
+                        }
+
+                    })
+
+
+                })
+
+                
+                console.log(usuario);
+                response.render("usuarios", { perfil: perfil, usuario:usuario });
+            }
+        })
+
+        
+        
 
     }
 

@@ -125,6 +125,29 @@ class DAOUsers {
 
         } //END METODO
 
+        getAllUser(callback) {
+            this.pool.getConnection(function(err, conexion) {
+                if (err) {
+                    callback(err);
+                } else {
+                    // devuelve el usuario entero cuyo email es el pasado por parametro
+                    var sql = 'SELECT imagen,nombre,id_usuario,reputacion FROM usuario;'
+                    
+                    conexion.query(sql, function(err, resultado) {
+                        conexion.release();
+                        if (err) {
+                            callback(err);
+                        } else {
+                            //console.log("bbdd",resultado);
+                            callback(null, resultado);
+    
+                        }
+                    }); //END QUERY
+                    
+                }
+            }); //END GET CONEXION
+        }
+
 }
 
 module.exports = DAOUsers;
