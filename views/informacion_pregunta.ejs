@@ -86,10 +86,10 @@
             </div>
 
             <form action="/respuestas/votar" method="POST">
-                <input type="hidden" value=<%= pregunta.id_pregunta %>>
-                <input type="checkbox" value="condiciones" name="condiciones" id="condiciones" onclick="this.disabled=true"> OK
-                <input type="checkbox" value="privacidad" name="privacidad" id="privacidad"/> no OK
-                <input type="submit" value="Enviar" onclick="this.disabled=true">
+                <input type="hidden" name="id" value=<%= pregunta.id_pregunta %>>
+                <input type="checkbox" value="ok" name="voto" id="votacion"> OK
+                <input type="checkbox" value="ko" name="voto" id="votacion"/> no OK
+                <input type="submit" value="Enviar">
             </form>
     
             <div class="votos">

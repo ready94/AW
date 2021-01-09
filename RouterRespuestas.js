@@ -177,7 +177,45 @@ respuestas.post("/votar",function(request,response){
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         var voto; var reputacion;
-        if(document.getElementById("condiciones")){
+        var id = request.body.id;
+
+        daoPreguntas.getVotos(id, function (error, resultado) {
+            if (error) {
+                //next(error);
+                
+                response.status(500);
+                console.log("ERROR BBDD" + error);
+            } else {
+
+                voto = resultado[0].TotalPuntos;
+
+                switch (request.body.voto) {
+                    case "ok":
+                        voto++;
+                        reputacion = 10;
+                        break;
+                    case "ko":
+                        voto--;
+                        reputacion = -2;
+                        break;
+                }
+
+                daoPreguntas.actualizarVotos(id, voto, function (error, resultado) {
+                    if (error) {
+                        //next(error);
+                        response.status(500);
+                        console.log("ERROR BBDD" + error);
+                    } else {
+                        response.redirect("/preguntas/preguntas.html");
+                        //response.redirect("/respuestas/informacion_pregunta/:"+id);
+                    }
+                })
+            }
+        })
+
+        
+
+        /*if(document.getElementById("condiciones")){
             console.log("ok");
             voto=1;
             reputacion=10;
@@ -187,15 +225,9 @@ respuestas.post("/votar",function(request,response){
             reputacion=-2;
         }else{
            console.log("nothing de nothing");
-        }
+        }*/
 
-        daoPreguntas.actualizarVotos(request.body.id,voto, function(error,resultado){
-            if (error) {
-                next(error)
-            } else {
-                response.redirect("/respuestas/informacion_pregunta/:"+request.body.id);
-            }
-        })
+        
     }
 });
 
