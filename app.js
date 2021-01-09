@@ -14,7 +14,7 @@ const sessionStore = new MySQLStore(config.mysqlConfig);
 
 const DAOUsers = require("./models/DAOUsers");
 const DAOPreguntas = require("./models/DAOPreguntas");
-const DAOEtiquetas = require("./models/DAOEtiquetas");
+//const DAOEtiquetas = require("./models/DAOEtiquetas");
 const DAORespuestas = require("./models/DAORespuestas");
 
 // Creación de la sesion
@@ -33,14 +33,14 @@ const pool = mysql.createPool(config.mysqlConfig);
 
 const ficherosEstaticos = path.join(__dirname, "public");
 
-const loginRouter = require("./routers/RouterLogin.js");
+//const loginRouter = require("./routers/RouterLogin.js");
 const preguntasRouter = require("./routers/RouterPreguntas.js");
 const respuestasRouter = require("./routers/RouterRespuestas.js");
-const usuariosRouter = require("./routers/RouterUsuario.js");
+const usuariosRouter = require("./routers/RouterUsers.js");
 
 let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
-let daoEtiquetas = new DAOEtiquetas(pool);
+//let daoEtiquetas = new DAOEtiquetas(pool);
 let daoRespuestas= new DAORespuestas(pool);
 let moment = require("moment");
 const { response } = require("express");
@@ -75,7 +75,7 @@ app.listen(config.port, function (err) {
 ****************************************************************************************************************************************************************                                                                   
 */
 
-app.use("/login", loginRouter);
+//app.use("/login", loginRouter);
 
 /*
 ****************************************************************************************************************************************************************

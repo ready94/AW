@@ -13,12 +13,12 @@ var user = express.Router();
 var DAOUsers = require("../models/DAOUsers");
 const ControllerUsuario = require("../controllers/ControllerUsers.js");
 
-const DAOEtiquetas = require(".././models/DAOEtiquetas");
+//const DAOEtiquetas = require(".././models/DAOEtiquetas");
 const { nextTick } = require("process");
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoUser = new DAOUsers(pool);
-var daoEtiquetas= new DAOEtiquetas(pool);
+//var daoEtiquetas= new DAOEtiquetas(pool);
 
 
 
@@ -36,19 +36,19 @@ function comprobarLogin(request, response, next) {
         next();
     } else {
         console.log("hay usu");
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
     }
 }
 
 
-login.get("/login.html", function (request, response) {
+user.get("/login.html", function (request, response) {
 
     response.status(200);
     response.render("login", { errorMsg: null }); // renderiza la pagina login.ejs
 
 });
 
-login.post("/login", function (request, response) { // peticion a la view login.ejs
+user.post("/login", function (request, response) { // peticion a la view login.ejs
 
     var email = request.body.mail;
     var password = request.body.pass;
@@ -118,14 +118,14 @@ function validarPass(p1, p2) {
 
 }
 
-login.get("/crear_cuenta.html", function (request, response) {
+user.get("/crear_cuenta.html", function (request, response) {
 
     response.status(200);
     response.render("crear_cuenta", { errorMsg: null }); // renderiza la pagina login.ejs
 
 });
 
-login.post("/crearCuenta", function (request, response) { // peticion a la view login.ejs
+user.post("/crearCuenta", function (request, response) { // peticion a la view login.ejs
 
     var email = request.body.mail;
     var password = request.body.pass;
@@ -170,10 +170,10 @@ login.post("/crearCuenta", function (request, response) { // peticion a la view 
                     response.render("crear_cuenta", { errorMsg: null })*/
                 } else if (resultado.length != 0) {
                     console.log("USUARIO CREADO CORRECTAMENTE"); //comen
-                    response.redirect("/login/login.html"); // redirecion a la pagina login si no ha habido errores 
+                    response.redirect("/usuarios/login.html"); // redirecion a la pagina login si no ha habido errores 
                 } else {
                     console.log("ERROR AL CREAR EL USUARIO "); //comen
-                    response.redirect("/login/crear_cuenta.html");
+                    response.redirect("/usuarios/crear_cuenta.html");
                 }
             }
         } else {
@@ -189,10 +189,10 @@ login.post("/crearCuenta", function (request, response) { // peticion a la view 
 ****************************************************************************************************************************************************************                                                                   
 */
 
-login.get("/logout", function (request, response) { // desconecta el usuario logueado actualmente
+user.get("/logout", function (request, response) { // desconecta el usuario logueado actualmente
     request.session.destroy();
     console.log("Usuario deslogueado correctamente")
-    response.redirect("/login/login.html");
+    response.redirect("/usuarios/login.html");
 });
 
 
@@ -205,7 +205,7 @@ login.get("/logout", function (request, response) { // desconecta el usuario log
 user.get("/pag_principal.html", function (request, response) {
     console.log("pagina principal");
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -247,7 +247,7 @@ user.get("/pag_principal.html", function (request, response) {
 user.get("/usuarios.html", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -318,7 +318,7 @@ user.get("/usuarios.html", function (request, response) {
 user.get("/perfil_usu/:idUsuario", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 

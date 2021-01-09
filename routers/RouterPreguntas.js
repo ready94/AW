@@ -11,13 +11,13 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 var preguntas = express.Router();
 
 var DAOPreguntas = require(".././models/DAOPreguntas");
-var DAOEtiquetas = require(".././models/DAOEtiquetas");
+//var DAOEtiquetas = require(".././models/DAOEtiquetas");
 const ControllerPreguntas = require("../controllers/ControllerPreguntas.js");
 
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoPreguntas = new DAOPreguntas(pool);
-var daoEtiquetas = new DAOEtiquetas(pool);
+//var daoEtiquetas = new DAOEtiquetas(pool);
 
 function text_truncate(str, length, ending) {
     if (ending == null) {
@@ -32,7 +32,7 @@ function text_truncate(str, length, ending) {
 
 preguntas.get("/preguntas.html", function (request, response) {
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -55,7 +55,7 @@ preguntas.get("/preguntas.html", function (request, response) {
                 var pregunta = [];
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
+                    daoPreguntas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
                             next(err);
@@ -118,7 +118,7 @@ preguntas.get("/preguntas.html", function (request, response) {
 preguntas.get("/formular_pregunta.html", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -140,7 +140,7 @@ preguntas.get("/formular_pregunta.html", function (request, response) {
 preguntas.post("/crearPregunta", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         var titulo = request.body.titulo;
@@ -171,7 +171,7 @@ preguntas.post("/crearPregunta", function (request, response) {
             } else if (resultado.length != 0) {
                 if (aux.length > 0) {
 
-                    daoEtiquetas.getUltimoID(cb_getUltimoID);
+                    daoPreguntas.getUltimoID(cb_getUltimoID);
 
                     function cb_getUltimoID(err, res, next) {
                         if (err) {
@@ -183,7 +183,7 @@ preguntas.post("/crearPregunta", function (request, response) {
                             var id = res[0].id_pregunta;
 
                             for (var i = 0; i < aux.length; i++) {
-                                daoEtiquetas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
+                                daoPreguntas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
 
                                 function cb_insertEtiquetas(err, res2, next) {
                                     if (err) {
@@ -222,7 +222,7 @@ preguntas.post("/crearPregunta", function (request, response) {
 preguntas.get("/sin_responder.html", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -244,7 +244,7 @@ preguntas.get("/sin_responder.html", function (request, response) {
                 var pregunta = [];
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
+                    daoPreguntas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
                             /*response.status(500);
@@ -310,7 +310,7 @@ preguntas.get("/sin_responder.html", function (request, response) {
 preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -334,7 +334,7 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
                 var pregunta = [];
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
+                    daoPreguntas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
                             /*response.status(500);
@@ -397,7 +397,7 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", function (request, response) {
 preguntas.post("/buscarTexto", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -426,7 +426,7 @@ preguntas.post("/buscarTexto", function (request, response) {
 
 
                 resultado.forEach((p) => {
-                    daoEtiquetas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
+                    daoPreguntas.getEtiquetas(p.id_pregunta, function (err, resul, next) {
 
                         if (err) {
                             /*response.status(500);

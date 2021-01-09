@@ -11,7 +11,7 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 var respuestas = express.Router();
 
 var DAOPreguntas = require(".././models/DAOPreguntas");
-var DAOEtiquetas = require(".././models/DAOEtiquetas");
+//var DAOEtiquetas = require(".././models/DAOEtiquetas");
 var DAORespuestas = require(".././models/DAORespuestas");
 const ControllerRespuestas = require("../controllers/ControllerRespuestas.js");
 
@@ -20,7 +20,7 @@ const { nextTick } = require("process");
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoPreguntas = new DAOPreguntas(pool);
-var daoEtiquetas = new DAOEtiquetas(pool);
+//var daoEtiquetas = new DAOEtiquetas(pool);
 var daoRespuestas = new DAORespuestas(pool);
 
 /*
@@ -32,7 +32,7 @@ var daoRespuestas = new DAORespuestas(pool);
 respuestas.get("/informacion_pregunta/:idPregunta", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -51,7 +51,7 @@ respuestas.get("/informacion_pregunta/:idPregunta", function (request, response)
                 next(error);
             } else {
 
-                daoEtiquetas.getEtiquetas(request.params.idPregunta, function (error, res,next) {
+                daoPreguntas.getEtiquetas(request.params.idPregunta, function (error, res,next) {
                     if (error) {
                         next(error)
                     } else {
@@ -137,7 +137,7 @@ respuestas.get("/informacion_pregunta/:idPregunta", function (request, response)
 respuestas.post("/responderPregunta", function (request, response) {
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
@@ -170,7 +170,7 @@ respuestas.post("/responderPregunta", function (request, response) {
 respuestas.post("/votar",function(request,response){
 
     if (request.session.usuario == undefined) {
-        response.redirect("/login/login.html");
+        response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         var voto; var reputacion;
