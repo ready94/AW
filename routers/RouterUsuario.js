@@ -10,15 +10,11 @@ var sessionStore = new MySQLStore(config.mysqlConfig);
 
 var user = express.Router();
 
-<<<<<<< HEAD:routers/RouterUsuario.js
 var DAOUsers = require(".././models/DAOUsers");
 const ControllerUsuario = require("../controllers/ControllerUsuario.js");
 
-=======
-var DAOUsers = require("./DAOUsers");
-const DAOEtiquetas = require("./DAOEtiquetas");
+const DAOEtiquetas = require(".././models/DAOEtiquetas");
 const { nextTick } = require("process");
->>>>>>> cd0440382384c5f029dc246c7e584cd0bdc0a688:RouterUsuario.js
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoUser = new DAOUsers(pool);
