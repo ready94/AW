@@ -319,14 +319,14 @@ class DAOPreguntas{
         });//END GET CONEXION
     }
 
-    getVotos(id, callback){
+    getVotosAndIdUser(id, callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err) {
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = "SELECT TotalPuntos FROM preguntas WHERE id_pregunta = ?;";
+                var sql = "SELECT TotalPuntos, id_usuario FROM preguntas WHERE id_pregunta = ?;";
                 var para = [id];
                 conexion.query(sql, para, function (err, resultado) {
                     conexion.release();

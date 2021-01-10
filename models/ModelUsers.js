@@ -101,29 +101,77 @@ class DAOUsers {
 
     insertUser(user, callback) {
 
-            this.pool.getConnection(function(err, conexion) {
+        this.pool.getConnection(function(err, conexion) {
 
-                if (err) {
-                    callback(err);
-                } else {
-                    // inserta un nuevo usuario en la base de datos con los datos del objeto "user"       
-                    var sql = 'INSERT INTO usuario (nombre, email, password, imagen, fecha_alta, num_preguntas, num_respuestas, reputacion, medallas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);';
-                    var para = [user.nombre, user.email, user.password, user.imagen, user.fecha_alta, 0, 0, 0, 0];
+            if (err) {
+                callback(err);
+            } else {
+                // inserta un nuevo usuario en la base de datos con los datos del objeto "user"       
+                var sql = 'INSERT INTO usuario (nombre, email, password, imagen, fecha_alta, num_preguntas, num_respuestas, reputacion, medallas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);';
+                var para = [user.nombre, user.email, user.password, user.imagen, user.fecha_alta, 0, 0, 0, 0];
 
-                    conexion.query(sql, para, function(err, resultado) {
-                        conexion.release();
-                        if (err) {
-                            callback(err);
-                        } else {
-                            console.log(resultado)
-                            callback(null, resultado);
-                        }
-                    }); //END QUERY                
-                    
-                }
-            }); //END GET CONEXION
+                conexion.query(sql, para, function(err, resultado) {
+                    conexion.release();
+                    if (err) {
+                        callback(err);
+                    } else {
+                        console.log(resultado)
+                        callback(null, resultado);
+                    }
+                }); //END QUERY                
+                
+            }
+        }); //END GET CONEXION
 
-        } //END METODO
+    } //END METODO
+
+    getReputacion(id, callback) {
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err) {
+                callback(err);
+            } else {
+                // devuelve el usuario entero cuyo email es el pasado por parametro
+                var sql = "SELECT reputacion FROM usuario WHERE id_usuario = ?;";
+                var para = [id];
+                conexion.query(sql, para, function (err, resultado) {
+                    conexion.release();
+                    if (err) {
+                        callback(err);
+                    } else {
+                        console.log(resultado);
+                        callback(null, resultado);
+
+                    }
+                }); //END QUERY
+
+            }
+        }); //END GET CONEXION
+    }
+
+    actualizarReputacion(id, reputacion, callback) {
+        console.log("id de usuario: " + id);
+        console.log("reputacion: " + reputacion);
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                var sql = "UPDATE usuario SET reputacion=" + reputacion + " WHERE id_usuario=" + id + ";";
+
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else {
+                        callback(null, resultado);
+                    }
+
+                });//END QUERY                
+
+            }
+        });//END GET CONEXION
+    }
 
     /*
     ****************************************************************************************************************************************************************

@@ -15,6 +15,7 @@ const path = require("path");
 
 var modelRespuestas = require("../models/ModelRespuestas");
 var modelPreguntas = require("../models/ModelPreguntas");
+var modelUsuarios = require("../models/ModelUsers");
 //const ControllerUsuario = require("../controllers/ControllerUsers.js");
 
 
@@ -23,6 +24,7 @@ var pool = mysql.createPool(config.mysqlConfig);
 
 var daoRespuestas = new modelRespuestas(pool);
 var daoPreguntas = new modelPreguntas(pool);
+var daoUsuarios = new modelUsuarios(pool);
 
 /*
 ****************************************************************************************************************************************************************
@@ -173,37 +175,55 @@ function votar(request,response,next){
     } else {
         var voto; var reputacion;
         var id = request.body.id;
+        var idUser;
 
-        daoPreguntas.getVotos(id, function (error, resultado) {
-            if (error) {
+        daoPreguntas.getVotosAndIdUser(id, function (error, resultado) {
+            if (error) 
                 next(error);
-                
-                
-                
-            } else {
+             else {
 
                 voto = resultado[0].TotalPuntos;
+                idUser = resultado[0].id_usuario;
 
-                switch (request.body.voto) {
-                    case "ok":
-                        voto++;
-                        reputacion = 10;
-                        break;
-                    case "ko":
-                        voto--;
-                        reputacion = -2;
-                        break;
-                }
-
-                daoPreguntas.actualizarVotos(id, voto, function (error, resultado) {
-                    if (error) {
+                daoUsuarios.getReputacion(idUser, function(error, resultado){
+                    if(error)
                         next(error);
-                        
-                    } else {
-                        response.redirect("/preguntas/preguntas.html");
-                        //response.redirect("/respuestas/informacion_pregunta/:"+id);
+                    else{
+                        reputacion = resultado[0].reputacion;
+                        switch (request.body.voto) {
+                            case "ok":
+                                voto++;
+                                reputacion = reputacion + 10;
+                                break;
+                            case "ko":
+                                voto--;
+                                reputacion = reputacion - 2;
+                                if (reputacion < 1) {
+                                    reputacion = 1;
+                                }
+                                break;
+                        }
+
+                        daoPreguntas.actualizarVotos(id, voto, function (error, resultado) {
+                            if (error)
+                                next(error);
+                            else {
+                                console.log("reputacion antes de enviar: " + reputacion);
+                                daoUsuarios.actualizarReputacion(idUser, reputacion, function (error, resultado) {
+                                    if (error)
+                                        next(error);
+                                    else
+                                        response.redirect("/preguntas/preguntas.html");
+                                });
+                            }
+                            //response.redirect("/preguntas/preguntas.html");
+                            //response.redirect("/respuestas/informacion_pregunta/:"+id);
+                        });
                     }
-                })
+                });
+                
+                
+                
             }
         })
     }
