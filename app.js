@@ -11,11 +11,11 @@ const expressValidator = require("express-validator");
 const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
-
+/*
 const DAOUsers = require("./models/DAOUsers");
 const DAOPreguntas = require("./models/DAOPreguntas");
 //const DAOEtiquetas = require("./models/DAOEtiquetas");
-const DAORespuestas = require("./models/DAORespuestas");
+const DAORespuestas = require("./models/DAORespuestas");*/
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -38,10 +38,10 @@ const preguntasRouter = require("./routers/RouterPreguntas.js");
 const respuestasRouter = require("./routers/RouterRespuestas.js");
 const usuariosRouter = require("./routers/RouterUsers.js");
 
-let daoUser = new DAOUsers(pool);
+/*let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
 //let daoEtiquetas = new DAOEtiquetas(pool);
-let daoRespuestas= new DAORespuestas(pool);
+let daoRespuestas= new DAORespuestas(pool);*/
 let moment = require("moment");
 const { response } = require("express");
 
