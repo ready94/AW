@@ -66,12 +66,16 @@ function informacion_pregunta(request,response,next){
                         }
 
                         console.log(resultado);
+
+                        var fecha = new Date(resultado[0].fecha);
+                        var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
                         var pregunta = {
                             id_pregunta: resultado[0].id_pregunta,
                             id_usuario: resultado[0].id_usuario,
                             titulo: resultado[0].titulo,
                             cuerpo: resultado[0].cuerpo,
-                            fecha: resultado[0].fecha,
+                            fecha: fechaForm,
                             visitas: resultado[0].visitas+1,
                             nombre: resultado[0].nombre,
                             imagen: resultado[0].imagen,
@@ -98,9 +102,12 @@ function informacion_pregunta(request,response,next){
                                 var respuesta = [];
                                 resul.forEach((r) => {
 
+                                    var fecha = new Date(r.fecha_respuesta);
+                                    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
                                     var aux = {
                                         texto: r.texto,
-                                        fecha_respuesta: r.fecha_respuesta,
+                                        fecha_respuesta: fechaForm,
                                         nombre: r.nombre,
                                         imagen: r.imagen
                                     }
@@ -136,7 +143,7 @@ function informacion_pregunta(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
-function responder_pregunta(resquest,response,next){
+function responder_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
