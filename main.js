@@ -12,10 +12,10 @@ const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
 /*
-const DAOUsers = require("./DAOUsers");
-const DAOPreguntas = require("./DAOPreguntas");
-const DAOEtiquetas = require("./DAOEtiquetas");
-const DAORespuestas = require("./DAORespuestas");*/
+const DAOUsers = require("./models/DAOUsers");
+const DAOPreguntas = require("./models/DAOPreguntas");
+//const DAOEtiquetas = require("./models/DAOEtiquetas");
+const DAORespuestas = require("./models/DAORespuestas");*/
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -33,14 +33,14 @@ const pool = mysql.createPool(config.mysqlConfig);
 
 const ficherosEstaticos = path.join(__dirname, "public");
 
-//const loginRouter = require("./RouterLogin.js");
+//const loginRouter = require("./routers/RouterLogin.js");
 const preguntasRouter = require("./routers/RouterPreguntas.js");
 const respuestasRouter = require("./routers/RouterRespuestas.js");
 const usuariosRouter = require("./routers/RouterUsers.js");
 
 /*let daoUser = new DAOUsers(pool);
 let daoPreguntas = new DAOPreguntas(pool);
-let daoEtiquetas = new DAOEtiquetas(pool);
+//let daoEtiquetas = new DAOEtiquetas(pool);
 let daoRespuestas= new DAORespuestas(pool);*/
 let moment = require("moment");
 const { response } = require("express");
@@ -123,7 +123,8 @@ function middlewareServerError(error,request,response,next){
     response.render("error500",{mensaje:error.message,pila:error.stack});
 }
 
-
+app.use(middlewareNotFound);
+app.use(middlewareServerError);
 /* No sabemos como funciona esto hulio
 app.get("/reset", function(request, response) {
     response.status(200);

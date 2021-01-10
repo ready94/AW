@@ -83,7 +83,7 @@
 
             <div id="barra_info">
                 <div id="contador">
-                    Preguntas totales <%= contador %>
+                    Preguntas totales <%= contador%>
                 </div>
                 <a class="button" href="/preguntas/formular_pregunta.html" title="formular">
                     <b>Formular una pregunta</b>
@@ -97,13 +97,16 @@
                     <div class="info_pregunta" > 
                         <a class="titulo_pregunta" href=<%="/respuestas/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
                         
-                        <div class="cuerpo"><%= p.cuerpo%></div>
+                        <div class="cuerpo"><%=p.cuerpo %></div>
                         
                         <div class="etiqueta_preguntas">
-                            <%for(var x of p.etiqueta){ %> 
-                            <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x %>>
-                                <%= x %> 
-                            </a>
+                            
+                            <%for(var x of etiqueta){ %> 
+                                <% if (p.id_pregunta==x.id_pregunta){ %>
+                                    <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x.etiqueta %>>
+                                        <%= x.etiqueta %> 
+                                    </a>
+                                <% } %>
                             <% };%>
                         
                         </div>

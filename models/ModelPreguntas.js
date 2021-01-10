@@ -24,7 +24,7 @@ class DAOPreguntas{
                     if (err)
                         callback(err);
                     else{
-                        console.log(resultado);
+                        //console.log(resultado);
                         callback(null, resultado);
 
                     }
@@ -104,7 +104,7 @@ class DAOPreguntas{
                     if (err)
                         callback(err);
                     else{
-                        console.log(resultado);
+                        //console.log(resultado);
                         callback(null, resultado);
 
                     }
@@ -211,7 +211,7 @@ class DAOPreguntas{
                     if (err)
                         callback(err);
                     else{
-                        console.log(resultado[0]); //comen
+                        //console.log(resultado[0]); //comen
                         callback(null, resultado);
                     }
                         
@@ -392,6 +392,37 @@ class DAOPreguntas{
         }
     });//END GET CONEXION
     }
+
+    getAllEtiquetas(callback) {
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            
+                var sql = "SELECT etiqueta, id_pregunta FROM etiquetas";   
+                
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        let etiqueta=[];
+
+                        resultado.forEach(element => etiqueta.push({
+                            id_pregunta: element.id_pregunta,
+                            etiqueta: element.etiqueta
+                        }));
+
+                        callback(null, etiqueta);
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
+    }
+
 
 insertEtiqueta(etiqueta, id_pregunta, callback) {
     this.pool.getConnection(function (err, conexion) {

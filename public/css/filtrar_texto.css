@@ -191,7 +191,7 @@ nav a:hover{
 
 .info_pregunta{
     float: left;
-    width: 90%;
+    width: 70%;
     cursor: auto;
 }
 
@@ -246,7 +246,7 @@ nav a:hover{
 .info_usu{
     text-align: center;
     float: left;
-    width: 50%;
+    width: 30%;
     cursor: auto;
     border-left:2px solid rgb(104, 104, 104);
 }

@@ -77,7 +77,7 @@
         <div id="fondo">
 
             <div>
-                <h1>Resultados de la etiqueta [<%= etiqueta%>]</h1>
+                <h1>Resultados de la etiqueta [<%= filtro%>]</h1>
             </div>
     
             <div id="barra_info">
@@ -98,10 +98,12 @@
                         <div class="cuerpo"><%= p.cuerpo%></div>
                         
                         <div class="etiqueta_preguntas">
-                            <%for(var x of p.etiqueta){ %> 
-                            <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x %>>
-                                <%= x %> 
-                            </a>
+                            <%for(var x of etiqueta){ %> 
+                                <% if (p.id_pregunta==x.id_pregunta){ %>
+                                    <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x.etiqueta %>>
+                                        <%= x.etiqueta %> 
+                                    </a>
+                                <% } %>
                             <% };%>
                            
                         </div>
