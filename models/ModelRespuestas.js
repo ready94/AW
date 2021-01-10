@@ -50,12 +50,23 @@ class DAORespuestas{
                             const sql2="UPDATE preguntas SET respuesta=TRUE WHERE id_pregunta=? ;";
                             var para2=[idPre];
                             conexion.query(sql2,para2, function (err, resultado) {
-                                conexion.release();
+                                
                                 if (err)
                                     callback(err);
                                 else{
-                                    //console.log("segundo update");
-                                    callback(null, resultado);
+                                    const sql3="UPDATE usuario SET num_respuestas=num_respuestas+1 WHERE id_usuario=?;";
+                                    var para3=[idUsu];
+                                    conexion.query(sql3,para3, function (err, resultado) {
+                                        conexion.release();
+                                        if(err){
+                                            callback(err);
+                                        }
+                                        else{
+                                            callback(null, resultado);
+                                        }
+                                    });
+
+                                    
                                 }
                             });//END QUERY   
 
