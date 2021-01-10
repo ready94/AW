@@ -180,17 +180,24 @@ class DAOPreguntas{
                 callback(err);
             else {
 
-                var sql = 'INSERT INTO preguntas (id_usuario, titulo, cuerpo, fecha) VALUES (?, ?, ?, ?);';
+                const sql = 'INSERT INTO preguntas (id_usuario, titulo, cuerpo, fecha) VALUES (?, ?, ?, ?);';
                
                 var para = [id_usuario, titulo, cuerpo, fecha];
 
                 conexion.query(sql, para, function (err, resultado) {
-                    conexion.release();
                     if (err)
                         callback(err);
                     else {
-                        //console.log(resultado)
-                        callback(null, resultado);
+                        const sql2= "UPDATE usuario SET num_preguntas=num_preguntas+1 WHERE id_usuario=?;"
+                        var para2=[id_usuario];
+                        conexion.query(sql2, para2, function (err, resultado) {
+                            conexion.release();
+                            if (err)
+                                callback(err);
+                            else {
+                                callback(null, resultado);
+                            }
+                        });
                     }
                 });//END QUERY                
                 
