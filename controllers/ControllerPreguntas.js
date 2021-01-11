@@ -467,11 +467,79 @@ function filtrar_texto(request,response,next){
     }
 }
 
+/*
+****************************************************************************************************************************************************************
+                VOTAR PREGUNTA
+****************************************************************************************************************************************************************                                                                   
+*/
+
+function votar_pregunta(request,response,next){
+    if (request.session.usuario == undefined) {
+        response.redirect("/usuarios/login.html");
+        alert("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+        var voto; var reputacion;
+        var id = request.body.id;
+        var idUser;
+
+        daoPreguntas.getVotosAndIdUser(id, function (error, resultado) {
+            if (error) 
+                next(error);
+             else {
+
+                voto = resultado[0].TotalPuntos;
+                idUser = resultado[0].id_usuario;
+
+                daoUsuarios.getReputacion(idUser, function(error, resultado){
+                    if(error)
+                        next(error);
+                    else{
+                        reputacion = resultado[0].reputacion;
+                        switch (request.body.voto) {
+                            case "ok":
+                                voto++;
+                                reputacion = reputacion + 10;
+                                break;
+                            case "ko":
+                                voto--;
+                                reputacion = reputacion - 2;
+                                if (reputacion < 1) {
+                                    reputacion = 1;
+                                }
+                                break;
+                        }
+
+                        daoPreguntas.actualizarVotos(id, voto, function (error, resultado) {
+                            if (error)
+                                next(error);
+                            else {
+                                console.log("reputacion antes de enviar: " + reputacion);
+                                daoUsuarios.actualizarReputacion(idUser, reputacion, function (error, resultado) {
+                                    if (error)
+                                        next(error);
+                                    else
+                                        response.redirect("/preguntas/preguntas.html");
+                                });
+                            }
+                            //response.redirect("/preguntas/preguntas.html");
+                            //response.redirect("/respuestas/informacion_pregunta/:"+id);
+                        });
+                    }
+                });
+                
+                
+                
+            }
+        })
+    }
+}
+
 module.exports={
     preguntas:preguntas,
     acceso_formular_pregunta: acceso_formular_pregunta,
     formular_pregunta:formular_pregunta,
     sin_responder:sin_responder,
     filtrar_etiqueta:filtrar_etiqueta,
-    filtrar_texto:filtrar_texto
+    filtrar_texto:filtrar_texto,
+    votar_pregunta:votar_pregunta
 }

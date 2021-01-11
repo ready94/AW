@@ -49,4 +49,12 @@ preguntas.get("/filtrar_etiqueta/:Etiqueta", ControllerPreguntas.filtrar_etiquet
 
 preguntas.post("/buscarTexto", ControllerPreguntas.filtrar_texto);
 
+/*
+****************************************************************************************************************************************************************
+                VOTAR RESPUESTAS
+****************************************************************************************************************************************************************                                                                   
+*/
+
+preguntas.post("/votarPregunta",ControllerPreguntas.votar_pregunta);
+
 module.exports = preguntas;

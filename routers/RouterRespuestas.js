@@ -24,10 +24,10 @@ respuestas.post("/responderPregunta", ControllerRespuestas.responder_pregunta);
 
 /*
 ****************************************************************************************************************************************************************
-                VOTAR PREGUNTA
+                VOTAR RESPUESTAS
 ****************************************************************************************************************************************************************                                                                   
 */
 
-respuestas.post("/votar",ControllerRespuestas.votar);
+respuestas.post("/votarRespuesta",ControllerRespuestas.votar_respuesta);
 
 module.exports = respuestas;

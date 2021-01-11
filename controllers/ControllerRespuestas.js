@@ -171,11 +171,11 @@ function responder_pregunta(request,response,next){
 
 /*
 ****************************************************************************************************************************************************************
-                VOTAR PREGUNTA
+                VOTAR RESPUESTA
 ****************************************************************************************************************************************************************                                                                   
 */
 
-function votar(request,response,next){
+function votar_respuesta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
@@ -239,5 +239,5 @@ function votar(request,response,next){
 module.exports={
     informacion_pregunta: informacion_pregunta,
     responder_pregunta:responder_pregunta,
-    votar:votar
+    votar_respuesta:votar_respuesta
 };
