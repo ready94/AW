@@ -13,7 +13,7 @@ class DAORespuestas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT r.texto,r.fecha_respuesta,u.nombre,u.imagen FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario  WHERE id_pregunta="+id+" ORDER BY r.fecha_respuesta DESC;"; 
+            const sql = "SELECT r.id_respuesta, r.texto,r.fecha_respuesta,u.nombre,u.imagen FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario  WHERE id_pregunta="+id+" ORDER BY r.fecha_respuesta DESC;"; 
 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -101,6 +101,54 @@ class DAORespuestas{
             }
         });//END GET CONEXION
         
+    }
+
+    getVotosAndIdUser(id, callback) {
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err) {
+                callback(err);
+            } else {
+                // devuelve el usuario entero cuyo email es el pasado por parametro
+                var sql = "SELECT TotalPuntos, id_usuario FROM respuestas WHERE id_respuesta = ?;";
+                var para = [id];
+                conexion.query(sql, para, function (err, resultado) {
+                    conexion.release();
+                    if (err) {
+                        callback(err);
+                    } else {
+                        console.log(resultado);
+                        callback(null, resultado);
+
+                    }
+                }); //END QUERY
+
+            }
+        }); //END GET CONEXION
+    }
+
+    actualizarVotos(id, voto, callback) {
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                //contador de preguntas
+                var sql = "UPDATE respuestas SET TotalPuntos=" + voto + " WHERE id_respuesta=" + id + ";";
+
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else {
+                        //console.log(resultado[0]); //comen
+                        callback(null, resultado);
+                    }
+
+                });//END QUERY                
+
+            }
+        });//END GET CONEXION
     }
 
 }

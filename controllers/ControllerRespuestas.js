@@ -106,6 +106,7 @@ function informacion_pregunta(request,response,next){
                                     var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
                                     var aux = {
+                                        id_respuesta: r.id_respuesta,
                                         texto: r.texto,
                                         fecha_respuesta: fechaForm,
                                         nombre: r.nombre,
@@ -181,10 +182,10 @@ function votar_respuesta(request,response,next){
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         var voto; var reputacion;
-        var id = request.body.id;
+        var id = request.body.idRespuesta;
         var idUser;
 
-        daoPreguntas.getVotosAndIdUser(id, function (error, resultado) {
+        daoRespuestas.getVotosAndIdUser(id, function (error, resultado) {
             if (error) 
                 next(error);
              else {
@@ -211,7 +212,7 @@ function votar_respuesta(request,response,next){
                                 break;
                         }
 
-                        daoPreguntas.actualizarVotos(id, voto, function (error, resultado) {
+                        daoRespuestas.actualizarVotos(id, voto, function (error, resultado) {
                             if (error)
                                 next(error);
                             else {

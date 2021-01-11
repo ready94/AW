@@ -14,6 +14,7 @@ const path = require("path");
 //var user = express.Router();
 
 var modelPreguntas = require("../models/ModelPreguntas");
+var modelUsuarios = require("../models/ModelUsers");
 //const ControllerUsuario = require("../controllers/ControllerUsers.js");
 
 
@@ -21,6 +22,7 @@ var modelPreguntas = require("../models/ModelPreguntas");
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoPreguntas = new modelPreguntas(pool);
+var daoUsuarios = new modelUsuarios(pool);
 
 /*
 ****************************************************************************************************************************************************************
