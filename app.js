@@ -107,31 +107,19 @@ app.use("/usuarios", usuariosRouter);
 ****************************************************************************************************************************************************************                                                                   
 */
 
-function middlewareNotFound(request,response){
+app.use(function middlewareNotFound(request,response){
     response.status(404);
     response.render("error404",{url:request.url});
-}
+});
+
 
 /*
 ****************************************************************************************************************************************************************
                 ERROR 500
 ****************************************************************************************************************************************************************                                                                   
 */
-
-function middlewareServerError(error,request,response,next){
+app.use(function middlewareServerError(error,request,response,next){
     response.status(500);
     response.render("error500",{mensaje:error.message,pila:error.stack});
-}
-
-app.use(middlewareNotFound);
-app.use(middlewareServerError);
-/* No sabemos como funciona esto hulio
-app.get("/reset", function(request, response) {
-    response.status(200);
-    request.session.contador = 0;
-    response.type("text/plain");
-    response.end("Has reiniciado el contador");
 });
-*/
 
-// Definición de las funciones callback

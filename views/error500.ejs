@@ -2,8 +2,8 @@
 <html lang="es">
 
 <head>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/error404.css">
-    <link rel="icon" type="image/png" href="../img/icon1.png">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/error500.css">
+    <link rel="icon" type="image/png" href="../img/warning.png">
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
     <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
 
@@ -15,12 +15,20 @@
 
 <body>
 
-    
-    <h1>ERROR 500 - Error interno en el servidor</h1>
-    <P>Se ha producido el siguiente error: <%= mensaje%> </P>
-    <p>Pila de ejecución:</p>
-    <pre><%= pila %></pre>
-    
+    <div id="fondo">
+
+        <div id="error">
+            
+                <div id="titulo">
+                    ERROR 500 - Error interno en el servidor
+                </div>
+                <div id="mensaje">
+                    <P>Se ha producido el siguiente error: <%= mensaje%> </P>
+                </div>
+                <img src="../img/500.gif"> 
+          
+        </div>
+
 </body>
 
 </html>

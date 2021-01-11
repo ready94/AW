@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" media="screen" href="../css/error404.css">
-    <link rel="icon" type="image/png" href="../img/icon1.png">
+    <link rel="icon" type="image/png" href="../img/warning.png">
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
     <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
 
@@ -15,10 +15,21 @@
 
 <body>
 
-    
-    <h1>ERROR 404 - Not Found </h1>
-    <P>La dirección <code><%= url %></code> no existe </P>
-    
+    <div id="fondo">
+
+        <div id="error">
+            
+                <div id="titulo">
+                    ERROR 404 - NOT FOUND
+                </div>
+                <div id="mensaje">
+                    <P>La dirección <code><%= url %></code> no existe </P>
+                </div>
+                <img src="../img/404.gif"> 
+          
+        </div>
+
+    </div>
 
 </body>
 
