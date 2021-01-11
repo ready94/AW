@@ -413,31 +413,23 @@ function filtrar_texto(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
-function comprobarMedallaPregunta(texto,id,tipo,next){
-    
-    daoPreguntas.getMedallasByPregunta(id,function(error,medalla){
-        if(error){
-            next(error);
-        }else{
-            console.log(medalla);
-            var ok=false;
-            for(var i=0; i< medalla.length;i++){
-                if(medalla[i].merito==texto && medalla[i].tipo==tipo){
-                    ok=true;
-                }
-            }
-            return ok;
+function comprobarMedallaPregunta(id,texto,tipo,medalla){
+    console.log(medalla);
+    var ok=false;
+    for(var i=0; i< medalla.length;i++){
+        if(medalla[i].merito==texto && medalla[i].categoria==tipo){
+            ok=true;
         }
-    })
+    }
+    return ok;     
 }
 
-function medallaPregunta(id,votos,next){
-    var puntos= votos;
-    var texto; var tipo; var fecha= new Date();
+function medallaPregunta(id,puntos,medalla){
+    var texto=""; var tipo=0;
     if(puntos==1){
         texto="Estudiante";
         tipo=1;
-    }else if(puntos ==2){
+    }else if(puntos==2){
         texto="Pregunta Interesante";
         tipo=1;
     }else if(puntos==4){
@@ -448,18 +440,16 @@ function medallaPregunta(id,votos,next){
         tipo=3;
     }
 
-    console.log("holi");
-    if(!comprobarMedallaPregunta(texto,id,tipo,next)){
-        daoPreguntas.insertarMedallaPregunta(id,fecha,texto,tipo,function(error,resultado){
-            if(error){
-                next(error);
-            }
-            else{
-                console.log("se inserto");
-                
-            }
-        })
+    //console.log("comprobar medalla");
+    console.log("merito",texto);
+    var ok=true;
+    if(texto!=""){
+        ok=comprobarMedallaPregunta(id,texto,tipo,medalla);
+        console.log(ok);
     }
+    console.log(ok);
+    return {ok,texto,tipo};
+   
 }
 
 function votar_pregunta(request,response,next){
@@ -467,63 +457,59 @@ function votar_pregunta(request,response,next){
         response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
-        var voto; var reputacion;
-        var id = request.body.id;
-        var idUser;
+        
+        var id = request.body.id; //id pregunta
 
-        daoPreguntas.getVotosAndIdUser(id, function (error, resultado) {
+        daoPreguntas.getDatosVotarPreguntas(id, function (error, datos) {
             if (error) 
                 next(error);
              else {
+                //console.log(datos);
+                
+                var voto=datos.total_puntos;
+                var idUser= datos.id_usuario;
+                var reputacion = datos.reputacion;
+                let medalla=[];
+                datos.resul.forEach(element => medalla.push({
+                    merito: element.merito,
+                    tipo: element.tipo
+                }));
 
-                voto = resultado[0].TotalPuntos;
-                idUser = resultado[0].id_usuario;
-
-                daoUsuarios.getReputacion(idUser, function(error, resultado){
-                    if(error)
-                        next(error);
-                    else{
-                        reputacion = resultado[0].reputacion;
-                        switch (request.body.voto) {
-                            case "ok":
-                                voto++;
-                                reputacion = reputacion + 10;
-                                console.log("medalla");
-                                medallaPregunta(id,voto,next);
-                                console.log("paso medalla");
-                                break;
-                            case "ko":
-                                voto--;
-                                reputacion = reputacion - 2;
-                                if (reputacion < 1) {
-                                    reputacion = 1;
-                                }
-                                break;
+                //console.log(request.body.voto);
+                switch (request.body.voto) {
+                    case "ok":
+                        voto++;
+                        reputacion = reputacion + 10;
+                        //console.log("medalla");
+                        //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
+                        var x = medallaPregunta(id,voto,medalla);
+                        if(x.ok==false){
+                            daoPreguntas.insertarMedallaPregunta(id,new Date(),x.texto,x.tipo,function(error,resultado){
+                                if(error)
+                                    next(error); 
+                            })
                         }
+                        
+                        //console.log("paso medalla");
+                        break;
+                    case "ko":
+                        voto--;
+                        reputacion = reputacion - 2;
+                        if (reputacion < 1) {
+                            reputacion = 1;
+                        }
+                        break;
+                }
 
-                        daoPreguntas.actualizarVotos(id, voto, function (error, resultado) {
-                            if (error)
-                                next(error);
-                            else {
-                                console.log("reputacion antes de enviar: " + reputacion);
-                                daoUsuarios.actualizarReputacion(idUser, reputacion, function (error, resultado) {
-                                    if (error)
-                                        next(error);
-                                    else{
-                                        
-                                        response.redirect("/preguntas/preguntas.html");   
-                                    }
-                                        
-                                });
-                            }
-                            //response.redirect("/preguntas/preguntas.html");
-                            //response.redirect("/respuestas/informacion_pregunta/:"+id);
-                        });
+                daoPreguntas.actualizarDatosPreguntas(id, idUser,voto, reputacion,function (error, resultado) {
+                    if (error)
+                        next(error);
+                    else {
+                        //console.log("reputacion antes de enviar: " + reputacion);    
+                        response.redirect("/respuestas/informacion_pregunta/"+id);
                     }
+                    
                 });
-                
-                
-                
             }
         })
     }

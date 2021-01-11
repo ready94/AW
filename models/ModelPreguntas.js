@@ -326,22 +326,41 @@ class DAOPreguntas{
         });//END GET CONEXION
     }
 
-    getVotosAndIdUser(id, callback){
+    getDatosVotarPreguntas(id, callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err) {
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = "SELECT TotalPuntos, id_usuario FROM preguntas WHERE id_pregunta = ?;";
+                var sql = "SELECT p.TotalPuntos, u.id_usuario, u.reputacion FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE id_pregunta = ?;";
                 var para = [id];
                 conexion.query(sql, para, function (err, resultado) {
-                    conexion.release();
                     if (err) {
                         callback(err);
                     } else {
-                        console.log(resultado);
-                        callback(null, resultado);
+                        const sql2="SELECT m.tipo, m.merito FROM medallas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE m.id_pregunta=? ";
+                        conexion.query(sql2,para,function(error,resul){
+                            conexion.release();
+                            if(error){
+                                callback(error);
+                            }else{
+                               
+
+                                //console.log("medalla",medalla);
+                                //console.log("resultado:",resultado)
+                                var datos={
+                                    id_usuario: resultado[0].id_usuario,
+                                    total_puntos:resultado[0].TotalPuntos,
+                                    reputacion: resultado[0].reputacion,
+                                    resul: resul
+                                }
+
+                                //console.log("datos:",datos);
+                                callback(null,datos);
+
+                            }
+                        })
 
                     }
                 }); //END QUERY
@@ -350,7 +369,7 @@ class DAOPreguntas{
         }); //END GET CONEXION
     }
 
-    actualizarVotos(id,voto,callback){
+    actualizarDatosPreguntas(id,idUser,voto,reputacion,callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
@@ -358,44 +377,20 @@ class DAOPreguntas{
             else {
             //contador de preguntas
                 var sql ="UPDATE preguntas SET TotalPuntos="+voto+" WHERE id_pregunta="+id+";"; 
-               
                 conexion.query(sql, function (err, resultado) {
-                    conexion.release();
+                    
                     if (err)
                         callback(err);
                     else{
-                        //console.log(resultado[0]); //comen
-                        callback(null, resultado);
-                    }
-                        
-                });//END QUERY                
-                
-            }
-        });//END GET CONEXION
-    }
-
-    getMedallasByPregunta(id,callback){
-        this.pool.getConnection(function (err, conexion) {
-
-            if (err)
-                callback(err);
-            else {
-            //contador de preguntas
-                const sql ="SELECT * FROM medallas WHERE id_pregunta=?"; 
-                var para=[id];
-                conexion.query(sql, para,function (err, resultado) {
-                    conexion.release();
-                    if (err)
-                        callback(err);
-                    else{
-                        let medalla=[];
-
-                        resultado.forEach(element => medalla.push({
-                            id_pregunta: element.id_pregunta,
-                            merito: element.merito
-                        }));
-
-                        callback(null, medalla);
+                        var sql2 ="UPDATE usuario SET reputacion="+reputacion+" WHERE id_usuario="+idUser+";"; 
+                        conexion.query(sql2, function (err, resultado) {
+                            conexion.release();
+                            if (err)
+                                callback(err);
+                            else{
+                                callback(null, resultado);
+                            }
+                        });
                     }
                         
                 });//END QUERY                
@@ -410,7 +405,7 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                const sql ="INSERT INTO medallas () VALUES (?,?,?,?)"; 
+                const sql ="INSERT INTO medallas (id_pregunta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
                 var para=[id,fecha,tipo,merito];
                 conexion.query(sql, para,function (err, resultado) {
                     conexion.release();

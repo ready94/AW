@@ -3,23 +3,11 @@
 var config = require("../config");
 var mysql = require("mysql");
 const path = require("path");
-//var express = require("express");
-//var bodyParser = require("body-parser");
-//var fs = require("fs");
-//var session = require("express-session");
-//var mysqlSession = require("express-mysql-session");
-//var MySQLStore = mysqlSession(session);
-//var sessionStore = new MySQLStore(config.mysqlConfig);
-
-//var user = express.Router();
 
 var modelRespuestas = require("../models/ModelRespuestas");
 var modelPreguntas = require("../models/ModelPreguntas");
 var modelUsuarios = require("../models/ModelUsers");
-//const ControllerUsuario = require("../controllers/ControllerUsers.js");
 
-
-//const { nextTick } = require("process");
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoRespuestas = new modelRespuestas(pool);
@@ -44,7 +32,7 @@ function informacion_pregunta(request,response,next){
             imagen: request.session.imagen
         };
 
-        console.log(request.params.idPregunta);
+        //console.log(request.params.idPregunta);
 
 
         daoPreguntas.getPreguntaInformacion(request.params.idPregunta, function (error, resultado) {
@@ -65,7 +53,7 @@ function informacion_pregunta(request,response,next){
                             etiqueta.push(i.etiqueta);
                         }
 
-                        console.log(resultado);
+                        //console.log(resultado);
 
                         var fecha = new Date(resultado[0].fecha);
                         var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
@@ -82,7 +70,7 @@ function informacion_pregunta(request,response,next){
                             etiqueta: etiqueta
                         }
 
-                        console.log(pregunta);
+                        //console.log(pregunta);
 
                         daoRespuestas.countRespuestas(pregunta.id_pregunta, function (e, r) {
                             if (e) {
@@ -98,7 +86,7 @@ function informacion_pregunta(request,response,next){
                                 next(err);
                             } else {
 
-                                console.log(resul);
+                                //console.log(resul);
                                 var respuesta = [];
                                 resul.forEach((r) => {
 
@@ -115,7 +103,7 @@ function informacion_pregunta(request,response,next){
                                     respuesta.push(aux);
                                 })
 
-                                console.log(respuesta);
+                                //console.log(respuesta);
 
                                 daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(e,resultado){
                                     if (e) {
