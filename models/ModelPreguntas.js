@@ -302,6 +302,30 @@ class DAOPreguntas{
         });//END GET CONEXION
     }
 
+    getDatosVisitas(idPre,callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                var sql ="SELECT merito, tipo FROM medallas WHERE id_pregunta="+idPre+";"; 
+               
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
+    }
+
     actualizarVisitas(visitas,id,callback){
         this.pool.getConnection(function (err, conexion) {
 

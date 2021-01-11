@@ -20,6 +20,31 @@ var daoUsuarios = new modelUsuarios(pool);
 ****************************************************************************************************************************************************************                                                                   
 */
 
+function medallaVisitas(visitas,medalla){
+    var texto=""; var tipo=0;
+    if(visitas==2){
+        texto="Pregunta Popular";
+        tipo=1;
+    }else if(visitas==4){
+        texto="Pregunta Destacada";
+        tipo=2;
+    }else if(visitas==6){
+        texto="Pregunta Famosa";
+        tipo=3;
+    }
+
+    //console.log("comprobar medalla");
+    console.log("merito",texto);
+    var ok=true;
+    if(texto!=""){
+        ok=comprobarMedallaRespuesta(texto,tipo,medalla);
+        console.log(ok);
+    }
+    console.log(ok);
+    return {ok,texto,tipo};
+   
+}
+
 function informacion_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
@@ -105,14 +130,45 @@ function informacion_pregunta(request,response,next){
 
                                 //console.log(respuesta);
 
-                                daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(e,resultado){
-                                    if (e) {
-                                        next(e);
+                                daoPreguntas.getDatosVisitas(pregunta.id_pregunta,function(error,resultado){
+                                    if(error){
+                                        next(error);
+                                    }
+                                    else{
+                                        let medalla=[];
+                                        resultado.forEach(element => medalla.push({
+                                            merito: element.merito,
+                                            tipo: element.tipo
+                                        }));
+
+                                        var x = medallaVisitas(pregunta.visitas,medalla);
+                                        if(x.ok==false){
+                                            daoPreguntas.insertarMedallaPregunta(pregunta.id_pregunta,new Date(),x.texto,x.tipo,function(error,resultado){
+                                            if(error)
+                                                next(error); 
+                                            else{
+                                                daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(error,resultado){
+                                                    if (error) {
+                                                        next(error);
+                                                    } else {
+                                                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
+                                                    }
+                                                     
+                                                })
+                                            }
+                                            })
+                                        }
+                                    }
+                                })
+                                /*
+                                daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(error,resultado){
+                                    if (error) {
+                                        next(error);
                                     } else {
                                         response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
                                     }
                                      
-                                })
+                                })*/
                                
                             }
 
