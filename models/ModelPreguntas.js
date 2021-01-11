@@ -374,8 +374,57 @@ class DAOPreguntas{
         });//END GET CONEXION
     }
 
-    actualizarMedallaPreguntas(){
-        
+    getMedallasByPregunta(id,callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            //contador de preguntas
+                const sql ="SELECT * FROM medallas WHERE id_pregunta=?"; 
+                var para=[id];
+                conexion.query(sql, para,function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        let medalla=[];
+
+                        resultado.forEach(element => medalla.push({
+                            id_pregunta: element.id_pregunta,
+                            merito: element.merito
+                        }));
+
+                        callback(null, medalla);
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
+    }
+
+    insertarMedallaPregunta(id,fecha,merito,tipo,callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                const sql ="INSERT INTO medallas () VALUES (?,?,?,?)"; 
+                var para=[id,fecha,tipo,merito];
+                conexion.query(sql, para,function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        
+                        callback(null, resultado);
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
     }
 
     /*

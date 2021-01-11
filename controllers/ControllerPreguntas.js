@@ -15,7 +15,6 @@ const path = require("path");
 
 var modelPreguntas = require("../models/ModelPreguntas");
 var modelUsuarios = require("../models/ModelUsers");
-//const ControllerUsuario = require("../controllers/ControllerUsers.js");
 
 
 //const { nextTick } = require("process");
@@ -105,67 +104,6 @@ function preguntas(request,response,next){
         })
     }
 };
-                
-
-
-
-
-                /*
-                var pregunta = [];
-
-                resultado.forEach((p) => {
-                    daoPreguntas.getEtiquetas(p.id_pregunta, function (err, resul) {
-
-                        if (err) {
-                            next(err);
-                            
-                        } else {
-
-                            //console.log(p.id_pregunta);
-                            var etiqueta = [];
-                            for (var x of resul) {
-                                etiqueta.push(x.etiqueta);
-                            }
-
-                            var fecha = new Date(p.fecha);
-                            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
-
-                            var aux = {
-                                id_pregunta: p.id_pregunta,
-                                id_usuario: p.id_usuario,
-                                titulo: p.titulo,
-                                cuerpo: text_truncate(p.cuerpo, 150),
-                                fecha: fechaForm,
-                                nombre: p.nombre,
-                                imagen: p.imagen,
-                                etiqueta: etiqueta
-                            }
-                            pregunta.push(aux);
-
-                            //console.log(pregunta);
-                        }
-
-                    })
-                })
-
-                daoPreguntas.count(function (e, res) {
-                    if (e) {
-                       
-                        next(e);
-                    } else {
-
-                        contador = res[0].Total;
-                        //response.status(200);
-                        response.render("preguntas", { perfil: usuario, contador: contador, pregunta: pregunta });
-                        //console.log("despues del render");
-                    }
-                })*/
-
-            
-        
-
-    
-
 
 /*
 ****************************************************************************************************************************************************************
@@ -475,6 +413,55 @@ function filtrar_texto(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
+function comprobarMedallaPregunta(texto,id,tipo,next){
+    
+    daoPreguntas.getMedallasByPregunta(id,function(error,medalla){
+        if(error){
+            next(error);
+        }else{
+            console.log(medalla);
+            var ok=false;
+            for(var i=0; i< medalla.length;i++){
+                if(medalla[i].merito==texto && medalla[i].tipo==tipo){
+                    ok=true;
+                }
+            }
+            return ok;
+        }
+    })
+}
+
+function medallaPregunta(id,votos,next){
+    var puntos= votos;
+    var texto; var tipo; var fecha= new Date();
+    if(puntos==1){
+        texto="Estudiante";
+        tipo=1;
+    }else if(puntos ==2){
+        texto="Pregunta Interesante";
+        tipo=1;
+    }else if(puntos==4){
+        texto="Buena Pregunta";
+        tipo=2;
+    }else if(puntos==6){
+        texto="Excelente Pregunta";
+        tipo=3;
+    }
+
+    console.log("holi");
+    if(!comprobarMedallaPregunta(texto,id,tipo,next)){
+        daoPreguntas.insertarMedallaPregunta(id,fecha,texto,tipo,function(error,resultado){
+            if(error){
+                next(error);
+            }
+            else{
+                console.log("se inserto");
+                
+            }
+        })
+    }
+}
+
 function votar_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
@@ -501,6 +488,9 @@ function votar_pregunta(request,response,next){
                             case "ok":
                                 voto++;
                                 reputacion = reputacion + 10;
+                                console.log("medalla");
+                                medallaPregunta(id,voto,next);
+                                console.log("paso medalla");
                                 break;
                             case "ko":
                                 voto--;
@@ -519,8 +509,11 @@ function votar_pregunta(request,response,next){
                                 daoUsuarios.actualizarReputacion(idUser, reputacion, function (error, resultado) {
                                     if (error)
                                         next(error);
-                                    else
-                                        response.redirect("/preguntas/preguntas.html");
+                                    else{
+                                        
+                                        response.redirect("/preguntas/preguntas.html");   
+                                    }
+                                        
                                 });
                             }
                             //response.redirect("/preguntas/preguntas.html");
