@@ -164,62 +164,103 @@ function responder_pregunta(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
+function comprobarMedallaRespuesta(texto,tipo,medalla){
+    console.log(medalla);
+    var ok=false;
+    for(var i=0; i< medalla.length;i++){
+        if(medalla[i].merito==texto && medalla[i].categoria==tipo){
+            ok=true;
+        }
+    }
+    console.log("comprobar:",ok);
+    return ok;     
+}
+
+function medallaRespuesta(puntos,medalla){
+    var texto=""; var tipo=0;
+    if(puntos==2){
+        texto="Respuesta Interesante";
+        tipo=1;
+    }else if(puntos==4){
+        texto="Buena Respuesta";
+        tipo=2;
+    }else if(puntos==6){
+        texto="Excelente Respuesta";
+        tipo=3;
+    }
+
+    //console.log("comprobar medalla");
+    console.log("merito",texto);
+    var ok=true;
+    if(texto!=""){
+        ok=comprobarMedallaRespuesta(texto,tipo,medalla);
+        console.log(ok);
+    }
+    console.log(ok);
+    return {ok,texto,tipo};
+   
+}
+
 function votar_respuesta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
         alert("NO ESTAS LOGUEADO, INDIOTA");
     } else {
-        var voto; var reputacion;
-        var id = request.body.idRespuesta;
-        var idUser;
-
-        daoRespuestas.getVotosAndIdUser(id, function (error, resultado) {
+        
+        var id = request.body.idRespuesta; //id respuesta
+        console.log(id);
+        daoRespuestas.getDatosVotarRespuestas(id, function (error, datos) {
             if (error) 
                 next(error);
              else {
+                //console.log(datos);
+                
+                var voto=datos.total_puntos;
+                var idUser= datos.id_usuario;
+                var idPre= datos.id_pregunta;
+                var reputacion = datos.reputacion;
+                let medalla=[];
+                datos.resul.forEach(element => medalla.push({
+                    merito: element.merito,
+                    tipo: element.tipo
+                }));
 
-                voto = resultado[0].TotalPuntos;
-                idUser = resultado[0].id_usuario;
-
-                daoUsuarios.getReputacion(idUser, function(error, resultado){
-                    if(error)
-                        next(error);
-                    else{
-                        reputacion = resultado[0].reputacion;
-                        switch (request.body.voto) {
-                            case "ok":
-                                voto++;
-                                reputacion = reputacion + 10;
-                                break;
-                            case "ko":
-                                voto--;
-                                reputacion = reputacion - 2;
-                                if (reputacion < 1) {
-                                    reputacion = 1;
-                                }
-                                break;
+                //console.log(request.body.voto);
+                switch (request.body.voto) {
+                    case "ok":
+                        voto++;
+                        reputacion = reputacion + 10;
+                        //console.log("medalla");
+                        //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
+                        var x = medallaRespuesta(voto,medalla);
+                        if(x.ok==false){
+                            daoRespuestas.insertarMedallaRespuesta(id,new Date(),x.texto,x.tipo,function(error,resultado){
+                                if(error)
+                                    next(error); 
+                            })
                         }
+                        
+                        //console.log("paso medalla");
+                        break;
+                    case "ko":
+                        voto--;
+                        reputacion = reputacion - 2;
+                        if (reputacion < 1) {
+                            reputacion = 1;
+                        }
+                        break;
+                }
 
-                        daoRespuestas.actualizarVotos(id, voto, function (error, resultado) {
-                            if (error)
-                                next(error);
-                            else {
-                                console.log("reputacion antes de enviar: " + reputacion);
-                                daoUsuarios.actualizarReputacion(idUser, reputacion, function (error, resultado) {
-                                    if (error)
-                                        next(error);
-                                    else
-                                        response.redirect("/preguntas/preguntas.html");
-                                });
-                            }
-                            //response.redirect("/preguntas/preguntas.html");
-                            //response.redirect("/respuestas/informacion_pregunta/:"+id);
-                        });
+                daoRespuestas.actualizarDatosRespuestas(id, idUser,voto, reputacion,function (error, resultado) {
+                    if (error)
+                        next(error);
+                    else {
+                        console.log("reputacion antes de enviar: " + reputacion); 
+                        response.redirect("/preguntas/preguntas.html");   
+                        //response.redirect("/respuestas/informacion_pregunta/"+idPre);
                     }
+                    
                 });
-                
-                
-                
             }
         })
     }

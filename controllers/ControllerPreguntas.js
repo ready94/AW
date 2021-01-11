@@ -413,7 +413,7 @@ function filtrar_texto(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
-function comprobarMedallaPregunta(id,texto,tipo,medalla){
+function comprobarMedallaPregunta(texto,tipo,medalla){
     console.log(medalla);
     var ok=false;
     for(var i=0; i< medalla.length;i++){
@@ -424,7 +424,7 @@ function comprobarMedallaPregunta(id,texto,tipo,medalla){
     return ok;     
 }
 
-function medallaPregunta(id,puntos,medalla){
+function medallaPregunta(puntos,medalla){
     var texto=""; var tipo=0;
     if(puntos==1){
         texto="Estudiante";
@@ -444,7 +444,7 @@ function medallaPregunta(id,puntos,medalla){
     console.log("merito",texto);
     var ok=true;
     if(texto!=""){
-        ok=comprobarMedallaPregunta(id,texto,tipo,medalla);
+        ok=comprobarMedallaPregunta(texto,tipo,medalla);
         console.log(ok);
     }
     console.log(ok);
@@ -482,7 +482,7 @@ function votar_pregunta(request,response,next){
                         reputacion = reputacion + 10;
                         //console.log("medalla");
                         //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
-                        var x = medallaPregunta(id,voto,medalla);
+                        var x = medallaPregunta(voto,medalla);
                         if(x.ok==false){
                             daoPreguntas.insertarMedallaPregunta(id,new Date(),x.texto,x.tipo,function(error,resultado){
                                 if(error)

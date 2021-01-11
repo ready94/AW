@@ -103,22 +103,41 @@ class DAORespuestas{
         
     }
 
-    getVotosAndIdUser(id, callback) {
+    getDatosVotarRespuestas(id, callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err) {
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = "SELECT TotalPuntos, id_usuario FROM respuestas WHERE id_respuesta = ?;";
+                var sql = "SELECT r.TotalPuntos,r.id_pregunta, u.id_usuario, u.reputacion FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario WHERE r.id_respuesta = ?;";
                 var para = [id];
                 conexion.query(sql, para, function (err, resultado) {
-                    conexion.release();
                     if (err) {
                         callback(err);
                     } else {
-                        console.log(resultado);
-                        callback(null, resultado);
+                        const sql2="SELECT m.tipo, m.merito FROM medallas AS m JOIN respuestas AS r ON m.id_respuesta=r.id_respuesta WHERE m.id_respuesta=? ";
+                        conexion.query(sql2,para,function(error,resul){
+                            conexion.release();
+                            if(error){
+                                callback(error);
+                            }else{
+                               
+                                //console.log("medalla",medalla);
+                                console.log("resultado:",resultado)
+                                var datos={
+                                    id_usuario: resultado[0].id_usuario,
+                                    id_pregunta:  resultado[0].id_pregunta,
+                                    total_puntos:resultado[0].TotalPuntos,
+                                    reputacion: resultado[0].reputacion,
+                                    resul: resul
+                                }
+
+                                //console.log("datos:",datos);
+                                callback(null,datos);
+
+                            }
+                        })
 
                     }
                 }); //END QUERY
@@ -127,30 +146,61 @@ class DAORespuestas{
         }); //END GET CONEXION
     }
 
-    actualizarVotos(id, voto, callback) {
+    actualizarDatosRespuestas(idRes,idUser,voto,reputacion,callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
-                //contador de preguntas
-                var sql = "UPDATE respuestas SET TotalPuntos=" + voto + " WHERE id_respuesta=" + id + ";";
-
+            //contador de preguntas
+                var sql ="UPDATE respuestas SET TotalPuntos="+voto+" WHERE id_respuesta="+idRes+";"; 
                 conexion.query(sql, function (err, resultado) {
+                    
+                    if (err)
+                        callback(err);
+                    else{
+                        var sql2 ="UPDATE usuario SET reputacion="+reputacion+" WHERE id_usuario="+idUser+";"; 
+                        conexion.query(sql2, function (err, resultado) {
+                            conexion.release();
+                            if (err)
+                                callback(err);
+                            else{
+                                callback(null, resultado);
+                            }
+                        });
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
+    }
+
+    insertarMedallaRespuesta(id,fecha,merito,tipo,callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                const sql ="INSERT INTO medallas (id_respuesta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
+                var para=[id,fecha,tipo,merito];
+                conexion.query(sql, para,function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
-                    else {
-                        //console.log(resultado[0]); //comen
+                    else{
+                        console.log("insert");
                         callback(null, resultado);
                     }
-
+                        
                 });//END QUERY                
-
+                
             }
         });//END GET CONEXION
     }
 
 }
+
+
 
 module.exports = DAORespuestas;
