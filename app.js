@@ -120,6 +120,6 @@ app.use(function middlewareNotFound(request,response){
 */
 app.use(function middlewareServerError(error,request,response,next){
     response.status(500);
-    response.render("error500",{mensaje:error.message,pila:error.stack});
+    response.render("error500",{mensaje:error.message});
 });
 
