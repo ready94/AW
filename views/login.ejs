@@ -16,29 +16,37 @@
 
 <body>
 
-    <div id="contenedor">
-        <header>
-            <h1>Café con preguntas</h1>
-            <p>Bienvenido</p>
-
-            <img src="../img/Login.gif"> 
-        </header>
-    </div>
-
-    <div id="login">
-        
-        
-            <form action="/usuarios/login" method="POST">
+    <div>
+        <div id="contenedor">
+            <header>
+                <h1>Café con preguntas</h1>
+                <p>Bienvenido/a</p>
+                <p>Aquí podras preguntar lo que desees sobre programación web</p>
+                
+            </header>
+        </div>
+    
+        <div id="login">
+            
+            <div >
                 <h1>LOG IN</h1>
-                Correo*: <br>
-                <input type="email" name="mail" required><br> Contraseña*:<br>
-                <!--cambiar el minimo de la contraseña y añadir caracteres especiales-->
-                <input type="password" name="pass" minlength="6" required><br>
-                <input class="button" type="submit" value="Iniciar sesion">
+                <form action="/usuarios/login" method="POST">
+                    
+                    Correo*: <br>
+                    <input type="email" name="mail" required><br> Contraseña*:<br>
+                    <!--cambiar el minimo de la contraseña y añadir caracteres especiales-->
+                    <input type="password" name="pass" minlength="6" required><br>
+                    <input class="button" type="submit" value="Iniciar sesion">
+                    
+                </form>
+                
                 <a class="button" href="/usuarios/crear_cuenta.html">Crear cuenta</a>
-            </form>
- 
+            </div>
+                
+     
+        </div>
     </div>
+    
 
 
    

@@ -4,47 +4,51 @@
 }
 
 html {
-    background-size: 100%;
-    background-color: #e0dddd;
-    overflow: hidden;
-}
+    height: 100%;
+    font-family: 'VT323', monospace;
+  }
 
 body{
+    background-image: url(../img/background.png);
+    background-size: 80%;
     font-family: 'VT323', monospace;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
 }
 
 #contenedor{
+    top: 50%;
     width: 50%;
     float: left;
-    
 }
+
 
 #login{
-    width: 50%;
-    height: 100%;
     float: left;
-    position: absolute;
     right: 0;
+    margin: 11% 5%;
     padding: 16px;
-    opacity: 0.85;
-    width: 45%;
-    background-color:#eec170;
-}
-
-header{
-    font-size: xx-large;
+    background-color:#eec270be;
     position: absolute;
-    top: 25%;
-    width: 50%;
+    width: 30%;
     text-align: center;
 }
 
-
+header{
+    font-size: x-large;
+    position: absolute;
+    margin: 17% 5%;
+    width: 40%;
+    text-align: center;
+    background-color: rgba(126, 116, 121, 0.671);
+    
+}
 
 form{
     font-family: 'VT323', monospace;
-    margin: 28%;
-    text-align: left;
     font-size: 20px;
 }
 
@@ -72,8 +76,3 @@ input[type=email], input[type=password]{
     font-family: 'VT323', monospace;
 }
 
-
-img{
-    width: 45%;
-    height: 45%;
-}
