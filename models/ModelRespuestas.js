@@ -116,7 +116,7 @@ class DAORespuestas{
                     if (err) {
                         callback(err);
                     } else {
-                        const sql2="SELECT m.tipo, m.merito FROM medallas AS m JOIN respuestas AS r ON m.id_respuesta=r.id_respuesta WHERE m.id_respuesta=? ";
+                        const sql2="SELECT m.tipo, m.merito FROM medallas_respuestas AS m JOIN respuestas AS r ON m.id_respuesta=r.id_respuesta WHERE m.id_respuesta=? ";
                         conexion.query(sql2,para,function(error,resul){
                             conexion.release();
                             if(error){
@@ -182,7 +182,7 @@ class DAORespuestas{
             if (err)
                 callback(err);
             else {
-                const sql ="INSERT INTO medallas (id_respuesta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
+                const sql ="INSERT INTO medallas_respuestas (id_respuesta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
                 var para=[id,fecha,tipo,merito];
                 conexion.query(sql, para,function (err, resultado) {
                     conexion.release();

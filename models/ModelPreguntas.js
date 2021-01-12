@@ -309,7 +309,7 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql ="SELECT merito, tipo FROM medallas WHERE id_pregunta="+idPre+";"; 
+                var sql ="SELECT merito, tipo FROM medallas_preguntas WHERE id_pregunta="+idPre+";"; 
                
                 conexion.query(sql, function (err, resultado) {
                     
@@ -362,7 +362,7 @@ class DAOPreguntas{
                     if (err) {
                         callback(err);
                     } else {
-                        const sql2="SELECT m.tipo, m.merito FROM medallas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE m.id_pregunta=? ";
+                        const sql2="SELECT m.tipo, m.merito FROM medallas_preguntas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE m.id_pregunta=? ";
                         conexion.query(sql2,para,function(error,resul){
                             conexion.release();
                             if(error){
@@ -428,15 +428,22 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                const sql ="INSERT INTO medallas (id_pregunta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
+                const sql ="INSERT INTO medallas_preguntas (id_pregunta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
                 var para=[id,fecha,tipo,merito];
                 conexion.query(sql, para,function (err, resultado) {
-                    conexion.release();
                     if (err)
                         callback(err);
                     else{
+                        const sql2="DELETE FROM medallas_preguntas WHERE id_pregunta="+id+" AND tipo=0;";
+                        conexion.query(sql2, para,function (err, resultado) {
+                            conexion.release();
+                            if (err)
+                                callback(err);
+                            else{
+                                callback(null, resultado);
+                            }
+                        });
                         
-                        callback(null, resultado);
                     }
                         
                 });//END QUERY                

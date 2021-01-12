@@ -309,8 +309,8 @@ function votar_respuesta(request,response,next){
                         next(error);
                     else {
                         console.log("reputacion antes de enviar: " + reputacion); 
-                        response.redirect("/preguntas/preguntas.html");   
-                        //response.redirect("/respuestas/informacion_pregunta/"+idPre);
+                        //response.redirect("/preguntas/preguntas.html");   
+                        response.redirect("/respuestas/informacion_pregunta/"+idPre);
                     }
                     
                 });

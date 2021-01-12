@@ -508,8 +508,8 @@ function votar_pregunta(request,response,next){
                         next(error);
                     else {
                         console.log("reputacion antes de enviar: " + reputacion);    
-                        //response.redirect("/respuestas/informacion_pregunta/"+id);
-                        response.redirect("/preguntas/preguntas.html"); 
+                        response.redirect("/respuestas/informacion_pregunta/"+id);
+                        //response.redirect("/preguntas/preguntas.html"); 
                     }
                     
                 });
