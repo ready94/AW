@@ -88,9 +88,16 @@
             <div class="votos">
                 <form action="/preguntas/votarPregunta" method="POST" onsubmit="enviar.disabled = true;" >
                     <input type="hidden" name="id" value=<%= pregunta.id_pregunta %>>
-                    <input type="checkbox" value="ok" name="voto" id="votacion"> OK
-                    <input type="checkbox" value="ko" name="voto" id="votacion"/> no OK
-                    <input type="submit" name="enviar" value="Enviar">
+                    <div>
+                        <img class="iconoVoto" src="/img/ok.png">
+                        <img class="iconoVoto" src="/img/cancel.png">
+                    </div>
+                    <div>
+                        <input type="radio" value="ok" name="voto" id="votoOk"> 
+                        <input type="radio" value="ko" name="voto" id="votoKo"/> 
+                        <input type="submit" name="enviar" value="Enviar">
+                    </div>
+                    
                 </form>
             </div>
     
@@ -138,9 +145,15 @@
                          <div class="votos">
                             <form action="/respuestas/votarRespuesta" method="POST" onsubmit="enviar.disabled = true;" >
                                 <input type="hidden" name="idRespuesta" value=<%= r.id_respuesta %>>
-                                <input type="checkbox" value="ok" name="voto" id="votacion"> OK
-                                <input type="checkbox" value="ko" name="voto" id="votacion"/> no OK
-                                <input type="submit" name="enviar" value="Enviar">
+                                <div>
+                                    <img class="iconoVoto" src="/img/ok.png">
+                                    <img class="iconoVoto" src="/img/cancel.png">
+                                </div>
+                                <div>
+                                    <input type="radio" value="ok" name="voto" id="votoOk"> 
+                                    <input type="radio" value="ko" name="voto" id="votoKo"/> 
+                                    <input type="submit" name="enviar" value="Enviar">
+                                </div>
                             </form>
                         </div>
                         <div class="texto"><%= r.texto %></div>

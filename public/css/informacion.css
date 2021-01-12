@@ -306,5 +306,15 @@ textarea{
     word-wrap: break-word;
 }
 
+.iconoVoto {
+    margin-left: 5px;
+    width: 35px;
+}
 
+#votoOk{
+    margin-left: 15px;
+}
 
+#votoKo{
+    margin-left: 25px;
+}
