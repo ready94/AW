@@ -16,22 +16,32 @@
 
 <body>
 
-    <header>
-        <h1>Café con preguntas</h1>
-    </header>
+    <div id="contenedor">
+        <header>
+            <h1>Café con preguntas</h1>
+            <p>Bienvenido</p>
 
-    <form action="/usuarios/login" method="POST">
-        Correo*: <br>
-        <input type="email" name="mail" required><br> Contraseña*:<br>
-        <!--cambiar el minimo de la contraseña y añadir caracteres especiales-->
-        <input type="password" name="pass" minlength="4" required><br>
-        <input class="button" type="submit" value="Iniciar sesion">
+            <img src="../img/Login.gif"> 
+        </header>
+    </div>
 
-    </form>
+    <div id="login">
+        
+        
+            <form action="/usuarios/login" method="POST">
+                <h1>LOG IN</h1>
+                Correo*: <br>
+                <input type="email" name="mail" required><br> Contraseña*:<br>
+                <!--cambiar el minimo de la contraseña y añadir caracteres especiales-->
+                <input type="password" name="pass" minlength="6" required><br>
+                <input class="button" type="submit" value="Iniciar sesion">
+                <a class="button" href="/usuarios/crear_cuenta.html">Crear cuenta</a>
+            </form>
+ 
+    </div>
 
-    <a class="button" href="/usuarios/crear_cuenta.html">
-        Crear cuenta
-    </a>
+
+   
 
 </body>
 
