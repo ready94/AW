@@ -38,9 +38,9 @@ function medallaVisitas(visitas,medalla){
     var ok=true;
     if(texto!=""){
         ok=comprobarMedallaRespuesta(texto,tipo,medalla);
-        console.log(ok);
+        //console.log(ok);
     }
-    console.log(ok);
+    //console.log(ok);
     return {ok,texto,tipo};
    
 }
@@ -129,47 +129,44 @@ function informacion_pregunta(request,response,next){
                                 })
 
                                 //console.log(respuesta);
-
-                                daoPreguntas.getDatosVisitas(pregunta.id_pregunta,function(error,resultado){
-                                    if(error){
-                                        next(error);
-                                    }
-                                    else{
-                                        let medalla=[];
-                                        resultado.forEach(element => medalla.push({
-                                            merito: element.merito,
-                                            tipo: element.tipo
-                                        }));
-
-                                        var x = medallaVisitas(pregunta.visitas,medalla);
-                                        if(x.ok==false){
-                                            daoPreguntas.insertarMedallaPregunta(pregunta.id_pregunta,new Date(),x.texto,x.tipo,function(error,resultado){
-                                            if(error)
-                                                next(error); 
-                                            else{
-                                                daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(error,resultado){
-                                                    if (error) {
-                                                        next(error);
-                                                    } else {
-                                                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
-                                                    }
-                                                     
-                                                })
-                                            }
-                                            })
-                                        }
-                                    }
-                                })
-                                /*
+                                console.log("actualizar visitas");
                                 daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(error,resultado){
                                     if (error) {
                                         next(error);
                                     } else {
-                                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
+                                               
+                                        daoPreguntas.getDatosVisitas(pregunta.id_pregunta,function(error,resultado){
+                                            if(error){
+                                                next(error);
+                                            }else{
+
+                                                let medalla=[];
+                                                resultado.forEach(element => medalla.push({
+                                                    merito: element.merito,
+                                                    tipo: element.tipo
+                                                }));
+                
+                                                var x = medallaVisitas(pregunta.visitas,medalla);
+ 
+                                                console.log("esto vaaaaa a petaaar:");
+                                                console.log(pregunta.id_pregunta,x.texto,x.tipo);
+                                                daoPreguntas.insertarMedallaPregunta(pregunta.id_pregunta,new Date(),x.texto,x.tipo,function(error,resultado){
+                                                    if(error){
+                                                        console.log("error");
+                                                        next(error); 
+                                                    } else{
+                                                        console.log("render");
+                                                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
+                                                         
+                                                    }
+                                                })        
+                                                        
+                                            }
+                                        })
                                     }
-                                     
-                                })*/
-                               
+                                             
+                                })
+
                             }
 
                         })

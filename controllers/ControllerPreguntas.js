@@ -445,7 +445,7 @@ function medallaPregunta(puntos,medalla){
     var ok=true;
     if(texto!=""){
         ok=comprobarMedallaPregunta(texto,tipo,medalla);
-        console.log(ok);
+        //console.log(ok);
     }
     console.log(ok);
     return {ok,texto,tipo};
@@ -485,12 +485,14 @@ function votar_pregunta(request,response,next){
                         var x = medallaPregunta(voto,medalla);
                         if(x.ok==false){
                             daoPreguntas.insertarMedallaPregunta(id,new Date(),x.texto,x.tipo,function(error,resultado){
-                                if(error)
+                                if(error){
                                     next(error); 
+                                }
+                                    
                             })
                         }
                         
-                        //console.log("paso medalla");
+                        console.log("paso medalla");
                         break;
                     case "ko":
                         voto--;
@@ -505,8 +507,9 @@ function votar_pregunta(request,response,next){
                     if (error)
                         next(error);
                     else {
-                        //console.log("reputacion antes de enviar: " + reputacion);    
-                        response.redirect("/respuestas/informacion_pregunta/"+id);
+                        console.log("reputacion antes de enviar: " + reputacion);    
+                        //response.redirect("/respuestas/informacion_pregunta/"+id);
+                        response.redirect("/preguntas/preguntas.html"); 
                     }
                     
                 });

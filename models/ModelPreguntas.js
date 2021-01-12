@@ -312,12 +312,11 @@ class DAOPreguntas{
                 var sql ="SELECT merito, tipo FROM medallas WHERE id_pregunta="+idPre+";"; 
                
                 conexion.query(sql, function (err, resultado) {
-                    conexion.release();
+                    
                     if (err)
                         callback(err);
                     else{
-                        
-                        callback(null, resultado);
+                        callback(null,resultado);
                     }
                         
                 });//END QUERY                
