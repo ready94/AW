@@ -76,63 +76,94 @@
                 <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
             </form>
 
-            <div>
-                <h1>Usuarios</h1>
-            </div>
 
-            <form id="buscarUsu" action="/preguntas/buscarUsuario" method="POST">
-                <input id="boton_filtrar" type="submit" value="Buscar">
-                <input id="filtrar" type="text" name="searchUsu" placeholder="Filtrar por usuario">
-            </form>
+            <div id="fondo">
+                <div id="titulo_usu">
+                    <h1>Usuarios</h1>
+                </div>
     
-            
-    
-            <div class="grid_container">
-                
-                    <div class="info_usu" >
-                        <div class="imagen_usu">
-                            <img  width="50" height="50" src=<%= perfil.imagen %>>
-                        </div>
-                        <a class="nombre_usu" href=<%="/usuarios/perfil_usu/"+ perfil.id %>>
-                        nombre x
-                        </a>
-                        <div>
-                            200
-                        </div>
-                        <div>
-                            etiqueta
-                        </div>
-
-
-                    </div>
-
-                    <div class="card">
-                        <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
-                        <div class="container">
-                          <h4><b>nombre Y</b></h4> 
-                          <p>reputacion</p> 
-                          <div>
-                              etiqueta
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
-                        <div class="container">
-                          <h4><b>nombre Y</b></h4> 
-                          <p>reputacion</p> 
-                          <div>
-                              etiqueta
-                          </div>
-                        </div>
-                    </div>
-
-            </div>
-
-        </div>
-
+                <form id="buscarUsu" action="/preguntas/buscarUsuario" method="POST">
+                    <input id="boton_filtrar" type="submit" value="Buscar">
+                    <input id="filtrar" type="text" name="searchUsu" placeholder="Filtrar por usuario">
+                </form>
         
+                
+        
+                <div class="grid_container">
+                    
+                    <div class="card">
+                        <a href="#">
+                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
+                            <div class="container">
+                              <h4><b>nombre Y</b></h4> 
+                              <p>reputacion</p> 
+                              <a class="boton_etiqueta" href=#>etiqueta</a>
+                              
+                            </div>
+                        </a>
+                    </div>
+                   
+    
+    
+                        <div class="card">
+                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
+                            <div class="container">
+                              <h4><b>nombre Y</b></h4> 
+                              <p>reputacion</p> 
+                              <div>
+                                  etiqueta
+                              </div>
+                            </div>
+                        </div>
+    
+                        <div class="card">
+                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
+                            <div class="container">
+                              <h4><b>nombre Y</b></h4> 
+                              <p>reputacion</p> 
+                              <div>
+                                  etiqueta
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
+                            <div class="container">
+                              <h4><b>nombre Y</b></h4> 
+                              <p>reputacion</p> 
+                              <div>
+                                  etiqueta
+                              </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
+                            <div class="container">
+                              <h4><b>nombre Y</b></h4> 
+                              <p>reputacion</p> 
+                              <div>
+                                  etiqueta
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
+                            <div class="container">
+                              <h4><b>nombre Y</b></h4> 
+                              <p>reputacion</p> 
+                              <div>
+                                  etiqueta
+                              </div>
+                            </div>
+                        </div>
+    
+                </div>
+    
+            </div>
+    
+            </div>
 
     </body>
 

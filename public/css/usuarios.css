@@ -151,8 +151,21 @@ nav a:hover{
 
 /*----------- caracteristicas propias -----------------*/
 
-/*----------- filtrar por usuario --------------------*/
+#fondo{
+    margin-top: 0.5em;
+    max-width:725px;
+    margin-left: auto;
+    margin-left: 20%;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+}
 
+#titulo_usu{
+    margin: 1em;
+    text-align: center;
+}
+/*----------- filtrar por usuario --------------------*/
 
 #boton_filtrar{
     
@@ -184,38 +197,29 @@ nav a:hover{
 
 /*---------- grid layout -------------------------------*/
 
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    background-color: #2196F3;
-    padding: 10px;
-  }
-
-.info_usu{
-    text-align: center;
-    float: left;
-    width: 30%;
-    cursor: auto;
-    box-sizing: border-box;
-}
-
-.imagen_usu{
+.grid_container {
+    position: relative;
+    margin-top:2em;
     width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+    overflow: auto;
 }
 
-.nombre_usu{
-    padding: 15px 15px;
-    margin-top: 10px;
-    cursor: pointer;
+.grid_container a{
+    color: black;
 }
-
 
 /*--------------------------------------------------------*/
 
 .card {
+    margin: 0.25em;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border: 1px solid rgb(104, 104, 104);
     transition: 0.3s;
-    width: 20%;
+    border-radius: 5px;
+    text-align: center;
   }
   
   .card:hover {
@@ -224,4 +228,25 @@ nav a:hover{
   
   .container {
     padding: 2px 16px;
+    display: block;
   }
+
+  /*------- ETIQUETAS ----------------------*/
+
+.boton_etiqueta{
+    float: left;
+    background-color:#c2a878;
+    border-radius: 10px;
+    border: 2px solid black;
+    color: #fff;
+    font-size: 15px;
+    padding: 8px 8px;
+    cursor: pointer;
+    margin: 0.1em 0em 0.1em 1.5em;
+
+}
+
+.boton_etiqueta:hover {
+    background-color: #eec170;
+    color: #fff;
+}
