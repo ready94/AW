@@ -251,7 +251,7 @@ function usuarios(request,response,next){
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
-
+/*
         daoUser.getAllUser(function(error,resultado){
             if (error) {
                 next(error);
@@ -271,7 +271,7 @@ function usuarios(request,response,next){
                             var etiqueta = [];
                             for (var x of resul) {
                                 etiqueta.push(x.etiqueta);
-                            }*/
+                            }
                             var aux = {
                                 id_usuario: u.id_usuario,
                                 nombre: u.nombre,
@@ -294,9 +294,9 @@ function usuarios(request,response,next){
                 //console.log(usuario);
                 response.render("usuarios", { perfil: perfil, usuario:usuario });
             }
-        })
+        })*/
 
-        
+        response.render("usuarios", { perfil: perfil});
         
 
     }
