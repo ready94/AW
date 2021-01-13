@@ -11,6 +11,8 @@ const expressValidator = require("express-validator");
 //const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
+const multer = require("multer");
+const multerFactory = multer();
 /*
 const DAOUsers = require("./models/DAOUsers");
 const DAOPreguntas = require("./models/DAOPreguntas");
