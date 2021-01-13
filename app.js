@@ -12,7 +12,7 @@ const expressValidator = require("express-validator");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
 const multer = require("multer");
-const multerFactory = multer({dest: path.join(_dirname, "profile_img")});
+const multerFactory = multer({dest: path.join(__dirname, "profile_img")});
 /*
 const DAOUsers = require("./models/DAOUsers");
 const DAOPreguntas = require("./models/DAOPreguntas");

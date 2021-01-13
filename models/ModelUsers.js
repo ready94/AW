@@ -272,10 +272,9 @@ class DAOUsers {
         if (err)
             callback(err);
         else {
-    
-            const sql = "SELECT m.merito,m.tipo FROM medallas_preguntas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE p.id_usuario= ?";   
-            var para=[id_usuario];
-            conexion.query(sql,para, function (err, resultado) {
+            
+            
+            conexion.query(sql, function (err, resultado) {
                 conexion.release();
                 if (err)
                     callback(err);
