@@ -21,26 +21,26 @@ var daoUsuarios = new modelUsuarios(pool);
 */
 
 function medallaVisitas(visitas,medalla){
-    var texto=""; var tipo=0;
-    if(visitas==2){
-        texto="Pregunta Popular";
-        tipo=1;
-    }else if(visitas==4){
-        texto="Pregunta Destacada";
-        tipo=2;
-    }else if(visitas==6){
-        texto="Pregunta Famosa";
-        tipo=3;
+    
+    var texto = ""; 
+    var tipo = 0;
+
+    if(visitas == 2){
+        texto = "Pregunta Popular";
+        tipo = 1;
+    }else if(visitas == 4){
+        texto = "Pregunta Destacada";
+        tipo = 2;
+    }else if(visitas == 6){
+        texto = "Pregunta Famosa";
+        tipo = 3;
     }
 
-    //console.log("comprobar medalla");
-    console.log("merito",texto);
-    var ok=true;
-    if(texto!=""){
-        ok=comprobarMedallaRespuesta(texto,tipo,medalla);
-        //console.log(ok);
+    var ok = true;
+
+    if(texto != ""){
+        ok = comprobarMedallaRespuesta(texto,tipo,medalla);
     }
-    //console.log(ok);
     return {ok,texto,tipo};
    
 }
@@ -48,7 +48,6 @@ function medallaVisitas(visitas,medalla){
 function informacion_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -56,9 +55,6 @@ function informacion_pregunta(request,response,next){
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
-
-        //console.log(request.params.idPregunta);
-
 
         daoPreguntas.getPreguntaInformacion(request.params.idPregunta, function (error, resultado) {
 
@@ -78,8 +74,6 @@ function informacion_pregunta(request,response,next){
                             etiqueta.push(i.etiqueta);
                         }
 
-                        //console.log(resultado);
-
                         var fecha = new Date(resultado[0].fecha);
                         var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
@@ -95,8 +89,6 @@ function informacion_pregunta(request,response,next){
                             etiqueta: etiqueta
                         }
 
-                        //console.log(pregunta);
-
                         daoRespuestas.countRespuestas(pregunta.id_pregunta, function (e, r) {
                             if (e) {
                                 next(e)
@@ -111,7 +103,6 @@ function informacion_pregunta(request,response,next){
                                 next(err);
                             } else {
 
-                                //console.log(resul);
                                 var respuesta = [];
                                 resul.forEach((r) => {
 
@@ -129,7 +120,6 @@ function informacion_pregunta(request,response,next){
                                                     votadoRespuesta = false;
                                                 }
                                                 else {
-                                                    console.log("render");
                                                     votadoRespuesta = true;
                                                 }
                                             }
@@ -152,8 +142,6 @@ function informacion_pregunta(request,response,next){
                                     
                                 })
 
-                                //console.log(respuesta);
-                                console.log("actualizar visitas");
                                 daoPreguntas.actualizarVisitas(pregunta.visitas,pregunta.id_pregunta,function(error,resultado){
                                     if (error) {
                                         next(error);
@@ -164,7 +152,7 @@ function informacion_pregunta(request,response,next){
                                                 next(error);
                                             }else{
 
-                                                let medalla=[];
+                                                let medalla = [];
                                                 resultado.forEach(element => medalla.push({
                                                     merito: element.merito,
                                                     tipo: element.tipo
@@ -172,11 +160,8 @@ function informacion_pregunta(request,response,next){
                 
                                                 var x = medallaVisitas(pregunta.visitas,medalla);
  
-                                                console.log("esto vaaaaa a petaaar:");
-                                                console.log(pregunta.id_pregunta,x.texto,x.tipo);
                                                 daoPreguntas.insertarMedallaPregunta(pregunta.id_pregunta,new Date(),x.texto,x.tipo,function(error,resultado){
                                                     if(error){
-                                                        console.log("error");
                                                         next(error); 
                                                     } else{
                                                         var votadoPregunta = true;
@@ -192,34 +177,24 @@ function informacion_pregunta(request,response,next){
                                                                         votadoPregunta = false;
                                                                     }
                                                                     else {
-                                                                        console.log("render");
                                                                         votadoPregunta = true;
                                                                     }
                                                                 }
                                                                 response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votadoPregunta: votadoPregunta });
-                                                            }
-                                                            
+                                                            } 
                                                         });
-                                                        
-                                                         
                                                     }
-                                                })        
-                                                        
+                                                })                  
                                             }
                                         })
-                                    }
-                                             
+                                    }          
                                 })
-
                             }
-
                         })
                     }
                 });
             }
-
         });
-
     }
 }
 
@@ -232,26 +207,19 @@ function informacion_pregunta(request,response,next){
 function responder_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var texto = request.body.texto;
         var idPregunta = request.body.id;
         var fecha = new Date();
 
-
-        //console.log(idPregunta);
-
-        //console.log("id usuario dentro de formular pregunta: " + request.session.idUsuario);
         daoRespuestas.insertRespuesta(idPregunta, request.session.idUsuario, texto, fecha, function (error, resultado) {
             if (error) {
                 next(error);
             } else {
-                // console.log(resultado);
                 response.redirect("/preguntas/preguntas.html");
             }
         });
-
     }
 }
 
@@ -262,38 +230,36 @@ function responder_pregunta(request,response,next){
 */
 
 function comprobarMedallaRespuesta(texto,tipo,medalla){
-    console.log(medalla);
-    var ok=false;
-    for(var i=0; i< medalla.length;i++){
-        if(medalla[i].merito==texto && medalla[i].categoria==tipo){
-            ok=true;
+
+    var ok = false;
+    for(var i = 0; i < medalla.length; i++){
+        if(medalla[i].merito == texto && medalla[i].categoria == tipo){
+            ok = true;
         }
     }
-    console.log("comprobar:",ok);
     return ok;     
 }
 
 function medallaRespuesta(puntos,medalla){
-    var texto=""; var tipo=0;
-    if(puntos==2){
-        texto="Respuesta Interesante";
-        tipo=1;
-    }else if(puntos==4){
-        texto="Buena Respuesta";
-        tipo=2;
-    }else if(puntos==6){
-        texto="Excelente Respuesta";
-        tipo=3;
+    var texto = ""; 
+    var tipo = 0;
+    if(puntos == 2){
+        texto = "Respuesta Interesante";
+        tipo = 1;
+    }else if(puntos == 4){
+        texto = "Buena Respuesta";
+        tipo = 2;
+    }else if(puntos == 6){
+        texto = "Excelente Respuesta";
+        tipo = 3;
     }
 
-    //console.log("comprobar medalla");
-    console.log("merito",texto);
-    var ok=true;
-    if(texto!=""){
-        ok=comprobarMedallaRespuesta(texto,tipo,medalla);
-        console.log(ok);
+    var ok = true;
+
+    if(texto != ""){
+        ok = comprobarMedallaRespuesta(texto,tipo,medalla);
     }
-    console.log(ok);
+
     return {ok,texto,tipo};
    
 }
@@ -301,43 +267,38 @@ function medallaRespuesta(puntos,medalla){
 function votar_respuesta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         
         var id = request.body.idRespuesta; //id respuesta
-        console.log(id);
         daoRespuestas.getDatosVotarRespuestas(id, function (error, datos) {
             if (error) 
                 next(error);
              else {
-                //console.log(datos);
                 
-                var voto=datos.total_puntos;
-                var idUser= datos.id_usuario;
-                var idPre= datos.id_pregunta;
+                var voto = datos.total_puntos;
+                var idUser = datos.id_usuario;
+                var idPre = datos.id_pregunta;
                 var reputacion = datos.reputacion;
-                let medalla=[];
+                let medalla = [];
+
                 datos.resul.forEach(element => medalla.push({
                     merito: element.merito,
                     tipo: element.tipo
                 }));
 
-                //console.log(request.body.voto);
                 switch (request.body.voto) {
                     case "ok":
                         voto++;
                         reputacion = reputacion + 10;
-                        //console.log("medalla");
                         //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
                         var x = medallaRespuesta(voto,medalla);
-                        if(x.ok==false){
+                        if(x.ok == false){
                             daoRespuestas.insertarMedallaRespuesta(id,new Date(),x.texto,x.tipo,function(error,resultado){
                                 if(error)
                                     next(error); 
                             })
                         }
                         
-                        //console.log("paso medalla");
                         break;
                     case "ko":
                         voto--;
@@ -357,8 +318,6 @@ function votar_respuesta(request,response,next){
                             if (error)
                                 next(error);
                             else {
-                                console.log("reputacion antes de enviar: " + reputacion);
-                                //response.redirect("/preguntas/preguntas.html");   
                                 response.redirect("/respuestas/informacion_pregunta/" + idPre);
                             }
 

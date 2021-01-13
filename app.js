@@ -8,15 +8,8 @@ const fs = require("fs");
 const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
 const expressValidator = require("express-validator");
-//const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
-
-/*
-const DAOUsers = require("./models/DAOUsers");
-const DAOPreguntas = require("./models/DAOPreguntas");
-//const DAOEtiquetas = require("./models/DAOEtiquetas");
-const DAORespuestas = require("./models/DAORespuestas");*/
 
 // Creación de la sesion
 const middlewareSession = session({
@@ -34,17 +27,10 @@ const pool = mysql.createPool(config.mysqlConfig);
 
 const ficherosEstaticos = path.join(__dirname, "public");
 
-
-
-//const loginRouter = require("./routers/RouterLogin.js");
 const preguntasRouter = require("./routers/RouterPreguntas.js");
 const respuestasRouter = require("./routers/RouterRespuestas.js");
 const usuariosRouter = require("./routers/RouterUsers.js");
 
-/*let daoUser = new DAOUsers(pool);
-let daoPreguntas = new DAOPreguntas(pool);
-//let daoEtiquetas = new DAOEtiquetas(pool);
-let daoRespuestas= new DAORespuestas(pool);*/
 let moment = require("moment");
 const { response } = require("express");
 
@@ -55,10 +41,6 @@ app.use(express.static(ficherosEstaticos));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middlewareSession);
 app.use(expressValidator());
-
-//app.use(comprobarLogin);
-//app.use(middlewareNotFound);
-//app.use(middlewareServerError);
 
 /*
 ****************************************************************************************************************************************************************
@@ -71,14 +53,6 @@ app.listen(config.port, function (err) {
     else 
         console.log(`Servidor arrancado en el puerto ${config.port}`);
 });
-
-/*
-****************************************************************************************************************************************************************
-               LOGIN USUARIO
-****************************************************************************************************************************************************************                                                                   
-*/
-
-//app.use("/login", loginRouter);
 
 /*
 ****************************************************************************************************************************************************************

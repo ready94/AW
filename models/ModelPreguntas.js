@@ -23,16 +23,11 @@ class DAOPreguntas{
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        //console.log(resultado);
+                    else
                         callback(null, resultado);
-
-                    }
-                        
-                });//END QUERY                
-                
+                });                 
             }
-        });//END GET CONEXION
+        });
     }
 
     getByIdPregunta(id, callback){
@@ -44,19 +39,16 @@ class DAOPreguntas{
                 // devuelve el usuario entero cuyo email es el pasado por parametro
                 var sql = "SELECT * FROM preguntas WHERE id_pregunta = ?;";
                 var para = [id];
+
                 conexion.query(sql, para, function (err, resultado) {
                     conexion.release();
-                    if (err) {
+                    if (err) 
                         callback(err);
-                    } else {
-                        console.log(resultado);
+                    else 
                         callback(null, resultado);
-
-                    }
-                }); //END QUERY
-                
+                }); 
             }
-        }); //END GET CONEXION
+        }); 
     }
 
     getPreguntaInformacion(id,callback){
@@ -73,16 +65,11 @@ class DAOPreguntas{
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        console.log(resultado);
-                        callback(null, resultado);
-
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);    
+                });              
             }
-        });//END GET CONEXION
+        });
     }
 
     //Recoge todas las preguntas almacenadas en la BBDD que contengan un texto específico
@@ -97,23 +84,15 @@ class DAOPreguntas{
             
             const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.titulo LIKE '%"+texto+"%' OR p.cuerpo LIKE '%"+texto+"%' ORDER BY p.fecha DESC;"; 
             
-            
-            
-                conexion.query(sql, function (err, resultado) {
-                    conexion.release();
-                    if (err)
-                        callback(err);
-                    else{
-                        //console.log(resultado);
-                        callback(null, resultado);
-
-                    }
-                        
-                });//END QUERY                
-                
+            conexion.query(sql, function (err, resultado) {
+                conexion.release();
+                if (err)
+                    callback(err);
+                else
+                    callback(null, resultado);  
+                });               
             }
-        });//END GET CONEXION
-
+        });
     }
 
     //Recoge todas las preguntas almacenadas en la BBDD que contengan una etiqueta específica
@@ -124,26 +103,20 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
-            
-            const sql = "SELECT * FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario JOIN etiquetas AS e ON p.id_pregunta=e.id_pregunta AND e.etiqueta='"+etiqueta+"' ORDER BY p.fecha DESC;"; 
-             
-            //const sql2="SELECT * FROM usuario AS u JOIN preguntas AS p ON p.id_usuario=u.id_usuario ORDER BY p.fecha;"; 
+                //contador de preguntas
+                
+                const sql = "SELECT * FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario JOIN etiquetas AS e ON p.id_pregunta=e.id_pregunta AND e.etiqueta='"+etiqueta+"' ORDER BY p.fecha DESC;"; 
+                
+                //const sql2="SELECT * FROM usuario AS u JOIN preguntas AS p ON p.id_usuario=u.id_usuario ORDER BY p.fecha;"; 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        //console.log(resultado);
-                        callback(null, resultado);
-
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);  
+                });   
             }
-        });//END GET CONEXION
-        
+        });
     }
 
     //Recoge todas las preguntas almacenadas en la BBDD que no tengan una respuesta
@@ -161,16 +134,11 @@ class DAOPreguntas{
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                       // console.log(resultado);
+                    else
                         callback(null, resultado);
-
-                    }
-                        
-                });//END QUERY                
-                
+                });                 
             }
-        });//END GET CONEXION
+        });
     }
 
     insertPregunta(id_usuario, titulo, cuerpo, fecha, callback){
@@ -188,22 +156,22 @@ class DAOPreguntas{
                     if (err)
                         callback(err);
                     else {
-                        const sql2= "UPDATE usuario SET num_preguntas=num_preguntas+1 WHERE id_usuario=?;"
-                        var para2=[id_usuario];
+                        const sql2 = "UPDATE usuario SET num_preguntas=num_preguntas+1 WHERE id_usuario=?;"
+                        var para2 = [id_usuario];
+
                         conexion.query(sql2, para2, function (err, resultado) {
                             conexion.release();
                             if (err)
                                 callback(err);
-                            else {
+                            else 
                                 callback(null, resultado);
-                            }
                         });
                     }
-                });//END QUERY                
-                
+                });               
             }
-        });//END GET CONEXION
+        });
     }
+
     count(callback){
         this.pool.getConnection(function (err, conexion) {
             
@@ -217,16 +185,11 @@ class DAOPreguntas{
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        //console.log(resultado[0]); //comen
-                        callback(null, resultado);
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);     
+                });                 
             }
-        });//END GET CONEXION
-        
+        });
     }
 
     countEtiquetas(etiqueta,callback){
@@ -237,21 +200,17 @@ class DAOPreguntas{
             else {
             //contador de preguntas
                 const sql =  "SELECT count (*) as TotalEtiquetas FROM etiquetas WHERE etiqueta= ?;"; 
-                var para=[etiqueta];
+                var para = [etiqueta];
                
                 conexion.query(sql,para, function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        //console.log(resultado);
-                        callback(null, resultado);
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);  
+                });
             }
-        });//END GET CONEXION
+        });
     }
 
     countTexto(texto,callback){
@@ -267,15 +226,11 @@ class DAOPreguntas{
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                       // console.log(resultado[0]); //comen
-                        callback(null, resultado);
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);    
+                });                 
             }
-        });//END GET CONEXION
+        });
     }
 
     countSinResponder(callback){
@@ -291,15 +246,11 @@ class DAOPreguntas{
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        console.log(resultado[0]); //comen
-                        callback(null, resultado);
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);     
+                });             
             }
-        });//END GET CONEXION
+        });
     }
 
     getDatosVisitas(idPre,callback){
@@ -309,20 +260,17 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql ="SELECT merito, tipo FROM medallas_preguntas WHERE id_pregunta="+idPre+";"; 
+                var sql = "SELECT merito, tipo FROM medallas_preguntas WHERE id_pregunta=" + idPre + ";"; 
                
                 conexion.query(sql, function (err, resultado) {
                     
                     if (err)
                         callback(err);
-                    else{
+                    else
                         callback(null,resultado);
-                    }
-                        
-                });//END QUERY                
-                
+                });                  
             }
-        });//END GET CONEXION
+        });
     }
 
     actualizarVisitas(visitas,id,callback){
@@ -338,15 +286,11 @@ class DAOPreguntas{
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        //console.log(resultado[0]); //comen
-                        callback(null, resultado);
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);  
+                }); 
             }
-        });//END GET CONEXION
+        });
     }
 
     getDatosVotarPreguntas(id, callback){
@@ -358,68 +302,59 @@ class DAOPreguntas{
                 // devuelve el usuario entero cuyo email es el pasado por parametro
                 var sql = "SELECT p.TotalPuntos, u.id_usuario, u.reputacion FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE id_pregunta = ?;";
                 var para = [id];
+
                 conexion.query(sql, para, function (err, resultado) {
-                    if (err) {
+                    if (err) 
                         callback(err);
-                    } else {
-                        const sql2="SELECT m.tipo, m.merito FROM medallas_preguntas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE m.id_pregunta=? ";
+                    else {
+                        const sql2 = "SELECT m.tipo, m.merito FROM medallas_preguntas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE m.id_pregunta=? ";
+                        
                         conexion.query(sql2,para,function(error,resul){
                             conexion.release();
-                            if(error){
-                                callback(error);
-                            }else{
-                               
 
-                                //console.log("medalla",medalla);
-                                //console.log("resultado:",resultado)
-                                var datos={
+                            if(error)
+                                callback(error);
+                            else{
+                                var datos = {
                                     id_usuario: resultado[0].id_usuario,
                                     total_puntos:resultado[0].TotalPuntos,
                                     reputacion: resultado[0].reputacion,
                                     resul: resul
                                 }
-
-                                //console.log("datos:",datos);
                                 callback(null,datos);
-
                             }
                         })
-
                     }
-                }); //END QUERY
-
+                }); 
             }
-        }); //END GET CONEXION
+        }); 
     }
 
-    actualizarDatosPreguntas(id,idUser,voto,reputacion,callback){
+    actualizarDatosPreguntas(id, idUser, voto, reputacion, callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
             //contador de preguntas
-                var sql ="UPDATE preguntas SET TotalPuntos="+voto+" WHERE id_pregunta="+id+";"; 
+                var sql ="UPDATE preguntas SET TotalPuntos=" + voto + " WHERE id_pregunta=" + id + ";"; 
                 conexion.query(sql, function (err, resultado) {
                     
                     if (err)
                         callback(err);
                     else{
-                        var sql2 ="UPDATE usuario SET reputacion="+reputacion+" WHERE id_usuario="+idUser+";"; 
+                        var sql2 ="UPDATE usuario SET reputacion=" + reputacion + " WHERE id_usuario=" + idUser + ";"; 
                         conexion.query(sql2, function (err, resultado) {
                             conexion.release();
                             if (err)
                                 callback(err);
-                            else{
+                            else
                                 callback(null, resultado);
-                            }
                         });
-                    }
-                        
-                });//END QUERY                
-                
+                    }     
+                });                   
             }
-        });//END GET CONEXION
+        });
     }
 
     insertarMedallaPregunta(id,fecha,merito,tipo,callback){
@@ -428,28 +363,25 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                const sql ="INSERT INTO medallas_preguntas (id_pregunta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
-                var para=[id,fecha,tipo,merito];
+                const sql = "INSERT INTO medallas_preguntas (id_pregunta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
+                var para = [id, fecha, tipo, merito];
+
                 conexion.query(sql, para,function (err, resultado) {
                     if (err)
                         callback(err);
                     else{
-                        const sql2="DELETE FROM medallas_preguntas WHERE id_pregunta="+id+" AND tipo=0;";
+                        const sql2 = "DELETE FROM medallas_preguntas WHERE id_pregunta=" + id + " AND tipo=0;";
                         conexion.query(sql2, para,function (err, resultado) {
                             conexion.release();
                             if (err)
                                 callback(err);
-                            else{
+                            else
                                 callback(null, resultado);
-                            }
                         });
-                        
                     }
-                        
-                });//END QUERY                
-                
+                }); 
             }
-        });//END GET CONEXION
+        });
     }
 
     /*
@@ -459,23 +391,23 @@ class DAOPreguntas{
     */
 
    getEtiquetas(id_pregunta,callback) {
-    this.pool.getConnection(function (err, conexion) {
+        this.pool.getConnection(function (err, conexion) {
 
-        if (err)
-            callback(err);
-        else {
-            
-            var sql = "SELECT * FROM etiquetas WHERE id_pregunta= ?";   
-            var para=[id_pregunta];
-            conexion.query(sql,para, function (err, resultado) {
-                if (err)
-                    callback(err);
-                else
-                    callback(null, resultado);
-            });//END QUERY                
-            conexion.release();
-        }
-    });//END GET CONEXION
+            if (err)
+                callback(err);
+            else {
+                var sql = "SELECT * FROM etiquetas WHERE id_pregunta= ?";   
+                var para = [id_pregunta];
+
+                conexion.query(sql,para, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else
+                        callback(null, resultado);
+                });                
+                conexion.release();
+            }
+        });
     }
 
     getAllEtiquetas(callback) {
@@ -500,14 +432,11 @@ class DAOPreguntas{
                         }));
 
                         callback(null, etiqueta);
-                    }
-                        
-                });//END QUERY                
-                
+                    }        
+                });                
             }
-        });//END GET CONEXION
+        });
     }
-
 
     insertEtiqueta(etiqueta, id_pregunta,id_usuario, callback) {
         this.pool.getConnection(function (err, conexion) {
@@ -517,19 +446,17 @@ class DAOPreguntas{
             else {
 
                 var sql = 'INSERT INTO etiquetas (etiqueta, id_pregunta,id_usuario) VALUES (?, ?,?);';
-                var para = [etiqueta, id_pregunta,id_usuario];
+                var para = [etiqueta, id_pregunta, id_usuario];
 
                 conexion.query(sql, para, function (err, resultado) {
                     if (err)
                         callback(err);
-                    else {
-                        console.log(resultado)
+                    else 
                         callback(null, resultado);
-                    }
-                });//END QUERY                
+                });               
                 conexion.release();
             }
-        });//END GET CONEXION
+        });
     }
 
     getUltimoID(callback){
@@ -543,10 +470,10 @@ class DAOPreguntas{
                         callback(err);
                     else
                         callback(null, resultado);
-                });//END QUERY                
+                });              
                 conexion.release();
             }
-        });//END GET CONEXION
+        });
     }
 
     existeEtiqueta(etiqueta, callback){
@@ -559,14 +486,12 @@ class DAOPreguntas{
                 conexion.query(sql, function (err, resultado) {
                     if (err)
                         callback(err);
-                    else {
-                        console.log(resultado)
+                    else 
                         callback(null, resultado);
-                    }
-                });//END QUERY                
+                });               
                 conexion.release();
             }
-        });//END GET CONEXION 
+        });
     }
 
     getVotacionPregunta(id_usuario, id_pregunta, callback){
@@ -575,18 +500,16 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                const sql = "SELECT id_pregunta FROM votacion_preguntas WHERE id_usuario=" + id_usuario + " AND id_pregunta=" + id_pregunta+";";
+                const sql = "SELECT id_pregunta FROM votacion_preguntas WHERE id_usuario=" + id_usuario + " AND id_pregunta=" + id_pregunta + ";";
                 conexion.query(sql, function (err, resultado) {
                     if (err)
                         callback(err);
-                    else {
-                        console.log(resultado)
+                    else 
                         callback(null, resultado);
-                    }
-                });//END QUERY                
+                });               
                 conexion.release();
             }
-        });//END GET CONEXION 
+        });
     }
 
     insertVotacionPregunta(id_usuario, id_pregunta, callback){
@@ -602,14 +525,12 @@ class DAOPreguntas{
                 conexion.query(sql, para, function (err, resultado) {
                     if (err)
                         callback(err);
-                    else {
-                        console.log(resultado)
+                    else
                         callback(null, resultado);
-                    }
-                });//END QUERY                
+                });                
                 conexion.release();
             }
-        });//END GET CONEXION
+        });
     }
 
 }

@@ -3,21 +3,9 @@
 var config = require("../config");
 var mysql = require("mysql");
 const path = require("path");
-//var express = require("express");
-//var bodyParser = require("body-parser");
-//var fs = require("fs");
-//var session = require("express-session");
-//var mysqlSession = require("express-mysql-session");
-//var MySQLStore = mysqlSession(session);
-//var sessionStore = new MySQLStore(config.mysqlConfig);
-
-//var user = express.Router();
 
 var modelUsers = require("../models/ModelUsers");
-//const ControllerUsuario = require("../controllers/ControllerUsers.js");
 
-
-//const { nextTick } = require("process");
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoUser = new modelUsers(pool);
@@ -30,15 +18,12 @@ var daoUser = new modelUsers(pool);
 */
 
 function comprobarLogin(request, response, next) {
-    console.log("ha entrado")
-    console.log(request.session.usuario);
-    if (request.session.usuario) {
-        console.log("no hay usu");
+
+    if (request.session.usuario) 
         next();
-    } else {
-        console.log("hay usu");
+    else 
         response.redirect("/usuarios/login.html");
-    }
+    
 }
 
 /*
@@ -47,31 +32,25 @@ function comprobarLogin(request, response, next) {
 ****************************************************************************************************************************************************************                                                                   
 */
 
-function acceso_login(request,response){
-    response.render("login", { errorMsg: null }); // renderiza la pagina login.ejs
+function acceso_login(request, response){
+    response.render("login", { errorMsg: null }); 
 }
 
-function login(request,response,next){
+function login(request, response, next){
     var email = request.body.mail;
     var password = request.body.pass;
 
-    daoUser.isUserCorrect(email, password, cd_isUserCorrect) // comprobacion si el user esta en la base de datos
+    daoUser.isUserCorrect(email, password, cd_isUserCorrect);
 
     function cd_isUserCorrect(err, resultado, next) {
-        if (err) {
-            /*response.status(500);
-            console.log("ERROR CON LA BASE DE DATOS " + err);
-            response.render("login", { errorMsg: null })*/
+        if (err) 
             next(err);
-        } else if (resultado.length != 0) {
-            console.log("USUARIO LOGUEADO CORRECTAMENTE");
-            request.session.usuario = email; // usuario logueado actualmente
-            response.redirect("/usuarios/pag_principal.html"); // redirecion a la pagina perfil que se muestra por pantalla
-
-        } else {
-            console.log("ERROR AL LOGUEAR USUARIO ");
-            response.render("login", { errorMsg: " Dirección de correo y/o contraseña no válidos." }) //renderiza la pagina perfil.ejs
-        }
+        else if (resultado.length != 0) {
+            request.session.usuario = email; 
+            response.redirect("/usuarios/pag_principal.html");
+        } 
+        else 
+            response.render("login", { errorMsg: " Dirección de correo y/o contraseña no válidos." });
     }
 }
 
@@ -83,7 +62,6 @@ function login(request,response,next){
 
 function logout(request,response){
     request.session.destroy();
-    //console.log("Usuario deslogueado correctamente")
     response.redirect("/usuarios/login.html");
 }
 
@@ -94,7 +72,6 @@ function logout(request,response){
 */
 
 // Retorna un entero aleatorio entre min (incluido) y max (excluido)
-// ¡Usando Math.round() te dará una distribución no-uniforme!
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -111,25 +88,18 @@ function validarPass(p1, p2) {
         cont++;
     }
 
-    if (espacios) {
-        console.log("La contraseña no puede contener espacios en blanco");
+    if (espacios) 
         return false;
-    }
 
     //que no haya ningun campo vacio
-    if (p1.length == 0 || p2.length == 0) {
-        console.log("Los campos de la password no pueden quedar vacios");
+    if (p1.length == 0 || p2.length == 0)
         return false;
-    }
 
     //que la contraseña y la confirmacion sean iguales
-    if (p1 != p2) {
-        console.log("Las passwords deben de coincidir");
+    if (p1 != p2)
         return false;
-    } else {
+    else 
         return true;
-    }
-
 }
 
 function acceso_crear_cuenta(request,response){
@@ -142,22 +112,12 @@ function crear_cuenta(request,response,next){
     var password2 = request.body.pass_confirm;
     var nick = request.body.nick;
     var icon = "";
-    console.log("icon antes: " + icon);
 
-   /* if (request.file == undefined) {
-        icon = "../img/icon" + getRandom(1, 10) + ".png";
-        console.log("icon undefined: " + icon);
-    }*/
-
-    if (request.file) {
+    if (request.file) 
         icon = request.file.filename;
-        console.log("icon no undefined: " + icon);
-    }else{
+    else
         icon = "../img/icon" + getRandom(1, 10) + ".png";
-        console.log("icon undefined: " + icon);
-    }
 
-    console.log("icon despues: " + icon);
     if (validarPass(password, password2)) {
         //Expresion regular para validar contraseña
         //Tiene que contener al menos un dígito, una mayúscula y una minúscula
@@ -173,27 +133,17 @@ function crear_cuenta(request,response,next){
                 fecha_alta: new Date()
             }
 
-            daoUser.insertUser(usuario, cd_insertUser); //insertamos el usuario en la BBDD
+            daoUser.insertUser(usuario, cd_insertUser);
 
             function cd_insertUser(err, resultado) {
                 if (err) {
-                    next(err);
-                    /*response.status(500);
-                    console.log("ERROR BBDD" + err); //comen
-                    if (err.sqlState == 2300) {
-                        console.log("Email ya existente");
-                    };
-                    response.render("crear_cuenta", { errorMsg: null })*/
+                    next(err); 
                 } else if (resultado.length != 0) {
-                   // console.log("USUARIO CREADO CORRECTAMENTE"); //comen
-                    response.redirect("/usuarios/login.html"); // redirecion a la pagina login si no ha habido errores 
+                    response.redirect("/usuarios/login.html"); 
                 } else {
-                    //console.log("ERROR AL CREAR EL USUARIO "); //comen
                     response.redirect("/usuarios/crear_cuenta.html");
                 }
             }
-        } else {
-            console.log("contraseña no valida"); //comen
         }
     }
 }
@@ -205,10 +155,8 @@ function crear_cuenta(request,response,next){
 */
 
 function pag_principal(request,response,next){
-    //console.log("pagina principal");
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         response.locals.email = request.session.usuario;
@@ -218,22 +166,19 @@ function pag_principal(request,response,next){
         function cb_getUser(error, resultado) {
             if (error) {
                 next(error);
-                /*response.status(500);
-                console.log("ERROR EN LA BASE DE DATOS");*/
             } else {
 
-                var usuario = { // valores del usuario
+                var usuario = { 
                     id: resultado[0].id_usuario,
                     nombre: resultado[0].nombre,
                     imagen: resultado[0].imagen
                 };
-                // guardamos los valores del usuario logueado actualmente en variables de sesion
+                
 
                 request.session.idUsuario = usuario.id;
                 request.session.nombre = usuario.nombre;
                 request.session.imagen = usuario.imagen;
 
-                //response.status(200);
                 response.render("pag_principal", { perfil: usuario });
             }
         }
@@ -248,39 +193,36 @@ function pag_principal(request,response,next){
 
 function maxEtiquetas(etiquetas){
     
-    var cont=1;
-    var maximo=1;
-    let max=[];
-    //console.log("comienza:",etiquetas);
+    var cont = 1;
+    var maximo = 1;
+    let max = [];
 
-    for(var i=0; i<etiquetas.length-1;i++){
-        //console.log("i",i, ": ",etiquetas[i].etiqueta);
-        //console.log("i++",i+1, ": ",etiquetas[i+1].etiqueta);
-        if(etiquetas[i].etiqueta==etiquetas[i+1].etiqueta){
+    for(var i = 0; i < etiquetas.length-1; i++){
+
+        if(etiquetas[i].etiqueta == etiquetas[i+1].etiqueta){
             cont++;
-            if(etiquetas[i].id_usuario==etiquetas[i+1].id_usuario && cont>maximo){
+
+            if(etiquetas[i].id_usuario == etiquetas[i+1].id_usuario && cont > maximo){
                 max.push(etiquetas[i]);
-                maximo=cont;
+                maximo = cont;
             }
             else{
-                maximo=1;
-                cont=1;
+                maximo = 1;
+                cont = 1;
             }
         }
         else{
-            maximo=1;
-            cont=1;
+            maximo = 1;
+            cont = 1;
         }
     }
 
-    //console.log("termina",max);
     return max;
 }
 
 function usuarios(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var perfil = {
@@ -294,8 +236,7 @@ function usuarios(request,response,next){
                 next(error);
             } else {
 
-                let usuario=[];
-               //console.log(resultado);
+                let usuario = [];
                 resultado.forEach((u) => {
                     
                     var aux = {
@@ -314,14 +255,10 @@ function usuarios(request,response,next){
                     else{
                         response.render("usuarios", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta) }); 
                     }
-
-                })       
-
-                
+                });       
             }
-        })
+        });
     }
-
 }
 
 /*
@@ -333,7 +270,6 @@ function usuarios(request,response,next){
 function filtrar_usuario(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var perfil = {
@@ -350,9 +286,7 @@ function filtrar_usuario(request,response,next){
                 next(error);
             } else {
 
-                //console.log("users con",nombre,":",resultado);
-                let usuario=[];
-               //console.log(resultado);
+                let usuario = [];
                 resultado.forEach((u) => {
                     
                     var aux = {
@@ -362,7 +296,7 @@ function filtrar_usuario(request,response,next){
                         reputacion: u.reputacion
                     }
                     usuario.push(aux);
-                })
+                });
 
                 daoUser.getAllEtiquetas(function(error,etiqueta){
 
@@ -371,9 +305,7 @@ function filtrar_usuario(request,response,next){
                     else{
                         response.render("filtrar_nombre_usu", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta),nombre:nombre }); 
                     }
-
-                })       
-   
+                });
             }
         });
     }
@@ -388,7 +320,6 @@ function filtrar_usuario(request,response,next){
 function perfil_usu(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -397,8 +328,7 @@ function perfil_usu(request,response,next){
             imagen: request.session.imagen
         };
 
-        var id_usuario=request.params.idUsuario
-       // console.log("id:", request.params.idUsuario);
+        var id_usuario = request.params.idUsuario
         daoUser.getUserByID(id_usuario, cb_getPreguntas);
 
         function cb_getPreguntas(err, resultado) {
@@ -419,16 +349,7 @@ function perfil_usu(request,response,next){
                     reputacion: resultado[0].reputacion
                 }
 
-                /*daoUser.getAllMedallas(bio.id_usuario,function(error,medallas){
-                    if(error){
-                        next(error);
-                    }else{
-                        console.log("total:",medallas);*/
-                        response.render("perfil_usu", { perfil: usuario, bio: bio });
-                  /*  }
-                })*/
-                
-
+                response.render("perfil_usu", { perfil: usuario, bio: bio });
             }
         }
     }

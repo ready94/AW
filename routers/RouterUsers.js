@@ -75,6 +75,4 @@ user.get("/perfil_usu/:idUsuario", ControllerUsuario.perfil_usu);
 
 user.post("/buscarUsuario", ControllerUsuario.filtrar_usuario);
 
-
-
 module.exports = user;
