@@ -244,6 +244,9 @@ nav a:hover{
 /*----------------------------------------*/
 
 .info_usu{
+    justify-content: center;
+    align-items: center;
+    display: flex;
     text-align: center;
     float: left;
     width: 30%;

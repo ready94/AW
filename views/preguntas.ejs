@@ -114,18 +114,21 @@
                     </div>
 
                     <div class="info_usu" >
-                        <div class="fecha_usu">
-                            Formulada el 
-                            <%= p.fecha%>
+                        <div>
+                            <div class="fecha_usu">
+                                Formulada el 
+                                <%= p.fecha%>
+                                
+                            </div>
                             
+                            <div class="imagen_usu">
+                                <img  width="50" height="50" src=<%= p.imagen %>>
+                            </div>
+                            <a class="nombre_usu" href=<%="/usuarios/perfil_usu/"+ p.id_usuario %>>
+                            <%= p.nombre%>
+                            </a>
                         </div>
                         
-                        <div class="imagen_usu">
-                            <img  width="50" height="50" src=<%= p.imagen %>>
-                        </div>
-                        <a class="nombre_usu" href=<%="/usuarios/perfil_usu/"+ p.id_usuario %>>
-                        <%= p.nombre%>
-                        </a>
                     </div>
                 </li>
                 <% }); %>

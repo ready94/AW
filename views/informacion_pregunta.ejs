@@ -120,17 +120,20 @@
                 </div>
     
                 <div id="info_usu" >
-                    <div class="fecha_usu">
-                        Formulada el <%= pregunta.fecha%>
+                    <div>
+                        <div class="fecha_usu">
+                            Formulada el <%= pregunta.fecha%>
+                        </div>
+                        
+                        <div class="imagen_usu">
+                            <img  width="50" height="50" src=<%= pregunta.imagen %>>
+                        </div>
+    
+                        <a id="nombre_usu" href=<%="/usuarios/perfil_usu/" + pregunta.id_usuario %>>
+                            <%= pregunta.nombre%>
+                        </a>
                     </div>
                     
-                    <div class="imagen_usu">
-                        <img  width="50" height="50" src=<%= pregunta.imagen %>>
-                    </div>
-
-                    <a id="nombre_usu" href=<%="/usuarios/perfil_usu/" + pregunta.id_usuario %>>
-                        <%= pregunta.nombre%>
-                    </a>
                     
                 </div>
             </div>
@@ -164,17 +167,20 @@
                     </div>
         
                     <div id="info_usu" >
-                        <div class="fecha_usu">
-                            Respondida el <%= r.fecha_respuesta%>
+                        <div>
+                            <div class="fecha_usu">
+                                Respondida el <%= r.fecha_respuesta%>
+                            </div>
+                            
+                            <div class="imagen_usu">
+                                <img  width="50" height="50" src=<%= r.imagen %>>
+                            </div>
+        
+                            <a class="nombre_usu" href=<%="/usuarios/perfil_usu/" + r.id_usuario %>>
+                                <%= r.nombre%>
+                            </a>
                         </div>
                         
-                        <div class="imagen_usu">
-                            <img  width="50" height="50" src=<%= r.imagen %>>
-                        </div>
-    
-                        <a class="nombre_usu" href=<%="/usuarios/perfil_usu/" + r.id_usuario %>>
-                            <%= r.nombre%>
-                        </a>
                                             
                     </div>
                 </li>
