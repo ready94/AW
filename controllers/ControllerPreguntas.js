@@ -503,16 +503,22 @@ function votar_pregunta(request,response,next){
                         break;
                 }
 
-                daoPreguntas.actualizarDatosPreguntas(id, idUser,voto, reputacion,function (error, resultado) {
-                    if (error)
-                        next(error);
+                daoPreguntas.insertVotacionPregunta(idUser, id, function(err, res){
+                    if (err)
+                        next(err);
                     else {
-                        console.log("reputacion antes de enviar: " + reputacion);    
-                        response.redirect("/respuestas/informacion_pregunta/"+id);
-                        //response.redirect("/preguntas/preguntas.html"); 
+                        daoPreguntas.actualizarDatosPreguntas(id, idUser, voto, reputacion, function (error, resultado) {
+                            if (error)
+                                next(error);
+                            else {
+                                console.log("reputacion antes de enviar: " + reputacion);
+                                response.redirect("/respuestas/informacion_pregunta/" + id);
+                                //response.redirect("/preguntas/preguntas.html"); 
+                            }
+                        });
                     }
-                    
                 });
+                
             }
         })
     }

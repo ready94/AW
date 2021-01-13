@@ -509,69 +509,109 @@ class DAOPreguntas{
     }
 
 
-insertEtiqueta(etiqueta, id_pregunta, callback) {
-    this.pool.getConnection(function (err, conexion) {
+    insertEtiqueta(etiqueta, id_pregunta, callback) {
+        this.pool.getConnection(function (err, conexion) {
 
-        if (err)
-            callback(err);
-        else {
+            if (err)
+                callback(err);
+            else {
 
-            var sql = 'INSERT INTO etiquetas (etiqueta, id_pregunta) VALUES (?, ?);';
-            var para = [etiqueta, id_pregunta];
+                var sql = 'INSERT INTO etiquetas (etiqueta, id_pregunta) VALUES (?, ?);';
+                var para = [etiqueta, id_pregunta];
 
-            conexion.query(sql, para, function (err, resultado) {
-                if (err)
-                    callback(err);
-                else {
-                    console.log(resultado)
-                    callback(null, resultado);
-                }
-            });//END QUERY                
-            conexion.release();
-        }
-    });//END GET CONEXION
+                conexion.query(sql, para, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else {
+                        console.log(resultado)
+                        callback(null, resultado);
+                    }
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+    }
+
+    getUltimoID(callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                conexion.query("SELECT id_pregunta FROM preguntas ORDER BY id_pregunta DESC LIMIT 1;", function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else
+                        callback(null, resultado);
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+    }
+
+    existeEtiqueta(etiqueta, callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                const sql= 'SELECT etiqueta FROM etiquetas WHERE etiqueta=' + etiqueta + "';'";
+                conexion.query(sql, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else {
+                        console.log(resultado)
+                        callback(null, resultado);
+                    }
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION 
+    }
+
+    getVotacionPregunta(id_usuario, callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                const sql = 'SELECT id_pregunta FROM votacion_preguntas WHERE id_usuario=' + id_usuario + "';'";
+                conexion.query(sql, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else {
+                        console.log(resultado)
+                        callback(null, resultado);
+                    }
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION 
+    }
+
+    insertVotacionPregunta(id_usuario, id_pregunta, callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+
+                var sql = 'INSERT INTO votacion_preguntas (id_usuario, id_pregunta) VALUES (?, ?);';
+                var para = [id_usuario, id_pregunta];
+
+                conexion.query(sql, para, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else {
+                        console.log(resultado)
+                        callback(null, resultado);
+                    }
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+    }
+
 }
-
-getUltimoID(callback){
-    this.pool.getConnection(function (err, conexion) {
-
-        if (err)
-            callback(err);
-        else {
-            conexion.query("SELECT id_pregunta FROM preguntas ORDER BY id_pregunta DESC LIMIT 1;", function (err, resultado) {
-                if (err)
-                    callback(err);
-                else
-                    callback(null, resultado);
-            });//END QUERY                
-            conexion.release();
-        }
-    });//END GET CONEXION
-}
-
-existeEtiqueta(etiqueta, callback){
-    this.pool.getConnection(function (err, conexion) {
-
-        if (err)
-            callback(err);
-        else {
-             const sql= 'SELECT etiqueta FROM etiquetas WHERE etiqueta=' + etiqueta + "';'";
-            conexion.query(sql, function (err, resultado) {
-                if (err)
-                    callback(err);
-                else {
-                    console.log(resultado)
-                    callback(null, resultado);
-                }
-            });//END QUERY                
-            conexion.release();
-        }
-    });//END GET CONEXION 
-}
-}
-
-
-
-
 
 module.exports = DAOPreguntas;
