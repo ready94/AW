@@ -419,14 +419,14 @@ function perfil_usu(request,response,next){
                     reputacion: resultado[0].reputacion
                 }
 
-                daoUser.getAllMedallas(bio.id_usuario,function(error,medallas){
+                /*daoUser.getAllMedallas(bio.id_usuario,function(error,medallas){
                     if(error){
                         next(error);
                     }else{
-                        console.log("total:",medallas);
+                        console.log("total:",medallas);*/
                         response.render("perfil_usu", { perfil: usuario, bio: bio });
-                    }
-                })
+                  /*  }
+                })*/
                 
 
             }

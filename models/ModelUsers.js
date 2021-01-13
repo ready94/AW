@@ -106,7 +106,7 @@ class DAOUsers {
             else {
             //contador de preguntas
             
-            const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario WHERE nombre LIKE '%"+nombre+"%' ;";
+            const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario WHERE nombre LIKE %?% ;";
             
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -266,7 +266,7 @@ class DAOUsers {
     ****************************************************************************************************************************************************************                                                                   
     */
 
-   getAllMedallas(id_usuario,callback){
+   /*getAllMedallas(id_usuario,callback){
     this.pool.getConnection(function (err, conexion) {
 
         if (err)
@@ -293,7 +293,7 @@ class DAOUsers {
         
         }
     });//END GET CONEXION
-}
+}*/
 }
 
 module.exports = DAOUsers;

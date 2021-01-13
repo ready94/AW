@@ -18,36 +18,7 @@
     
     <body>
     
-        <header>
-    
-            <div id="cabecera">
-    
-                <div id="titulo">
-                    <a href="/usuarios/pag_principal.html">
-                        <h1>Café con preguntas</h1>
-                    </a>
-                </div>
-    
-                <div id="login">
-    
-                    <img src="../profile_img/<%= perfil.imagen %>" id="icon">
-                    <div id="usu">
-    
-                        <a title="Perfil" href=<%="/usuarios/perfil_usu/" + perfil.id %> >
-                            <h3 id="nick">
-                                <%= perfil.nombre %>
-                            </h3>
-                        </a>
-    
-                        <a class="button" href="/usuarios/logout" title="Cerrar sesion">
-                            Cerrar sesión
-                        </a>
-    
-                    </div>
-                </div>
-            </div>
-    
-        </header>
+        <%-include("header") %>
     
         <div id="fijo">
             <nav>
