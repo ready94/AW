@@ -4,31 +4,43 @@
 }
 
 html {
-    background: -webkit-radial-gradient(top left,ellipse,#5b3924,#ffffff);
-    background-size: 1920px 1080px;
-}
+    height: 100%;
+    font-family: 'VT323', monospace;
+  }
 
 body{
-    background-color: #e0dddd;
-    opacity: 0.85;
-    margin:0 auto;
-    max-width:1250px;
-    min-height:600px;
+    background-image: url(../img/mesa2.jpg);
+    background-size: 100%;
     font-family: 'VT323', monospace;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+
+#login{
+    max-width:725px;
+    margin-left: 25%;
+    padding: 16px;
+    background-color:#eec270a6;
+    height: 1000px;
+    width: 100%;
+    position: absolute;
+    text-align: center;
 }
 
 header{
+    width: 100%;
     text-align: center;
-    font-size: xx-large;
+    font-size: x-large;
+    margin-bottom: 1em;
 }
 
-header h1{
-    margin: 1em 2em 0em 2em;
-}
 
 form{
-    margin-left: 40%;
-    text-align: left;
+    width: 100%;
     font-size: 20px;
 }
 
@@ -49,7 +61,7 @@ input[type=text],input[type=file]{
     color:#fff;
     float: left;
     font-size:14px;
-    margin-left:50px;
+    margin-left:10em;
     margin-top: 1.5em;
     padding:10px 36px;
     text-decoration: none;

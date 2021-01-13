@@ -10,7 +10,7 @@ html {
 
 body{
     background-image: url(../img/mesa2.jpg);
-    background-size: 80%;
+    background-size: 100%;
     font-family: 'VT323', monospace;
     overflow: hidden;
     background-position: center;
@@ -26,6 +26,7 @@ body{
     padding: 16px;
     background-color:#eec270a6;
     height: 1000px;
+    width: 100%;
     position: absolute;
     text-align: center;
 }
