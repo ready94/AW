@@ -8,7 +8,7 @@ const fs = require("fs");
 const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
 const expressValidator = require("express-validator");
-const alert = require("alert");
+//const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
 /*

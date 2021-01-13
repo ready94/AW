@@ -48,7 +48,7 @@ function medallaVisitas(visitas,medalla){
 function informacion_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -155,8 +155,26 @@ function informacion_pregunta(request,response,next){
                                                         console.log("error");
                                                         next(error); 
                                                     } else{
-                                                        console.log("render");
-                                                        response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador });
+                                                        daoPreguntas.getVotacionPregunta(request.session.idUsuario, function(err, res){
+                                                            console.log("dentro de votacion");
+                                                            console.log("id de la pregunta: " + pregunta.id_pregunta);
+                                                            console.log("id de la pregunta del voto: " + res);
+                                                            var votado = false;
+                                                            if(err)
+                                                                next(err);
+                                                            else{
+                                                                if (res != undefined && (pregunta.id_pregunta == res)){
+                                                                    votado = true;
+                                                                    console.log("render");
+                                                                    response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votado });
+                                                                } else {
+                                                                    console.log("render");
+                                                                    response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votado });
+                                                                }
+                                                            }
+                                                            
+                                                        });
+                                                        
                                                          
                                                     }
                                                 })        
@@ -188,7 +206,7 @@ function informacion_pregunta(request,response,next){
 function responder_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var texto = request.body.texto;
@@ -257,7 +275,7 @@ function medallaRespuesta(puntos,medalla){
 function votar_respuesta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         
         var id = request.body.idRespuesta; //id respuesta
