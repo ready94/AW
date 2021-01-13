@@ -391,8 +391,9 @@ function perfil_usu(request,response,next){
             imagen: request.session.imagen
         };
 
+        var id_usuario=request.params.idUsuario
        // console.log("id:", request.params.idUsuario);
-        daoUser.getUserByID(request.params.idUsuario, cb_getPreguntas);
+        daoUser.getUserByID(id_usuario, cb_getPreguntas);
 
         function cb_getPreguntas(err, resultado) {
 
@@ -403,18 +404,24 @@ function perfil_usu(request,response,next){
                 var fecha = new Date(resultado[0].fecha_alta);
                 var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
-                var aux = {
+                var bio = {
                     nombre: resultado[0].nombre,
                     imagen: resultado[0].imagen,
                     fecha:fechaForm,
                     preguntas: resultado[0].num_preguntas,
                     respuestas: resultado[0].num_respuestas,
-                    reputacion: resultado[0].reputacion,
-                    medallas: resultado[0].medallas
+                    reputacion: resultado[0].reputacion
                 }
 
-
-                response.render("perfil_usu", { perfil: usuario, bio: aux });
+                daoUser.getAllMedallas(bio.id_usuario,function(error,medallas){
+                    if(error){
+                        next(error);
+                    }else{
+                        console.log("total:",medallas);
+                        response.render("perfil_usu", { perfil: usuario, bio: bio });
+                    }
+                })
+                
 
             }
         }

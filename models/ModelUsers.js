@@ -259,6 +259,42 @@ class DAOUsers {
             }
         });//END GET CONEXION
     }
+
+    /*
+    ****************************************************************************************************************************************************************
+                MEDALLAS
+    ****************************************************************************************************************************************************************                                                                   
+    */
+
+   getAllMedallas(id_usuario,callback){
+    this.pool.getConnection(function (err, conexion) {
+
+        if (err)
+            callback(err);
+        else {
+    
+            const sql = "SELECT m.merito,m.tipo FROM medallas_preguntas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE p.id_usuario= ?";   
+            var para=[id_usuario];
+            conexion.query(sql,para, function (err, resultado) {
+                conexion.release();
+                if (err)
+                    callback(err);
+                else{
+                    let medallas_p=[];
+                    console.log(resultado);
+                    resultado.forEach(element => medallas_p.push({
+                        merito: element.merito,
+                        tipo: element.tipo
+                    }));
+
+                    callback(null, medallas_p);
+                }
+                
+            });//END QUERY                
+        
+        }
+    });//END GET CONEXION
+}
 }
 
 module.exports = DAOUsers;
