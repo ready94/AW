@@ -267,7 +267,7 @@ function maxEtiquetas(etiquetas){
         }
     }
 
-    console.log("termina",max);
+    //console.log("termina",max);
     return max;
 }
 
@@ -314,56 +314,63 @@ function usuarios(request,response,next){
                 
             }
         })
+    }
+
+}
+
 /*
-        daoUser.getAllUser(function(error,resultado){
+****************************************************************************************************************************************************************
+                FILTRAR POR USUARIO
+****************************************************************************************************************************************************************                                                                   
+*/
+
+function filtrar_usuario(request,response,next){
+    if (request.session.usuario == undefined) {
+        response.redirect("/usuarios/login.html");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
+    } else {
+
+        var perfil = {
+            id: request.session.idUsuario,
+            nombre: request.session.nombre,
+            imagen: request.session.imagen
+        };
+
+        var nombre = request.body.searchUsu;
+
+        daoUser.getUsuariosPorNombre(nombre, function (error, resultado) {
+
             if (error) {
                 next(error);
             } else {
 
-                var usuario=[];
-
+                //console.log("users con",nombre,":",resultado);
+                let usuario=[];
+               //console.log(resultado);
                 resultado.forEach((u) => {
-                    //console.log("foreach");
-                    daoEtiquetas.getEtiquetaUser(u.id_usuario, function (err, resul) {
-
-                        if (err) {
-                            next(err);
-                        } else {
-
-                            /*console.log(p.id_pregunta);
-                            var etiqueta = [];
-                            for (var x of resul) {
-                                etiqueta.push(x.etiqueta);
-                            }
-                            var aux = {
-                                id_usuario: u.id_usuario,
-                                nombre: u.nombre,
-                                imagen: u.imagen,
-                                reputacion:u.reputacion,
-                               etiqueta: resul
-                            }
-                           // console.log(aux);
-                            usuario.push(aux);
-
-                            //console.log(pregunta);
-                        }
-
-                    })
-
-
+                    
+                    var aux = {
+                        id_usuario: u.id_usuario,
+                        nombre: u.nombre,
+                        imagen: u.imagen,
+                        reputacion: u.reputacion
+                    }
+                    usuario.push(aux);
                 })
 
-                
-                //console.log(usuario);
-                response.render("usuarios", { perfil: perfil, usuario:usuario });
+                daoUser.getAllEtiquetas(function(error,etiqueta){
+
+                    if(error)
+                        next(error);
+                    else{
+                        response.render("filtrar_nombre_usu", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta),nombre:nombre }); 
+                    }
+
+                })       
+   
             }
-        })*/
-
-        
-        
-
+        });
     }
-
 }
 
 /*
@@ -417,6 +424,7 @@ function perfil_usu(request,response,next){
 
 module.exports={
     perfil_usu: perfil_usu,
+    filtrar_usuario:filtrar_usuario,
     usuarios: usuarios,
     pag_principal:pag_principal,
     crear_cuenta: crear_cuenta,

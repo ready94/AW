@@ -96,6 +96,7 @@ header {
 /*----------- mantener nav y buscar fijas ------------*/
 
 #fijo{
+    background-color: #e0dddd;
     position:sticky;
     top: 0;
 }

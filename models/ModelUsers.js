@@ -97,35 +97,34 @@ class DAOUsers {
         }); //END GET CONEXION
     }
 
-    getAllEtiquetas(callback){
+    getUsuariosPorNombre(nombre, callback){
+        
         this.pool.getConnection(function (err, conexion) {
-
+            
             if (err)
                 callback(err);
             else {
+            //contador de preguntas
             
-                var sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta";   
-                
+            const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario WHERE nombre LIKE '%"+nombre+"%' ;";
+            
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
                     else{
-                        let etiqueta=[];
+                        //console.log(resultado);
+                        callback(null, resultado);
 
-                        resultado.forEach(element => etiqueta.push({
-                            id_usuario: element.id_usuario,
-                            etiqueta: element.etiqueta
-                        }));
-
-                        callback(null, etiqueta);
                     }
                         
                 });//END QUERY                
                 
             }
         });//END GET CONEXION
+
     }
+   
 
     getUserByID(idUsuario, callback) {
         this.pool.getConnection(function (err, conexion) {
@@ -231,50 +230,32 @@ class DAOUsers {
     ****************************************************************************************************************************************************************                                                                   
     */
 
-    getEtiquetaUser(idUser,callback){
+    getAllEtiquetas(callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
+        
+                var sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta";   
             
-                const sql= "SELECT etiqueta FROM etiquetas WHERE id_usuario=" + idUser + " ORDER BY etiqueta;";
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
-                    else {
+                    else{
+                        let etiqueta=[];
 
-                        console.log("etiquetas:",resultado);
-                        var etiqueta=[];
-                        resultado.forEach((e)=>{
-                        etiqueta.push(e);
-                        })
-    
-                        var max=0;
-                        var cont=0;
-                        var aux=etiqueta[0];
-                        console.log(aux);
-                        for(var i=1; i< etiqueta.length;i++){
-                            if(etiqueta[i]==etiqueta[i--]){
-                                cont++;
-                                if(cont>max){
-                                    max=cont;  
-                                    aux=etiqueta[i];
-                                }
-                            
-                            }
-                            else{
-                                cont=1;
-                            }
-                        }
-    
-                        console.log("etiqueta",aux);
-                        callback(null,aux);
+                        resultado.forEach(element => etiqueta.push({
+                            id_usuario: element.id_usuario,
+                            etiqueta: element.etiqueta
+                        }));
+
+                        callback(null, etiqueta);
                     }
-            
+                    
                 });//END QUERY                
-           
+            
             }
         });//END GET CONEXION
     }

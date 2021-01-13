@@ -2,7 +2,7 @@
 <html lang="es">
 
     <head>
-        <link rel="stylesheet" type="text/css" media="screen" href="../css/pag_principal.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/filtrar_nombre_usu.css">
         <link rel="icon" type="image/png" href="../img/icon1.png">
         <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
         <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
@@ -75,12 +75,41 @@
             </form>
         </div>
 
-        <div>
-            buscar
+        <div id="fondo">
+            <div id="titulo_usu">
+                <h1>Usuarios filtrados por ["<%= nombre%>"]</h1>
+            </div>
+
+            <form action="/usuarios/buscarUsuario" method="POST" id="buscarUsu">
+                <input id="boton_filtrar" type="submit" value="Buscar">
+                <input id="filtrar" type="text" name="searchUsu" placeholder="Filtrar por usuario">
+            </form>
+    
+            <div class="grid_container">
+                <% usuario.forEach(function(u){ %>
+                <div class="card">
+                    <a href=<%="/usuarios/perfil_usu/"+ u.id_usuario %>>
+                        <img alt="Imagen Perfil" width="100" height="100" src=<%= u.imagen %> >
+                        <div class="container">
+                          <h4><b><%= u.nombre %></b></h4> 
+                          <p><%= u.reputacion %></p> 
+                            <%for(var x of etiqueta){ %> 
+                                <% if (u.id_usuario==x.id_usuario){ %>
+                                    <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x.etiqueta %>>
+                                        <%= x.etiqueta %> 
+                                    </a>
+                                <% } %>
+                            <% };%>
+                          
+                        </div>
+                    </a>
+                </div>
+               <%}); %>
+
+            </div>
+
         </div>
 
-        <div>
-            Usuarios filtrados por ...
         </div>
 
     </body>

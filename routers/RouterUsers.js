@@ -3,8 +3,10 @@
 const path = require("path");
 const express = require("express");
 
-const ControllerUsuario = require("../controllers/ControllerUsers.js");
 var user = express.Router();
+
+const ControllerUsuario = require("../controllers/ControllerUsers");
+
 
 
 /*
@@ -57,6 +59,14 @@ user.get("/usuarios.html", ControllerUsuario.usuarios);
 */
 
 user.get("/perfil_usu/:idUsuario", ControllerUsuario.perfil_usu);
+
+/*
+****************************************************************************************************************************************************************
+                FILTRAR POR TEXTO
+****************************************************************************************************************************************************************                                                                   
+*/
+
+user.post("/buscarUsuario", ControllerUsuario.filtrar_usuario);
 
 
 

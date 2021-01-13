@@ -76,13 +76,14 @@
                 <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
             </form>
 
+        </div>
 
-            <div id="fondo">
+        <div id="fondo">
                 <div id="titulo_usu">
                     <h1>Usuarios</h1>
                 </div>
     
-                <form id="buscarUsu" action="/preguntas/buscarUsuario" method="POST">
+                <form action="/usuarios/buscarUsuario" method="POST" id="buscarUsu">
                     <input id="boton_filtrar" type="submit" value="Buscar">
                     <input id="filtrar" type="text" name="searchUsu" placeholder="Filtrar por usuario">
                 </form>
@@ -112,9 +113,9 @@
     
                 </div>
     
-            </div>
+        </div>
     
-            </div>
+            
 
     </body>
 
