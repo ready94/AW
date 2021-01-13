@@ -84,7 +84,9 @@
             <div id="visitas">
                 Visita <%= pregunta.visitas%>
             </div>
-            <% if(votado){ %>}
+            <% if(!votado){ %>
+
+                <%= votado %>
             <div class="votos">
                 <form action="/preguntas/votarPregunta" method="POST" onsubmit="enviar.disabled = true;" >
                     <input type="hidden" name="id" value=<%= pregunta.id_pregunta %>>

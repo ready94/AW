@@ -569,13 +569,13 @@ class DAOPreguntas{
         });//END GET CONEXION 
     }
 
-    getVotacionPregunta(id_usuario, callback){
+    getVotacionPregunta(id_usuario, id_pregunta, callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
-                const sql = 'SELECT id_pregunta FROM votacion_preguntas WHERE id_usuario=' + id_usuario + "';'";
+                const sql = "SELECT id_pregunta FROM votacion_preguntas WHERE id_usuario=" + id_usuario + " AND id_pregunta=" + id_pregunta+";";
                 conexion.query(sql, function (err, resultado) {
                     if (err)
                         callback(err);

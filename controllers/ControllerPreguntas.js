@@ -503,7 +503,7 @@ function votar_pregunta(request,response,next){
                         break;
                 }
 
-                daoPreguntas.insertVotacionPregunta(idUser, id, function(err, res){
+                daoPreguntas.insertVotacionPregunta(request.session.idUsuario, id, function(err, res){
                     if (err)
                         next(err);
                     else {

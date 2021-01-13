@@ -155,22 +155,26 @@ function informacion_pregunta(request,response,next){
                                                         console.log("error");
                                                         next(error); 
                                                     } else{
-                                                        daoPreguntas.getVotacionPregunta(request.session.idUsuario, function(err, res){
-                                                            console.log("dentro de votacion");
-                                                            console.log("id de la pregunta: " + pregunta.id_pregunta);
-                                                            console.log("id de la pregunta del voto: " + res);
-                                                            var votado = false;
+                                                        var votado = true;
+                                                        daoPreguntas.getVotacionPregunta(request.session.idUsuario, pregunta.id_pregunta, function(err, res){
                                                             if(err)
                                                                 next(err);
                                                             else{
-                                                                if (res != undefined && (pregunta.id_pregunta == res)){
-                                                                    votado = true;
-                                                                    console.log("render");
-                                                                    response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votado });
-                                                                } else {
-                                                                    console.log("render");
-                                                                    response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votado });
+                                                                if (res == ""){
+                                                                    votado = false;
                                                                 }
+                                                                else {
+                                                                    if (pregunta.id_pregunta != res[0].id_pregunta){
+                                                                        votado = false;
+                                                                    }
+                                                                    else {
+                                                                        console.log("render");
+                                                                        votado = true;
+                                                                    }
+                                                                }
+                                                                
+                                                                console.log("votado: " + votado);
+                                                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votado });
                                                             }
                                                             
                                                         });
