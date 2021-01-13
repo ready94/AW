@@ -43,7 +43,7 @@ function text_truncate(str, length, ending) {
 function preguntas(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -114,7 +114,7 @@ function preguntas(request,response,next){
 function acceso_formular_pregunta(request,response){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -132,7 +132,7 @@ function acceso_formular_pregunta(request,response){
 function formular_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         var titulo = request.body.titulo;
         var cuerpo = request.body.cuerpo;
@@ -213,7 +213,7 @@ function formular_pregunta(request,response,next){
 function sin_responder(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -279,7 +279,7 @@ function sin_responder(request,response,next){
 function filtrar_etiqueta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -350,7 +350,7 @@ function filtrar_etiqueta(request,response,next){
 function filtrar_texto(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
@@ -455,7 +455,7 @@ function medallaPregunta(puntos,medalla){
 function votar_pregunta(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
         
         var id = request.body.id; //id pregunta

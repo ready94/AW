@@ -112,19 +112,19 @@ function validarPass(p1, p2) {
     }
 
     if (espacios) {
-        alert("La contraseña no puede contener espacios en blanco");
+        console.log("La contraseña no puede contener espacios en blanco");
         return false;
     }
 
     //que no haya ningun campo vacio
     if (p1.length == 0 || p2.length == 0) {
-        alert("Los campos de la password no pueden quedar vacios");
+        console.log("Los campos de la password no pueden quedar vacios");
         return false;
     }
 
     //que la contraseña y la confirmacion sean iguales
     if (p1 != p2) {
-        alert("Las passwords deben de coincidir");
+        console.log("Las passwords deben de coincidir");
         return false;
     } else {
         return true;
@@ -175,7 +175,7 @@ function crear_cuenta(request,response,next){
                     /*response.status(500);
                     console.log("ERROR BBDD" + err); //comen
                     if (err.sqlState == 2300) {
-                        alert("Email ya existente");
+                        console.log("Email ya existente");
                     };
                     response.render("crear_cuenta", { errorMsg: null })*/
                 } else if (resultado.length != 0) {
@@ -187,7 +187,7 @@ function crear_cuenta(request,response,next){
                 }
             }
         } else {
-            alert("contraseña no valida"); //comen
+            console.log("contraseña no valida"); //comen
         }
     }
 }
@@ -202,7 +202,7 @@ function pag_principal(request,response,next){
     //console.log("pagina principal");
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         response.locals.email = request.session.usuario;
@@ -243,7 +243,7 @@ function pag_principal(request,response,next){
 function usuarios(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var perfil = {
@@ -312,7 +312,7 @@ function usuarios(request,response,next){
 function perfil_usu(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-        alert("NO ESTAS LOGUEADO, INDIOTA");
+        console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
 
         var usuario = {
