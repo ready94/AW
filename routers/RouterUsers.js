@@ -2,6 +2,9 @@
 
 const path = require("path");
 const express = require("express");
+const multer = require("multer");
+const multerFactory = multer();
+
 
 var user = express.Router();
 
@@ -26,7 +29,7 @@ user.post("/login", ControllerUsuario.login);
 
 user.get("/crear_cuenta.html", ControllerUsuario.acceso_crear_cuenta);
 
-user.post("/crearCuenta", ControllerUsuario.crear_cuenta);
+user.post("/crearCuenta", multerFactory.single("icon"), ControllerUsuario.crear_cuenta);
 
 /*
 ****************************************************************************************************************************************************************
