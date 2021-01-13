@@ -115,17 +115,41 @@ function informacion_pregunta(request,response,next){
                                 var respuesta = [];
                                 resul.forEach((r) => {
 
-                                    var fecha = new Date(r.fecha_respuesta);
-                                    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+                                    var votadoRespuesta = false;
 
-                                    var aux = {
-                                        id_respuesta: r.id_respuesta,
-                                        texto: r.texto,
-                                        fecha_respuesta: fechaForm,
-                                        nombre: r.nombre,
-                                        imagen: r.imagen
-                                    }
-                                    respuesta.push(aux);
+                                    daoRespuestas.getVotacionRespuesta(request.session.idUsuario, r.id_respuesta, function(err, res){
+                                        if(err)
+                                            next(err);
+                                        else{
+                                            if (res == "") {
+                                                votadoRespuesta = false;
+                                            }
+                                            else {
+                                                if (r.id_respuesta != res[0].id_respuesta) {
+                                                    votadoRespuesta = false;
+                                                }
+                                                else {
+                                                    console.log("render");
+                                                    votadoRespuesta = true;
+                                                }
+                                            }
+
+                                            var fecha = new Date(r.fecha_respuesta);
+                                            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
+                                            var aux = {
+                                                id_respuesta: r.id_respuesta,
+                                                texto: r.texto,
+                                                fecha_respuesta: fechaForm,
+                                                nombre: r.nombre,
+                                                imagen: r.imagen,
+                                                votadoRespuesta: votadoRespuesta
+                                            }
+                                            respuesta.push(aux);
+
+                                        }
+                                    });
+                                    
                                 })
 
                                 //console.log(respuesta);
@@ -155,26 +179,24 @@ function informacion_pregunta(request,response,next){
                                                         console.log("error");
                                                         next(error); 
                                                     } else{
-                                                        var votado = true;
+                                                        var votadoPregunta = true;
                                                         daoPreguntas.getVotacionPregunta(request.session.idUsuario, pregunta.id_pregunta, function(err, res){
                                                             if(err)
                                                                 next(err);
                                                             else{
                                                                 if (res == ""){
-                                                                    votado = false;
+                                                                    votadoPregunta = false;
                                                                 }
                                                                 else {
                                                                     if (pregunta.id_pregunta != res[0].id_pregunta){
-                                                                        votado = false;
+                                                                        votadoPregunta = false;
                                                                     }
                                                                     else {
                                                                         console.log("render");
-                                                                        votado = true;
+                                                                        votadoPregunta = true;
                                                                     }
                                                                 }
-                                                                
-                                                                console.log("votado: " + votado);
-                                                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votadoPregunta });
+                                                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votadoPregunta: votadoPregunta });
                                                             }
                                                             
                                                         });
@@ -326,16 +348,24 @@ function votar_respuesta(request,response,next){
                         break;
                 }
 
-                daoRespuestas.actualizarDatosRespuestas(id, idUser,voto, reputacion,function (error, resultado) {
-                    if (error)
-                        next(error);
-                    else {
-                        console.log("reputacion antes de enviar: " + reputacion); 
-                        //response.redirect("/preguntas/preguntas.html");   
-                        response.redirect("/respuestas/informacion_pregunta/"+idPre);
+
+                daoRespuestas.insertVotacionRespuesta(request.session.idUsuario, id, function(err, res){
+                    if(err)
+                        next(err);
+                    else{
+                        daoRespuestas.actualizarDatosRespuestas(id, idUser, voto, reputacion, function (error, resultado) {
+                            if (error)
+                                next(error);
+                            else {
+                                console.log("reputacion antes de enviar: " + reputacion);
+                                //response.redirect("/preguntas/preguntas.html");   
+                                response.redirect("/respuestas/informacion_pregunta/" + idPre);
+                            }
+
+                        });
                     }
-                    
                 });
+                
             }
         })
     }
