@@ -9,7 +9,7 @@ html {
   }
 
 body{
-    background-image: url(../img/background.png);
+    background-image: url(../img/mesa2.jpg);
     background-size: 80%;
     font-family: 'VT323', monospace;
     overflow: hidden;
@@ -19,35 +19,26 @@ body{
     position: relative;
 }
 
-#contenedor{
-    top: 50%;
-    width: 50%;
-    float: left;
-}
-
 
 #login{
-    float: left;
-    right: 0;
-    margin: 11% 5%;
+    max-width:725px;
+    margin-left: 25%;
     padding: 16px;
-    background-color:#eec270be;
+    background-color:#eec270a6;
+    height: 1000px;
     position: absolute;
-    width: 30%;
     text-align: center;
 }
 
 header{
     font-size: x-large;
-    position: absolute;
-    margin: 17% 5%;
-    width: 40%;
     text-align: center;
-    background-color: rgba(126, 116, 121, 0.671);
-    
+    margin-bottom: 1em;
+    margin-top: 4.5em;
 }
 
 form{
+    margin-top: 0.5em;
     font-family: 'VT323', monospace;
     font-size: 20px;
 }
@@ -68,7 +59,7 @@ input[type=email], input[type=password]{
     color:#fff;
     float: left;
     font-size:14px;
-    margin-left:50px;
+    margin-left:130px;
     margin-top: 1.5em;
     padding:10px 36px;
     text-decoration: none;
