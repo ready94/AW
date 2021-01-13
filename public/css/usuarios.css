@@ -204,7 +204,7 @@ nav a:hover{
     display: grid;
     grid-template-columns: auto auto auto auto;
     padding: 10px;
-    overflow: auto;
+    
 }
 
 .grid_container a{
@@ -220,6 +220,7 @@ nav a:hover{
     transition: 0.3s;
     border-radius: 5px;
     text-align: center;
+    padding-bottom: 12px;
   }
   
   .card:hover {
@@ -227,23 +228,22 @@ nav a:hover{
   }
   
   .container {
+    text-align: center;
     padding: 2px 16px;
-    display: block;
+    margin-top: 0.2em;
   }
 
   /*------- ETIQUETAS ----------------------*/
 
 .boton_etiqueta{
-    float: left;
+    
     background-color:#c2a878;
     border-radius: 10px;
     border: 2px solid black;
-    color: #fff;
-    font-size: 15px;
-    padding: 8px 8px;
+    font-size: 16px;
+    padding: 5px 5px;
     cursor: pointer;
-    margin: 0.1em 0em 0.1em 1.5em;
-
+    width: 100%;
 }
 
 .boton_etiqueta:hover {

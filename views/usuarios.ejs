@@ -90,74 +90,25 @@
                 
         
                 <div class="grid_container">
-                    
+                    <% usuario.forEach(function(u){ %>
                     <div class="card">
-                        <a href="#">
-                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
+                        <a href=<%="/usuarios/perfil_usu/"+ u.id_usuario %>>
+                            <img alt="Imagen Perfil" width="100" height="100" src=<%= u.imagen %> >
                             <div class="container">
-                              <h4><b>nombre Y</b></h4> 
-                              <p>reputacion</p> 
-                              <a class="boton_etiqueta" href=#>etiqueta</a>
+                              <h4><b><%= u.nombre %></b></h4> 
+                              <p><%= u.reputacion %></p> 
+                                <%for(var x of etiqueta){ %> 
+                                    <% if (u.id_usuario==x.id_usuario){ %>
+                                        <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x.etiqueta %>>
+                                            <%= x.etiqueta %> 
+                                        </a>
+                                    <% } %>
+                                <% };%>
                               
                             </div>
                         </a>
                     </div>
-                   
-    
-    
-                        <div class="card">
-                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
-                            <div class="container">
-                              <h4><b>nombre Y</b></h4> 
-                              <p>reputacion</p> 
-                              <div>
-                                  etiqueta
-                              </div>
-                            </div>
-                        </div>
-    
-                        <div class="card">
-                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
-                            <div class="container">
-                              <h4><b>nombre Y</b></h4> 
-                              <p>reputacion</p> 
-                              <div>
-                                  etiqueta
-                              </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
-                            <div class="container">
-                              <h4><b>nombre Y</b></h4> 
-                              <p>reputacion</p> 
-                              <div>
-                                  etiqueta
-                              </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
-                            <div class="container">
-                              <h4><b>nombre Y</b></h4> 
-                              <p>reputacion</p> 
-                              <div>
-                                  etiqueta
-                              </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <img alt="Avatar" width="100" height="100" src=<%= perfil.imagen %> >
-                            <div class="container">
-                              <h4><b>nombre Y</b></h4> 
-                              <p>reputacion</p> 
-                              <div>
-                                  etiqueta
-                              </div>
-                            </div>
-                        </div>
+                   <%}); %>
     
                 </div>
     

@@ -509,15 +509,15 @@ class DAOPreguntas{
     }
 
 
-    insertEtiqueta(etiqueta, id_pregunta, callback) {
+    insertEtiqueta(etiqueta, id_pregunta,id_usuario, callback) {
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
 
-                var sql = 'INSERT INTO etiquetas (etiqueta, id_pregunta) VALUES (?, ?);';
-                var para = [etiqueta, id_pregunta];
+                var sql = 'INSERT INTO etiquetas (etiqueta, id_pregunta,id_usuario) VALUES (?, ?,?);';
+                var para = [etiqueta, id_pregunta,id_usuario];
 
                 conexion.query(sql, para, function (err, resultado) {
                     if (err)

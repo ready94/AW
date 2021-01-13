@@ -75,6 +75,58 @@ class DAOUsers {
         }); //END GET CONEXION
     }
 
+    getAllUser(callback){
+        this.pool.getConnection(function(err, conexion) {
+            if (err) {
+                callback(err);
+            } else {
+                // devuelve el usuario entero cuyo email es el pasado por parametro
+                const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario;"
+                
+                conexion.query(sql, function(err, resultado) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        /*console.log(resultado);*/
+                        callback(null, resultado);
+
+                    }
+                }); //END QUERY
+                
+            }
+        }); //END GET CONEXION
+    }
+
+    getAllEtiquetas(callback){
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+            
+                var sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta";   
+                
+                conexion.query(sql, function (err, resultado) {
+                    conexion.release();
+                    if (err)
+                        callback(err);
+                    else{
+                        let etiqueta=[];
+
+                        resultado.forEach(element => etiqueta.push({
+                            id_usuario: element.id_usuario,
+                            etiqueta: element.etiqueta
+                        }));
+
+                        callback(null, etiqueta);
+                    }
+                        
+                });//END QUERY                
+                
+            }
+        });//END GET CONEXION
+    }
+
     getUserByID(idUsuario, callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {

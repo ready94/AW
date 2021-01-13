@@ -134,6 +134,7 @@ function formular_pregunta(request,response,next){
         response.redirect("/usuarios/login.html");
         console.log("NO ESTAS LOGUEADO, INDIOTA");
     } else {
+        var id_usuario= request.session.idUsuario;
         var titulo = request.body.titulo;
         var cuerpo = request.body.cuerpo;
         var etiqueta = request.body.etiqueta;
@@ -174,7 +175,7 @@ function formular_pregunta(request,response,next){
                             var id = res[0].id_pregunta;
 
                             for (var i = 0; i < aux.length; i++) {
-                                daoPreguntas.insertEtiqueta(aux[i], id, cb_insertEtiquetas);
+                                daoPreguntas.insertEtiqueta(aux[i], id,id_usuario, cb_insertEtiquetas);
 
                                 function cb_insertEtiquetas(err, res2) {
                                     if (err) {

@@ -240,6 +240,37 @@ function pag_principal(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
+function maxEtiquetas(etiquetas){
+    
+    var cont=1;
+    var maximo=1;
+    let max=[];
+    //console.log("comienza:",etiquetas);
+
+    for(var i=0; i<etiquetas.length-1;i++){
+        //console.log("i",i, ": ",etiquetas[i].etiqueta);
+        //console.log("i++",i+1, ": ",etiquetas[i+1].etiqueta);
+        if(etiquetas[i].etiqueta==etiquetas[i+1].etiqueta){
+            cont++;
+            if(etiquetas[i].id_usuario==etiquetas[i+1].id_usuario && cont>maximo){
+                max.push(etiquetas[i]);
+                maximo=cont;
+            }
+            else{
+                maximo=1;
+                cont=1;
+            }
+        }
+        else{
+            maximo=1;
+            cont=1;
+        }
+    }
+
+    console.log("termina",max);
+    return max;
+}
+
 function usuarios(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
@@ -251,6 +282,38 @@ function usuarios(request,response,next){
             nombre: request.session.nombre,
             imagen: request.session.imagen
         };
+
+        daoUser.getAllUser(function(error,resultado){
+            if (error) {
+                next(error);
+            } else {
+
+                let usuario=[];
+               //console.log(resultado);
+                resultado.forEach((u) => {
+                    
+                    var aux = {
+                        id_usuario: u.id_usuario,
+                        nombre: u.nombre,
+                        imagen: u.imagen,
+                        reputacion: u.reputacion
+                    }
+                    usuario.push(aux);
+                })
+
+                daoUser.getAllEtiquetas(function(error,etiqueta){
+
+                    if(error)
+                        next(error);
+                    else{
+                        response.render("usuarios", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta) }); 
+                    }
+
+                })       
+
+                
+            }
+        })
 /*
         daoUser.getAllUser(function(error,resultado){
             if (error) {
@@ -296,7 +359,7 @@ function usuarios(request,response,next){
             }
         })*/
 
-        response.render("usuarios", { perfil: perfil});
+        
         
 
     }
