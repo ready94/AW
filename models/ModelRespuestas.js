@@ -199,6 +199,49 @@ class DAORespuestas{
         });//END GET CONEXION
     }
 
+    getVotacionRespuesta(id_usuario, id_respuesta, callback) {
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+                const sql = "SELECT id_respuesta FROM votacion_respuestas WHERE id_usuario=" + id_usuario + " AND id_respuesta=" + id_respuesta + ";";
+                conexion.query(sql, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else {
+                        console.log(resultado)
+                        callback(null, resultado);
+                    }
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION 
+    }
+
+    insertVotacionRespuesta(id_usuario, id_respuesta, callback) {
+        this.pool.getConnection(function (err, conexion) {
+
+            if (err)
+                callback(err);
+            else {
+
+                var sql = 'INSERT INTO votacion_respuestas (id_usuario, id_respuesta) VALUES (?, ?);';
+                var para = [id_usuario, id_respuesta];
+
+                conexion.query(sql, para, function (err, resultado) {
+                    if (err)
+                        callback(err);
+                    else {
+                        console.log(resultado)
+                        callback(null, resultado);
+                    }
+                });//END QUERY                
+                conexion.release();
+            }
+        });//END GET CONEXION
+    }
+
 }
 
 

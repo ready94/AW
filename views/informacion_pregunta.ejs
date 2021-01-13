@@ -143,7 +143,7 @@
                 <% respuesta.forEach((r)=>{ %>
                 <li class="respuesta">
                     <div class="info_respuesta" > 
-                        
+                        <% if(!r.votadoRespuesta){ %> 
                          <div class="votos">
                             <form action="/respuestas/votarRespuesta" method="POST" onsubmit="enviar.disabled = true;" >
                                 <input type="hidden" name="idRespuesta" value=<%= r.id_respuesta %>>
@@ -158,6 +158,7 @@
                                 </div>
                             </form>
                         </div>
+                        <% } %>
                         <div class="texto"><%= r.texto %></div>
 
                     </div>
@@ -177,6 +178,7 @@
                                             
                     </div>
                 </li>
+                
                 <%}); %>
             </ul>
             
