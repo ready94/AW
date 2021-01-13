@@ -174,7 +174,7 @@ function informacion_pregunta(request,response,next){
                                                                 }
                                                                 
                                                                 console.log("votado: " + votado);
-                                                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votado });
+                                                                response.render("informacion_pregunta", { pregunta: pregunta, perfil: usuario, respuesta: respuesta, contador: contador, votado: votadoPregunta });
                                                             }
                                                             
                                                         });
