@@ -158,7 +158,7 @@ class DAOUsers {
                 callback(err);
             } else {
                 // inserta un nuevo usuario en la base de datos con los datos del objeto "user"       
-                var sql = 'INSERT INTO usuario (nombre, email, password, imagen, fecha_alta, num_preguntas, num_respuestas, reputacion, medallas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);';
+                var sql = 'INSERT INTO usuario (nombre, email, password, imagen, fecha_alta, num_preguntas, num_respuestas, reputacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
                 var para = [user.nombre, user.email, user.password, user.imagen, user.fecha_alta, 0, 0, 0, 0];
 
                 conexion.query(sql, para, function(err, resultado) {

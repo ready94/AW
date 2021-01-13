@@ -3,7 +3,7 @@
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
-const multerFactory = multer();
+const multerFactory = multer({ dest: path.join(__dirname, "../public/profile_img") });
 
 
 var user = express.Router();
@@ -31,6 +31,10 @@ user.get("/crear_cuenta.html", ControllerUsuario.acceso_crear_cuenta);
 
 user.post("/crearCuenta", multerFactory.single("icon"), ControllerUsuario.crear_cuenta);
 
+user.get("../public/profile_img/:id", function(request, response){
+    let pathImg = path.join(__dirname, "../public/profile_img", request.params.id);
+    response.sendFile(pathImg);
+});
 /*
 ****************************************************************************************************************************************************************
                 LOGOUT USUARIO

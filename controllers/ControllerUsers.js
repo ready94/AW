@@ -141,17 +141,23 @@ function crear_cuenta(request,response,next){
     var password = request.body.pass;
     var password2 = request.body.pass_confirm;
     var nick = request.body.nick;
-    var icon = request.body.icon;
+    var icon = "";
+    console.log("icon antes: " + icon);
 
-    if (request.icon == undefined) {
-
+   /* if (request.file == undefined) {
         icon = "../img/icon" + getRandom(1, 10) + ".png";
+        console.log("icon undefined: " + icon);
+    }*/
+
+    if (request.file) {
+        icon = request.file.filename;
+        console.log("icon no undefined: " + icon);
+    }else{
+        icon = "../img/icon" + getRandom(1, 10) + ".png";
+        console.log("icon undefined: " + icon);
     }
 
-    if (request.icon != undefined) {
-        icon = request.filter.path;
-    }
-
+    console.log("icon despues: " + icon);
     if (validarPass(password, password2)) {
         //Expresion regular para validar contraseña
         //Tiene que contener al menos un dígito, una mayúscula y una minúscula

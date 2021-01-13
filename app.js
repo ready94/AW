@@ -11,8 +11,7 @@ const expressValidator = require("express-validator");
 //const alert = require("alert");
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(config.mysqlConfig);
-const multer = require("multer");
-const multerFactory = multer({dest: path.join(__dirname, "profile_img")});
+
 /*
 const DAOUsers = require("./models/DAOUsers");
 const DAOPreguntas = require("./models/DAOPreguntas");
@@ -34,6 +33,8 @@ const app = express();
 const pool = mysql.createPool(config.mysqlConfig);
 
 const ficherosEstaticos = path.join(__dirname, "public");
+
+
 
 //const loginRouter = require("./routers/RouterLogin.js");
 const preguntasRouter = require("./routers/RouterPreguntas.js");
