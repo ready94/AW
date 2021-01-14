@@ -21,29 +21,7 @@
         <%-include("header") %>
     
         <div id="fijo">
-            <nav>
-    
-                <a class="button" href="/preguntas/preguntas.html" title="preguntas">
-                    <b>PREGUNTAS</b>
-                    <img src="/img/flecha-abajo.png">
-                </a>
-    
-                <a class="button" href="/preguntas/sin_responder.html" title="preguntas sin responder">
-                    <b>SIN RESPONDER</b>
-                    <img src="/img/flecha-abajo.png">
-                </a>
-    
-                <a class="button" href="/usuarios/usuarios.html" title="usuarios">
-                    <b>USUARIOS</b>
-                    <img src="/img/flecha-abajo.png">
-                </a>
-    
-            </nav>
-    
-            <form action="/preguntas/buscarTexto" method="POST">
-                <input id="boton_buscar" type="submit" value="Buscar">
-                <input id="buscar" type="text" name="search" placeholder="Buscar por título/cuerpo de pregunta...">
-            </form>
+            <%-include("nav") %>
         </div>
 
         <div id="fondo">
