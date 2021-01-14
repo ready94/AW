@@ -12,7 +12,7 @@ class DAORespuestas{
                 callback(err);
             else {
                 //contador de preguntas
-                const sql = "SELECT r.id_respuesta, r.texto, r.fecha_respuesta, u.nombre, u.imagen FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario  WHERE id_pregunta=" + id + " ORDER BY r.fecha_respuesta DESC;"; 
+                const sql = "SELECT r.id_respuesta, r.id_usuario, r.texto, r.fecha_respuesta, u.nombre, u.imagen FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario  WHERE id_pregunta=" + id + " ORDER BY r.fecha_respuesta DESC;"; 
 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();

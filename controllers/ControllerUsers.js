@@ -258,6 +258,7 @@ function usuarios(request,response,next){
                     if(error)
                         next(error);
                     else{
+                        console.log("etiquetas: " , maxEtiquetas(etiqueta));
                         response.render("usuarios", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta) }); 
                     }
                 });       

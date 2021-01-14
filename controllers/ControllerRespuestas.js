@@ -130,6 +130,7 @@ function informacion_pregunta(request,response,next){
                                             var aux = {
                                                 id_respuesta: r.id_respuesta,
                                                 texto: r.texto,
+                                                id_usuario: r.id_usuario,
                                                 fecha_respuesta: fechaForm,
                                                 nombre: r.nombre,
                                                 imagen: r.imagen,
