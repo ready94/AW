@@ -41,45 +41,8 @@
             </div>
     
             <ul>
-                <% pregunta.forEach(p=>{ %>
-                <li class="pregunta">
-                    <div class="info_pregunta" > 
-                        <a class="titulo_pregunta" href=<%="/respuestas/informacion_pregunta/"+ p.id_pregunta %>><%=p.titulo %></a>
-                        
-                        <div class="cuerpo"><%= p.cuerpo%></div>
-                        
-                        <div class="etiqueta_preguntas">
-                            <%for(var x of etiqueta){ %> 
-                                <% if (p.id_pregunta==x.id_pregunta){ %>
-                                    <a class="boton_etiqueta" href=<%="/preguntas/filtrar_etiqueta/" + x.etiqueta %>>
-                                        <%= x.etiqueta %> 
-                                    </a>
-                                <% } %>
-                            <% };%>
-                           
-                        </div>
-                    
-                    </div>
-    
-                    <div class="info_usu" >
-                        <div>
-                            <div class="fecha_usu">
-                                Formulada el 
-                                <%= p.fecha%>
-                                
-                            </div>
-                            <div class="imagen_usu">
-                                <img  width="50" height="50" src=<%= p.imagen %>>
-                            </div>
-                           
-                            <a class="nombre_usu" href=<%="/usuarios/perfil_usu/"+ p.id_usuario %>>
-                               <%= p.nombre%>
-                            </a>
-                        </div>
-                        
-                              
-                    </div>
-                </li>
+                <% pregunta.forEach(function(p){ %>
+                    <%-include("preg",{p:p,etiqueta:etiqueta}) %>
                 <% }); %>
             </ul>
         </div>
