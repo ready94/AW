@@ -79,11 +79,11 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.titulo LIKE '%"+texto+"%' OR p.cuerpo LIKE '%"+texto+"%' ORDER BY p.fecha DESC;"; 
+                let like= "%"+texto+"%";
+                const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.titulo LIKE ? OR p.cuerpo LIKE ? ORDER BY p.fecha DESC;"; 
             
-            conexion.query(sql, function (err, resultado) {
+                conexion.query(sql,[like,like], function (err, resultado) {
                 conexion.release();
                 if (err)
                     callback(err);

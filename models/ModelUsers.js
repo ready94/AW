@@ -103,9 +103,9 @@ class DAOUsers {
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
-            let like= "%"+nombre+"%";
-            const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario WHERE nombre LIKE ? ;";
+      
+                let like= "%"+nombre+"%";
+                const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario WHERE nombre LIKE ? ;";
             
                 conexion.query(sql,[like], function (err, resultado) {
                     conexion.release();
