@@ -6,7 +6,7 @@
 html {
     height: 100%;
     font-family: 'VT323', monospace;
-  }
+}
 
 body{
     background-image: url(../img/mesa2.jpg);
@@ -31,20 +31,30 @@ body{
     text-align: center;
 }
 
-header{
-    font-size: x-large;
-    text-align: center;
-    margin-bottom: 1em;
+#justificar{
+    justify-content: center;
+    align-items: center;
+}
+
+#justificar_login{
     margin-top: 4.5em;
 }
 
+header{
+    width: 100%;
+    text-align: center;
+    font-size: x-large;
+    margin-bottom: 1em;
+}
+
+
 form{
-    margin-top: 0.5em;
-    font-family: 'VT323', monospace;
+    width: 100%;
     font-size: 20px;
 }
 
-input[type=email], input[type=password]{
+input[type=email], input[type=password],
+input[type=text],input[type=file]{
     margin: 0.5em 0.5em 0.5em 0.5em;
     border-radius:4px;
     border:black 1px solid;
@@ -60,11 +70,14 @@ input[type=email], input[type=password]{
     color:#fff;
     float: left;
     font-size:14px;
-    margin-left:130px;
+    margin-left:10em;
     margin-top: 1.5em;
     padding:10px 36px;
     text-decoration: none;
     cursor:pointer;
     font-family: 'VT323', monospace;
 }
-
+.button:hover{
+    background-color:#eec170;
+    color:#fff
+}

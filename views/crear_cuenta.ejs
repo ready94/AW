@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/crear_cuenta.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/login.css">
     <link rel="icon" type="image/png" href="../img/icon1.png">
     <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
     <!--<link href="https://fonts.googleapis.com/css2?family=Seaweed+Script&display=swap" rel="stylesheet">-->
@@ -17,24 +17,27 @@
 
     <div>
         <div id="login">
-            <header>
-                <h1>Café con preguntas</h1>
-                
-                <h1>Sign Up</h1>
-            </header>
-        
-            <form action="/usuarios/crearCuenta" method="POST" enctype="multipart/form-data">
-                Correo*: <br>
-                <input type="email" name="mail" required><br>
-                Contraseña*:<br>
-                <input type="password" name="pass" minlength="6" required><br> Confirmar contraseña*: <br>
-                <input type="password" name="pass_confirm" minlength="6" required><br> Nombre para mostrar (Nick)*:<br>
-                <input type="text" name="nick" requiered> <br>
-                Imagen del perfil:<br>
-                <input type="file" name="icon" accept="jpeg,png"><br>
-                <input class="button" type="submit" value="Crear cuenta">
-            </form>
-            <a class="button" href="/usuarios/login.html"> Iniciar sesion </a>
+            <div id="justificar">
+                <header>
+                    <h1>Café con preguntas</h1>
+                    
+                    <h1>Sign Up</h1>
+                </header>
+            
+                <form action="/usuarios/crearCuenta" method="POST" enctype="multipart/form-data">
+                    Correo*: <br>
+                    <input type="email" name="mail" required><br>
+                    Contraseña*:<br>
+                    <input type="password" name="pass" minlength="6" required><br> Confirmar contraseña*: <br>
+                    <input type="password" name="pass_confirm" minlength="6" required><br> Nombre para mostrar (Nick)*:<br>
+                    <input type="text" name="nick" requiered> <br>
+                    Imagen del perfil:<br>
+                    <input type="file" name="icon" accept="jpeg,png"><br>
+                    <input class="button" type="submit" value="Crear cuenta">
+                </form>
+                <a class="button" href="/usuarios/login.html"> Iniciar sesion </a>
+           
+            </div>
         </div>
     </div>
     
