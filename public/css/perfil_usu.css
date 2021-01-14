@@ -113,22 +113,18 @@ td{
 
 /*----------------meritos ----------------*/
 
-.num_medallas{
-    list-style: none;
+.box .num_bronce {
+    margin-top: 1em;
+    list-style:url(../img/bronce.png)
+}
+.box .num_plata {
+    margin-top: 1em;
+    list-style:url(../img/plata.png)
+}
+.box .num_oro{
+    margin-top: 1em;
+    list-style:url(../img/oro.png)
 }
 
-/*
-.merito{
-    display: flex;
-    float: left;
-    width: 50%;
-    background-color:#eafcff;
-    border-radius: 10px;
-    border: 2px solid black;
-    color: black;
-    font-size: 15px;
-    padding: 10px 10px;
-    cursor: pointer;
-    margin: 0.25em 0.25em;
-}
-*/
+
+

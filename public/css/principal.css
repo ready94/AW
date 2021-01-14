@@ -25,7 +25,9 @@ a{
 
 header {
     margin:0 auto;
-    border: solid 10px black;
+    border-left: solid 10px black;
+    border-right:solid 10px black ;
+    border-top: solid 10px black;
     height: 150px;
 }
 
@@ -109,11 +111,10 @@ header {
 nav{
     font-family: 'VT323', monospace;
     display: inline-block;
-    border-left: solid 10px black;
-    border-right:solid 10px black ;
-    border-bottom: solid 10px black;
-    width: 98.5%;
-    height: 2.5em;
+    box-sizing: border-box;
+    border: 10px solid black;
+    width: 100%;
+    height: 3.85em;
    
 }
 
@@ -132,7 +133,7 @@ nav a:hover{
     border: none;
     color: #fff;
     font-size: 16px;
-    padding: 12px 20px 12px 20px;
+    padding: 15px 20px 15px 20px;
     margin-top: 1em ;
     cursor: pointer;
     font-family: 'VT323', monospace;

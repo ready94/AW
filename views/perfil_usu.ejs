@@ -67,13 +67,11 @@
                                 <div id="bronce"><b>BRONCE</b> <br> <%=medallas.contBronce %> </div>
                                 <ul>
                                     <% medallas.bronce.forEach(function(b){%>
-                                    <li class="num_medallas">
-                                        <div class="merito">
+                                    <li class="num_bronce">                               
                                             <%=b.merito %>
                                             <%if(b.cont>1){ %>
                                                 <b> x<%=b.cont %></b>
-                                            <% }%>
-                                        </div>
+                                            <% }%>                            
                                     </li>
                                     <% });%>
                                 </ul>
@@ -84,13 +82,11 @@
                                 <div id="plata"><b>PLATA</b> <br> <%=medallas.contPlata %></div>
                                 <ul>
                                     <% medallas.plata.forEach(function(p){%>
-                                    <li class="num_medallas">
-                                        <div class="merito">
+                                    <li class="num_plata">                  
                                             <%=p.merito%>
                                             <%if(p.cont>1){ %>
                                                 <b> x<%=p.cont %></b>
-                                            <% }%>
-                                        </div>
+                                            <% }%>                                     
                                     </li>
                                     <% });%>
                                 </ul>
@@ -100,13 +96,11 @@
                                 <div id="oro"><b>ORO</b> <br> <%=medallas.contOro %></div>
                                 <ul>
                                     <% medallas.oro.forEach(function(o){%>
-                                    <li class="num_medallas">
-                                        <div class="merito">
+                                    <li class="num_oro">                            
                                             <%=o.merito %>
                                             <%if(o.cont>1){ %>
                                                <b> x<%=o.cont %></b> 
                                             <% }%>
-                                        </div>
                                     </li>
                                     <% });%>
                                 </ul>
