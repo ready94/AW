@@ -1,15 +1,5 @@
 
-/*------------ Caracteristicas propias ------------------------*/
-
-#fondo{
-    margin-top: 0.5em;
-    max-width: 725px;
-    margin-left: auto;
-    margin-left: 20%;
-    text-align: left;
-    font-size: 20px;
-    font-family: 'VT323', monospace;
-}
+/*------------- PREGUNTA ----------------------------------*/
 
 #pregunta{
     margin: 1em 0.5em 0.5em 0.5em;
@@ -99,7 +89,7 @@
 }
 
 /*--------------------------------------------------------------------------------------------*/
-/*-------- respuestas --------------*/
+/*-------- RESPUESTAS --------------*/
 
 #visitas{
     width: 100%;
