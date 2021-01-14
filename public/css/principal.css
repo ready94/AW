@@ -30,14 +30,15 @@ header {
 }
 
 #cabecera{
-    display: inline-flex;
+    display: flex;
+    width: 100%;
 }
 
 #titulo {
-    
+    float: left;
+    width: 70%;
     padding: 30px;
-    font-size: 35px;
-    flex: left;
+    font-size: 35px; 
 }
 
 #titulo a{
@@ -47,11 +48,11 @@ header {
 }
 
 #login {
-    flex: right;
+    float: left;
+    width: 30%;
     text-align: center;
     border-left: solid 10px black;
     height: 150px;
-    margin-left: 150px;
 }
 
 #icon {
@@ -63,8 +64,9 @@ header {
 
 #usu {
     font-size: larger;
-    float: right;
     padding:20px;
+    display: block;
+    text-align: center;
 }
 
 #nick{
@@ -72,6 +74,7 @@ header {
     text-align: center;
     color: black;
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 .button {

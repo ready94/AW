@@ -328,6 +328,18 @@ function contadorTipo(medallas,categoria){
     return cont;
 }
 
+function hayMedalla(lista,merito){
+    var ok=false;
+    for(var i=0; i<lista.length; i++){
+        if(lista[i].merito==merito){
+            ok=true;
+            var pos=i;
+        }
+    }
+
+    return {ok,pos};
+}
+
 function medallero(medallas){
 
     var contBronce=contadorTipo(medallas,1);
@@ -339,13 +351,28 @@ function medallero(medallas){
 
     for(var i=0; i<medallas.length; i++){
        if(medallas[i].tipo==1){
-        bronce.push(medallas[i]);
+        var b=hayMedalla(bronce,medallas[i].merito);
+           if(b.ok){
+                bronce[b.pos].cont+=1;
+           }else{
+                bronce.push({merito:medallas[i].merito,cont:1});
+           }
        }
        else if(medallas[i].tipo==2){
-        plata.push(medallas[i]);
+        var p=hayMedalla(plata,medallas[i].merito);
+           if(p.ok){
+                plata[p.pos].cont+=1;
+           }else{
+                plata.push({merito:medallas[i].merito,cont:1});
+           }
        }
        else{
-        oro.push(medallas[i]);
+        var o=hayMedalla(oro,medallas[i].merito);
+           if(o.ok){
+                oro[o.pos].cont+=1;
+           }else{
+                oro.push({merito:medallas[i].merito,cont:1});
+           }
        }
     }
 
@@ -391,7 +418,7 @@ function perfil_usu(request,response,next){
                     else{
                         
 
-                        console.log(medallero(medallas));
+                        //console.log(medallero(medallas));
                         response.render("perfil_usu", { perfil: usuario, bio: bio,medallas: medallero(medallas) });
                     }
                 })

@@ -27,20 +27,20 @@
         
         <div id="fondo">
             <div id="estadisticas">
-                <div id="perfil">
-                    <img id="imagen_usu" src="/profile_img/<%= bio.imagen %>" >
-
-                    <div>
-                        <%= bio.nombre %>
-                    </div>
-                    <div>
-                        Miembro desde el <%= bio.fecha%>
-                    </div>
+                <div class="card">
+                    
+                        <img alt="Imagen Perfil" width="100" height="100" src="/profile_img/<%= bio.imagen %>" >
+                        <div class="container">
+                          <h4><b><%= bio.nombre %></b></h4> 
+                          <p><%= bio.fecha%></p> 
+                          
+                        </div>
+                    
                 </div>
 
                 <div id="perfil_ranking">
                     <div class="barra">
-                        Estadísticas
+                        <b>Estadísticas</b>
                     </div>
                     
                     <table>
@@ -61,17 +61,20 @@
 
             <div id="medallas">
                 <div class="barra">
-                    Medallas
+                    <b>Medallas</b>
                 </div>
                 <div class="grid_container">
                     
                             <div class="box">
-                                <div id="bronce">BRONCE <br> <%=medallas.contBronce %> </div>
+                                <div id="bronce"><b>BRONCE</b> <br> <%=medallas.contBronce %> </div>
                                 <ul>
                                     <% medallas.bronce.forEach(function(b){%>
                                     <li class="num_medallas">
                                         <div class="merito">
                                             <%=b.merito %>
+                                            <%if(b.cont>1){ %>
+                                                <b> x<%=b.cont %></b>
+                                            <% }%>
                                         </div>
                                     </li>
                                     <% });%>
@@ -80,12 +83,15 @@
                        
                         
                             <div class="box">
-                                <div id="plata">PLATA <br> <%=medallas.contPlata %></div>
+                                <div id="plata"><b>PLATA</b> <br> <%=medallas.contPlata %></div>
                                 <ul>
                                     <% medallas.plata.forEach(function(p){%>
                                     <li class="num_medallas">
                                         <div class="merito">
-                                            <%=p.merito %>
+                                            <%=p.merito%>
+                                            <%if(p.cont>1){ %>
+                                                <b> x<%=p.cont %></b>
+                                            <% }%>
                                         </div>
                                     </li>
                                     <% });%>
@@ -93,12 +99,15 @@
                             </div>
                         
                             <div class="box">
-                                <div id="oro">ORO <br> <%=medallas.contOro %></div>
+                                <div id="oro"><b>ORO</b> <br> <%=medallas.contOro %></div>
                                 <ul>
                                     <% medallas.oro.forEach(function(o){%>
                                     <li class="num_medallas">
                                         <div class="merito">
                                             <%=o.merito %>
+                                            <%if(o.cont>1){ %>
+                                               <b> x<%=o.cont %></b> 
+                                            <% }%>
                                         </div>
                                     </li>
                                     <% });%>
