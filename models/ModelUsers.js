@@ -80,7 +80,7 @@ class DAOUsers {
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario;"
+                const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario ORDER BY nombre ASC;"
                 
                 conexion.query(sql, function(err, resultado) {
                     if (err) {
@@ -235,7 +235,7 @@ class DAOUsers {
                 callback(err);
             else {
         
-                const sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta";   
+                const sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta ASC";   
             
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
