@@ -116,7 +116,7 @@ function crear_cuenta(request,response,next){
     if (request.file) 
         icon = request.file.filename;
     else
-        icon = "../img/icon" + getRandom(1, 10) + ".png";
+        icon = /*"../img/*/"icon" + getRandom(1, 10) + ".png";
 
     if (validarPass(password, password2)) {
         //Expresion regular para validar contraseña
