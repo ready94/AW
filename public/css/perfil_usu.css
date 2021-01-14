@@ -219,10 +219,20 @@ td{
     margin: 1em 0.5em 0.5em 0.5em;
 }
 
-#columnas{
-    margin: 1em 0.5em 0.5em 0.5em;
-    -webkit-column-count: 3; 
-    column-count: 3;
+/*---------- grid layout -------------------------------*/
+
+.grid_container {
+    position: relative;
+    margin-top:2em;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+    
+}
+
+.box{
+    list-style: none;
 }
 
 #oro{
@@ -256,4 +266,24 @@ td{
     border: solid 2px #724c32;
     background-color: #9E6136;
     text-align: center;
+}
+
+/*----------------meritos ----------------*/
+
+.num_medallas{
+    list-style: none;
+}
+
+.merito{
+    display: flex;
+    float: left;
+    width: 50%;
+    background-color:#c2a878;
+    border-radius: 10px;
+    border: 2px solid black;
+    color: #fff;
+    font-size: 15px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin: 0.25em 0.25em;
 }

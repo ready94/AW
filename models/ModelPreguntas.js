@@ -357,14 +357,14 @@ class DAOPreguntas{
         });
     }
 
-    insertarMedallaPregunta(id,fecha,merito,tipo,callback){
+    insertarMedallaPregunta(id,idUsu,merito,tipo,fecha,callback){
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
                 callback(err);
             else {
-                const sql = "INSERT INTO medallas_preguntas (id_pregunta,fecha,tipo,merito) VALUES (?,?,?,?)"; 
-                var para = [id, fecha, tipo, merito];
+                const sql = "INSERT INTO medallas_preguntas (id_pregunta,id_usuario,merito,tipo,fecha) VALUES (?,?,?,?,?)"; 
+                var para = [id, idUsu,merito,tipo,fecha];
 
                 conexion.query(sql, para,function (err, resultado) {
                     if (err)

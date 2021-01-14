@@ -131,7 +131,7 @@ class DAOUsers {
             if (err) {
                 callback(err);
             } else {
-                // devuelve el usuario entero cuyo email es el pasado por parametro
+                
                 var sql = 'SELECT * FROM usuario WHERE id_usuario = ?;';
                 var para = [idUsuario];
                 conexion.query(sql, para, function (err, resultado) {
@@ -139,7 +139,7 @@ class DAOUsers {
                     if (err) {
                         callback(err);
                     } else {
-                        console.log(resultado);
+                        //console.log(resultado);
                         callback(null, resultado);
 
                     }
@@ -260,40 +260,65 @@ class DAOUsers {
         });//END GET CONEXION
     }
 
+
+
     /*
     ****************************************************************************************************************************************************************
                 MEDALLAS
     ****************************************************************************************************************************************************************                                                                   
     */
 
-   /*getAllMedallas(id_usuario,callback){
-    this.pool.getConnection(function (err, conexion) {
+    getAllMedallas(id_usuario,callback){
+        this.pool.getConnection(function (error, conexion) {
 
-        if (err)
-            callback(err);
-        else {
+            if (error){ 
+                callback(error);
+            }   
+            else {
             
-            
-            conexion.query(sql, function (err, resultado) {
-                conexion.release();
-                if (err)
-                    callback(err);
-                else{
-                    let medallas_p=[];
-                    console.log(resultado);
-                    resultado.forEach(element => medallas_p.push({
-                        merito: element.merito,
-                        tipo: element.tipo
-                    }));
+                const sql="SELECT merito,tipo FROM medallas_preguntas WHERE id_usuario= ?;";
+                var para=[id_usuario];
+                conexion.query(sql,para, function (err, resultado) {
+                    
+                    if (err)
+                        callback(err);
+                    
+                    else{
+                        if (error) 
+                            callback(error);  
+                        else {
+                        
+                            const sql2="SELECT merito,tipo FROM medallas_respuestas WHERE id_usuario= ?;";
+                            var para2=[id_usuario];
+                            conexion.query(sql2,para2, function (err, resul) {
+                                conexion.release();
+                                if (err){
+                                    callback(err);
+                                }
+                                else{
+                                    let medallas=[];
+                                    resultado.forEach(element => medallas.push({
+                                        merito: element.merito,
+                                        tipo: element.tipo
+                                    }));
+                                    resul.forEach(element => medallas.push({
+                                        merito: element.merito,
+                                        tipo: element.tipo
+                                    }));
 
-                    callback(null, medallas_p);
-                }
+                                    callback(null, medallas);
+                                }
+                            });
+
+                        
+                        }
+                    }
                 
-            });//END QUERY                
+                });//END QUERY                
         
-        }
-    });//END GET CONEXION
-}*/
+            }
+        });//END GET CONEXION
+    }
 }
 
 module.exports = DAOUsers;

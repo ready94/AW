@@ -317,6 +317,41 @@ function filtrar_usuario(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
+function contadorTipo(medallas,categoria){
+    var cont=0;
+    medallas.forEach((m)=>{
+        if(m.tipo==categoria)
+            cont++;
+    })
+
+    
+    return cont;
+}
+
+function medallero(medallas){
+
+    var contBronce=contadorTipo(medallas,1);
+    let bronce=[];
+    var contPlata=contadorTipo(medallas,2);
+    let plata=[];
+    var contOro=contadorTipo(medallas,3);
+    let oro=[];
+
+    for(var i=0; i<medallas.length; i++){
+       if(medallas[i].tipo==1){
+        bronce.push(medallas[i]);
+       }
+       else if(medallas[i].tipo==2){
+        plata.push(medallas[i]);
+       }
+       else{
+        oro.push(medallas[i]);
+       }
+    }
+
+    return {contBronce,contPlata,contOro,bronce,plata,oro};
+}
+
 function perfil_usu(request,response,next){
     if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
@@ -329,18 +364,18 @@ function perfil_usu(request,response,next){
         };
 
         var id_usuario = request.params.idUsuario
-        daoUser.getUserByID(id_usuario, cb_getPreguntas);
-
-        function cb_getPreguntas(err, resultado) {
+        daoUser.getUserByID(id_usuario, function cb_getPreguntas(err, resultado) {
 
             if (err) {
                 next(err);
             } else {
-
+                
+                
                 var fecha = new Date(resultado[0].fecha_alta);
                 var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
-
+                
                 var bio = {
+                    id_usuario: resultado[0].id_usuario,
                     nombre: resultado[0].nombre,
                     imagen: resultado[0].imagen,
                     fecha:fechaForm,
@@ -349,9 +384,21 @@ function perfil_usu(request,response,next){
                     reputacion: resultado[0].reputacion
                 }
 
-                response.render("perfil_usu", { perfil: usuario, bio: bio });
+                daoUser.getAllMedallas(bio.id_usuario,function(error,medallas){
+                    if(error){
+                        next(error);
+                    }
+                    else{
+                        
+
+                        console.log(medallero(medallas));
+                        response.render("perfil_usu", { perfil: usuario, bio: bio,medallas: medallero(medallas) });
+                    }
+                })
+
+                
             }
-        }
+        })
     }
 }
 

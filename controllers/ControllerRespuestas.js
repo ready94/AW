@@ -160,7 +160,7 @@ function informacion_pregunta(request,response,next){
                 
                                                 var x = medallaVisitas(pregunta.visitas,medalla);
  
-                                                daoPreguntas.insertarMedallaPregunta(pregunta.id_pregunta,new Date(),x.texto,x.tipo,function(error,resultado){
+                                                daoPreguntas.insertarMedallaPregunta(pregunta.id_pregunta,pregunta.id_usuario,x.texto,x.tipo,new Date(),function(error,resultado){
                                                     if(error){
                                                         next(error); 
                                                     } else{
@@ -293,7 +293,7 @@ function votar_respuesta(request,response,next){
                         //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
                         var x = medallaRespuesta(voto,medalla);
                         if(x.ok == false){
-                            daoRespuestas.insertarMedallaRespuesta(id,new Date(),x.texto,x.tipo,function(error,resultado){
+                            daoRespuestas.insertarMedallaRespuesta(id,idUser,x.texto,x.tipo,new Date(),function(error,resultado){
                                 if(error)
                                     next(error); 
                             })

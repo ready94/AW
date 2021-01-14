@@ -432,7 +432,7 @@ function votar_pregunta(request,response,next){
                         //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
                         var x = medallaPregunta(voto,medalla);
                         if(x.ok == false){
-                            daoPreguntas.insertarMedallaPregunta(id,new Date(),x.texto,x.tipo,function(error,resultado){
+                            daoPreguntas.insertarMedallaPregunta(id,idUser,x.texto,x.tipo,new Date(),function(error,resultado){
                                 if(error){
                                     next(error); 
                                 }      

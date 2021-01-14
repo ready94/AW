@@ -84,19 +84,48 @@
                 <div class="barra">
                     Medallas
                 </div>
-                <div id="columnas">
-                    <div class="box">
-                        <div id="bronce">BRONCE </div>
-                        <div>Meritos</div>
-                    </div>
-                    <div class="box">
-                        <div id="plata">PLATA</div>
-                        <div>Meritos</div>
-                    </div>
-                    <div class="box">
-                        <div id="oro">ORO</div>
-                        <div>Meritos</div>
-                    </div>
+                <div class="grid_container">
+                    
+                            <div class="box">
+                                <div id="bronce">BRONCE <br> <%=medallas.contBronce %> </div>
+                                <ul>
+                                    <% medallas.bronce.forEach(function(b){%>
+                                    <li class="num_medallas">
+                                        <div class="merito">
+                                            <%=b.merito %>
+                                        </div>
+                                    </li>
+                                    <% });%>
+                                </ul>
+                            </div>
+                       
+                        
+                            <div class="box">
+                                <div id="plata">PLATA <br> <%=medallas.contPlata %></div>
+                                <ul>
+                                    <% medallas.plata.forEach(function(p){%>
+                                    <li class="num_medallas">
+                                        <div class="merito">
+                                            <%=p.merito %>
+                                        </div>
+                                    </li>
+                                    <% });%>
+                                </ul>
+                            </div>
+                        
+                            <div class="box">
+                                <div id="oro">ORO <br> <%=medallas.contOro %></div>
+                                <ul>
+                                    <% medallas.oro.forEach(function(o){%>
+                                    <li class="num_medallas">
+                                        <div class="merito">
+                                            <%=o.merito %>
+                                        </div>
+                                    </li>
+                                    <% });%>
+                                </ul>
+                            </div>
+                     
                 </div>
             </div>
 
