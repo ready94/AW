@@ -12,7 +12,7 @@ class DAOUsers {
             if (err) {
                 callback(new Error("Error de conexión a la base de datos correct"));
             } else {
-                const sql="SELECT * FROM usuario WHERE email = ? AND password = ?"
+                const sql="SELECT * FROM usuario WHERE email = ? AND password = ?;"
                 connection.query(sql, [email, password],function(err, rows) {
                         connection.release(); // devolver al pool la conexión
                         if (err) {
@@ -21,7 +21,7 @@ class DAOUsers {
                             if (rows.length === 0) {
                                 callback(null, false); //no está el usuario con el password proporcionado
                             } else {
-                                callback(null, true);
+                                callback(null, rows);
                             }
                         }
                     });
@@ -36,7 +36,7 @@ class DAOUsers {
                 callback(new Error("Error de conexión a la base de datos image"));
             } else {
                 const sql="SELECT imagen FROM usuario WHERE email = ?;"
-                connection.query(sql,[email],function(err, rows) {
+                connection.query(sql, [email], function (err, rows) {
                         connection.release(); // devolver al pool la conexión
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
@@ -44,7 +44,7 @@ class DAOUsers {
                             if (rows.length === 0) {
                                 callback(null, false); //no está el usuario con el password proporcionado
                             } else {
-                                callback(null, true);
+                                callback(null, rows);
                             }
                         }
                     });
