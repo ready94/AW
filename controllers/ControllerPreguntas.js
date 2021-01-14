@@ -122,13 +122,13 @@ function formular_pregunta(request,response,next){
 
         if (etiqueta != "") {
             var etiquetas = etiqueta.split("@");
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 6; i++) {
                 if (etiquetas[i] != "" && etiquetas[i] != undefined) {
                     aux.push(etiquetas[i]);
                 }
             }
         }
-
+        
         daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
 
         function cb_insertPregunta(err, resultado) {
