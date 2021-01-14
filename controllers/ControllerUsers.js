@@ -145,6 +145,8 @@ function crear_cuenta(request,response,next){
                 }
             }
         }
+    } else {
+        response.redirect("/usuarios/crear_cuenta.html");
     }
 }
 
