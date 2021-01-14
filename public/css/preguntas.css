@@ -1,5 +1,5 @@
 
-/*------------ Caracteristicas propias ------------------------*/
+/*------------ Caracteristicas PREGUNTAS ------------------------*/
 
 #fondo{
     margin-top: 0.5em;
@@ -23,6 +23,8 @@
     float:right;
 }
 
+/*----------------- PREGUNTA ---------------------*/
+
 .pregunta{
     margin: 1em 0.5em 0.5em 0.5em;
     width: 100%;
@@ -37,6 +39,8 @@
 .pregunta a{
     color: black;
 }
+
+/*********** parte de la informacion pregunta ****************/
 
 .info_pregunta{
     float: left;
@@ -90,7 +94,7 @@
     color: #fff;
 }
 
-/*----------------------------------------*/
+/*********** parte del usuario que pregunto ****************/
 
 .info_usu{
     justify-content: center;
