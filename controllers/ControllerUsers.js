@@ -45,8 +45,8 @@ function login(request, response, next){
     function cd_isUserCorrect(err, resultado, next) {
         if (err) 
             next(err);
-        else if (resultado.length != 0) {
-            request.session.usuario = email; 
+        else if (resultado.length != undefined && password == resultado[0].password) {
+            request.session.usuario = email;
             response.redirect("/usuarios/pag_principal.html");
         } 
         else 
