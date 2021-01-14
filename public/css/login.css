@@ -47,6 +47,12 @@ header{
     margin-bottom: 1em;
 }
 
+#error{
+    margin: 1em;
+    text-align: center;
+    color: red;
+    background-color: white;
+}
 
 form{
     width: 100%;

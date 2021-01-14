@@ -141,12 +141,15 @@ function crear_cuenta(request,response,next){
                 } else if (resultado.length != 0) {
                     response.redirect("/usuarios/login.html"); 
                 } else {
-                    response.redirect("/usuarios/crear_cuenta.html");
+                    response.render("crear_cuenta",{ errorMsg: "Contraseña no válida/Las constraseñas deben coincidir." });
                 }
             }
+        } else{
+            response.render("crear_cuenta",{ errorMsg: "Contraseña no válida/Las constraseñas deben coincidir." });        
         }
-    } else {
-        response.redirect("/usuarios/crear_cuenta.html");
+
+    } else{
+        response.render("crear_cuenta",{ errorMsg: "Contraseña no válida/Las constraseñas deben coincidir." });        
     }
 }
 
