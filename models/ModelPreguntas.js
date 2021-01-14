@@ -37,10 +37,9 @@ class DAOPreguntas{
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = "SELECT * FROM preguntas WHERE id_pregunta = ?;";
-                var para = [id];
+                const sql = "SELECT * FROM preguntas WHERE id_pregunta = ?;";
 
-                conexion.query(sql, para, function (err, resultado) {
+                conexion.query(sql,[id], function (err, resultado) {
                     conexion.release();
                     if (err) 
                         callback(err);
@@ -59,9 +58,9 @@ class DAOPreguntas{
             else {
             //contador de preguntas
             
-            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha, p.visitas,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_pregunta="+id+" ORDER BY p.fecha DESC;"; 
+            const sql = "SELECT p.id_pregunta, p.id_usuario, p.titulo, p.cuerpo,p.fecha, p.visitas,u.nombre,u.imagen FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE p.id_pregunta= ? ORDER BY p.fecha DESC;"; 
             
-                conexion.query(sql, function (err, resultado) {
+                conexion.query(sql, [id],function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
@@ -105,10 +104,9 @@ class DAOPreguntas{
             else {
                 //contador de preguntas
                 
-                const sql = "SELECT * FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario JOIN etiquetas AS e ON p.id_pregunta=e.id_pregunta AND e.etiqueta='"+etiqueta+"' ORDER BY p.fecha DESC;"; 
+                const sql = "SELECT * FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario JOIN etiquetas AS e ON p.id_pregunta=e.id_pregunta AND e.etiqueta= ? ORDER BY p.fecha DESC;"; 
                 
-                //const sql2="SELECT * FROM usuario AS u JOIN preguntas AS p ON p.id_usuario=u.id_usuario ORDER BY p.fecha;"; 
-                conexion.query(sql, function (err, resultado) {
+                conexion.query(sql,[etiqueta], function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
@@ -148,7 +146,7 @@ class DAOPreguntas{
                 callback(err);
             else {
 
-                const sql = 'INSERT INTO preguntas (id_usuario, titulo, cuerpo, fecha) VALUES (?, ?, ?, ?);';
+                const sql = "INSERT INTO preguntas (id_usuario, titulo, cuerpo, fecha) VALUES (?, ?, ?, ?);";
                
                 var para = [id_usuario, titulo, cuerpo, fecha];
 
@@ -157,9 +155,8 @@ class DAOPreguntas{
                         callback(err);
                     else {
                         const sql2 = "UPDATE usuario SET num_preguntas=num_preguntas+1 WHERE id_usuario=?;"
-                        var para2 = [id_usuario];
 
-                        conexion.query(sql2, para2, function (err, resultado) {
+                        conexion.query(sql2, [id_usuario], function (err, resultado) {
                             conexion.release();
                             if (err)
                                 callback(err);
@@ -179,7 +176,7 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql =  "SELECT count (*) as Total FROM preguntas;"; 
+                const sql =  "SELECT count (*) as Total FROM preguntas;"; 
                
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -199,10 +196,9 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                const sql =  "SELECT count (*) as TotalEtiquetas FROM etiquetas WHERE etiqueta= ?;"; 
-                var para = [etiqueta];
+                const sql =  "SELECT count (*) as TotalEtiquetas FROM etiquetas WHERE etiqueta= ?;";
                
-                conexion.query(sql,para, function (err, resultado) {
+                conexion.query(sql,[etiqueta], function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
@@ -219,7 +215,6 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
                 const sql =  "SELECT count (*) as TotalTexto FROM preguntas WHERE titulo LIKE '%"+texto+"%' OR cuerpo LIKE '%"+texto+"%';"; 
                
                 conexion.query(sql, function (err, resultado) {
@@ -239,8 +234,7 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
-                var sql =  "SELECT count (*) as TotalSinResponder FROM preguntas WHERE respuesta=FALSE;"; 
+                const sql =  "SELECT count (*) as TotalSinResponder FROM preguntas WHERE respuesta=FALSE;"; 
                
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -259,10 +253,10 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
-                var sql = "SELECT merito, tipo FROM medallas_preguntas WHERE id_pregunta=" + idPre + ";"; 
+            
+                const sql = "SELECT merito, tipo FROM medallas_preguntas WHERE id_pregunta= ?;"; 
                
-                conexion.query(sql, function (err, resultado) {
+                conexion.query(sql,[idPre], function (err, resultado) {
                     
                     if (err)
                         callback(err);
@@ -280,9 +274,9 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql ="UPDATE preguntas SET visitas="+visitas+" WHERE id_pregunta="+id+";"; 
+                const sql ="UPDATE preguntas SET visitas=? WHERE id_pregunta= ?;"; 
                
-                conexion.query(sql, function (err, resultado) {
+                conexion.query(sql,[visitas,id], function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
@@ -300,16 +294,15 @@ class DAOPreguntas{
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = "SELECT p.TotalPuntos, u.id_usuario, u.reputacion FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE id_pregunta = ?;";
-                var para = [id];
+                const sql = "SELECT p.TotalPuntos, u.id_usuario, u.reputacion FROM preguntas AS p JOIN usuario AS u ON p.id_usuario=u.id_usuario WHERE id_pregunta = ?;";
 
-                conexion.query(sql, para, function (err, resultado) {
+                conexion.query(sql, [id], function (err, resultado) {
                     if (err) 
                         callback(err);
                     else {
                         const sql2 = "SELECT m.tipo, m.merito FROM medallas_preguntas AS m JOIN preguntas AS p ON m.id_pregunta=p.id_pregunta WHERE m.id_pregunta=? ";
                         
-                        conexion.query(sql2,para,function(error,resul){
+                        conexion.query(sql2, [id],function(error,resul){
                             conexion.release();
 
                             if(error)
@@ -337,14 +330,14 @@ class DAOPreguntas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql ="UPDATE preguntas SET TotalPuntos=" + voto + " WHERE id_pregunta=" + id + ";"; 
-                conexion.query(sql, function (err, resultado) {
+                const sql ="UPDATE preguntas SET TotalPuntos=? WHERE id_pregunta=?;"; 
+                conexion.query(sql,[voto,id], function (err, resultado) {
                     
                     if (err)
                         callback(err);
                     else{
-                        var sql2 ="UPDATE usuario SET reputacion=" + reputacion + " WHERE id_usuario=" + idUser + ";"; 
-                        conexion.query(sql2, function (err, resultado) {
+                        const sql2 ="UPDATE usuario SET reputacion=? WHERE id_usuario=?;"; 
+                        conexion.query(sql2,[reputacion,idUser], function (err, resultado) {
                             conexion.release();
                             if (err)
                                 callback(err);
@@ -370,8 +363,8 @@ class DAOPreguntas{
                     if (err)
                         callback(err);
                     else{
-                        const sql2 = "DELETE FROM medallas_preguntas WHERE id_pregunta=" + id + " AND tipo=0;";
-                        conexion.query(sql2, para,function (err, resultado) {
+                        const sql2 = "DELETE FROM medallas_preguntas WHERE id_pregunta=? AND tipo=0;";
+                        conexion.query(sql2, [id],function (err, resultado) {
                             conexion.release();
                             if (err)
                                 callback(err);
@@ -396,10 +389,9 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                var sql = "SELECT * FROM etiquetas WHERE id_pregunta= ?";   
-                var para = [id_pregunta];
+                const sql = "SELECT * FROM etiquetas WHERE id_pregunta= ?";
 
-                conexion.query(sql,para, function (err, resultado) {
+                conexion.query(sql,[id_pregunta], function (err, resultado) {
                     if (err)
                         callback(err);
                     else
@@ -417,7 +409,7 @@ class DAOPreguntas{
                 callback(err);
             else {
             
-                var sql = "SELECT etiqueta, id_pregunta FROM etiquetas";   
+                const sql = "SELECT etiqueta, id_pregunta FROM etiquetas";   
                 
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -445,7 +437,7 @@ class DAOPreguntas{
                 callback(err);
             else {
 
-                var sql = 'INSERT INTO etiquetas (etiqueta, id_pregunta,id_usuario) VALUES (?, ?,?);';
+                const sql = "INSERT INTO etiquetas (etiqueta, id_pregunta,id_usuario) VALUES (?, ?,?);";
                 var para = [etiqueta, id_pregunta, id_usuario];
 
                 conexion.query(sql, para, function (err, resultado) {
@@ -465,7 +457,8 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                conexion.query("SELECT id_pregunta FROM preguntas ORDER BY id_pregunta DESC LIMIT 1;", function (err, resultado) {
+                const sql="SELECT id_pregunta FROM preguntas ORDER BY id_pregunta DESC LIMIT 1;";
+                conexion.query(sql, function (err, resultado) {
                     if (err)
                         callback(err);
                     else
@@ -482,8 +475,8 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                const sql= 'SELECT etiqueta FROM etiquetas WHERE etiqueta=' + etiqueta + "';'";
-                conexion.query(sql, function (err, resultado) {
+                const sql= "SELECT etiqueta FROM etiquetas WHERE etiqueta=?;";
+                conexion.query(sql,[etiqueta] ,function (err, resultado) {
                     if (err)
                         callback(err);
                     else 
@@ -500,8 +493,8 @@ class DAOPreguntas{
             if (err)
                 callback(err);
             else {
-                const sql = "SELECT id_pregunta FROM votacion_preguntas WHERE id_usuario=" + id_usuario + " AND id_pregunta=" + id_pregunta + ";";
-                conexion.query(sql, function (err, resultado) {
+                const sql = "SELECT id_pregunta FROM votacion_preguntas WHERE id_usuario= ? AND id_pregunta= ?;";
+                conexion.query(sql,[id_usuario,id_pregunta], function (err, resultado) {
                     if (err)
                         callback(err);
                     else 
@@ -519,10 +512,9 @@ class DAOPreguntas{
                 callback(err);
             else {
 
-                var sql = 'INSERT INTO votacion_preguntas (id_usuario, id_pregunta) VALUES (?, ?);';
-                var para = [id_usuario, id_pregunta];
+                const sql = "INSERT INTO votacion_preguntas (id_usuario, id_pregunta) VALUES (?, ?);";
 
-                conexion.query(sql, para, function (err, resultado) {
+                conexion.query(sql, [id_usuario, id_pregunta], function (err, resultado) {
                     if (err)
                         callback(err);
                     else

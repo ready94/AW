@@ -41,17 +41,15 @@ class DAORespuestas{
                         callback(err);
                     else{
                         const sql2 = "UPDATE preguntas SET respuesta=TRUE WHERE id_pregunta=? ;";
-                        var para2 = [idPre];
 
-                        conexion.query(sql2, para2, function (err, resultado) {
+                        conexion.query(sql2, [idPre], function (err, resultado) {
                             
                             if (err)
                                 callback(err);
                             else{
                                 const sql3 = "UPDATE usuario SET num_respuestas=num_respuestas+1 WHERE id_usuario=?;";
-                                var para3 = [idUsu];
 
-                                conexion.query(sql3, para3, function (err, resultado) {
+                                conexion.query(sql3, [idUsu], function (err, resultado) {
                                     conexion.release();
                                     if(err)
                                         callback(err);
@@ -74,9 +72,8 @@ class DAORespuestas{
             else {
             //contador de preguntas
                 const sql =  "SELECT count (*) as TotalRespuestas FROM respuestas WHERE id_pregunta=?;"; 
-                var para = [id];
 
-                conexion.query(sql, para, function (err, resultado) {
+                conexion.query(sql, [id], function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
@@ -94,16 +91,15 @@ class DAORespuestas{
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = "SELECT r.TotalPuntos, r.id_pregunta, u.id_usuario, u.reputacion FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario WHERE r.id_respuesta = ?;";
-                var para = [id];
+                const sql = "SELECT r.TotalPuntos, r.id_pregunta, u.id_usuario, u.reputacion FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario WHERE r.id_respuesta = ?;";
 
-                conexion.query(sql, para, function (err, resultado) {
+                conexion.query(sql,[id], function (err, resultado) {
                     if (err) {
                         callback(err);
                     } else {
                         const sql2 = "SELECT m.tipo, m.merito FROM medallas_respuestas AS m JOIN respuestas AS r ON m.id_respuesta=r.id_respuesta WHERE m.id_respuesta=? ";
                         
-                        conexion.query(sql2,para,function(error,resul){
+                        conexion.query(sql2,[id],function(error,resul){
                             conexion.release();
                             if(error)
                                 callback(error);
@@ -132,14 +128,14 @@ class DAORespuestas{
                 callback(err);
             else {
             //contador de preguntas
-                var sql = "UPDATE respuestas SET TotalPuntos=" + voto + " WHERE id_respuesta=" + idRes + ";"; 
-                conexion.query(sql, function (err, resultado) {
+                const sql = "UPDATE respuestas SET TotalPuntos= ? WHERE id_respuesta= ?;"; 
+                conexion.query(sql,[voto,idRes], function (err, resultado) {
                     
                     if (err)
                         callback(err);
                     else{
-                        var sql2 = "UPDATE usuario SET reputacion=" + reputacion + " WHERE id_usuario=" + idUser + ";"; 
-                        conexion.query(sql2, function (err, resultado) {
+                        const sql2 = "UPDATE usuario SET reputacion= ? WHERE id_usuario= ?;"; 
+                        conexion.query(sql2,[reputacion,idUser], function (err, resultado) {
                             conexion.release();
                             if (err)
                                 callback(err);
@@ -178,8 +174,8 @@ class DAORespuestas{
             if (err)
                 callback(err);
             else {
-                const sql = "SELECT id_respuesta FROM votacion_respuestas WHERE id_usuario=" + id_usuario + " AND id_respuesta=" + id_respuesta + ";";
-                conexion.query(sql, function (err, resultado) {
+                const sql = "SELECT id_respuesta FROM votacion_respuestas WHERE id_usuario= ? AND id_respuesta= ?;";
+                conexion.query(sql,[id_usuario,id_respuesta], function (err, resultado) {
                     if (err)
                         callback(err);
                     else 

@@ -12,8 +12,8 @@ class DAOUsers {
             if (err) {
                 callback(new Error("Error de conexión a la base de datos correct"));
             } else {
-                connection.query("SELECT * FROM usuario WHERE email = ? AND password = ?", [email, password],
-                    function(err, rows) {
+                const sql="SELECT * FROM usuario WHERE email = ? AND password = ?"
+                connection.query(sql, [email, password],function(err, rows) {
                         connection.release(); // devolver al pool la conexión
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
@@ -35,8 +35,8 @@ class DAOUsers {
             if (err) {
                 callback(new Error("Error de conexión a la base de datos image"));
             } else {
-                connection.query("SELECT imagen FROM usuario WHERE email = '" + email + "';",
-                    function(err, rows) {
+                const sql="SELECT imagen FROM usuario WHERE email = ?;"
+                connection.query(sql,[email],function(err, rows) {
                         connection.release(); // devolver al pool la conexión
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
@@ -58,9 +58,8 @@ class DAOUsers {
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = 'SELECT * FROM usuario WHERE email = ?;'
-                var para = [email]
-                conexion.query(sql, para, function(err, resultado) {
+                const sql = "SELECT * FROM usuario WHERE email = ?;";
+                conexion.query(sql, [email], function(err, resultado) {
                     conexion.release();
                     if (err) {
                         callback(err);
@@ -105,10 +104,10 @@ class DAOUsers {
                 callback(err);
             else {
             //contador de preguntas
-            
+            let like=nombre;
             const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario WHERE nombre LIKE %?% ;";
             
-                conexion.query(sql, function (err, resultado) {
+                conexion.query(sql,[like], function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
@@ -132,9 +131,8 @@ class DAOUsers {
                 callback(err);
             } else {
                 
-                var sql = 'SELECT * FROM usuario WHERE id_usuario = ?;';
-                var para = [idUsuario];
-                conexion.query(sql, para, function (err, resultado) {
+                const sql = "SELECT * FROM usuario WHERE id_usuario = ?;";
+                conexion.query(sql,[idUsuario], function (err, resultado) {
                     conexion.release();
                     if (err) {
                         callback(err);
@@ -158,7 +156,7 @@ class DAOUsers {
                 callback(err);
             } else {
                 // inserta un nuevo usuario en la base de datos con los datos del objeto "user"       
-                var sql = 'INSERT INTO usuario (nombre, email, password, imagen, fecha_alta, num_preguntas, num_respuestas, reputacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
+                const sql = "INSERT INTO usuario (nombre, email, password, imagen, fecha_alta, num_preguntas, num_respuestas, reputacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
                 var para = [user.nombre, user.email, user.password, user.imagen, user.fecha_alta, 0, 0, 0, 0];
 
                 conexion.query(sql, para, function(err, resultado) {
@@ -183,9 +181,9 @@ class DAOUsers {
                 callback(err);
             } else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
-                var sql = "SELECT reputacion FROM usuario WHERE id_usuario = ?;";
-                var para = [id];
-                conexion.query(sql, para, function (err, resultado) {
+                const sql = "SELECT reputacion FROM usuario WHERE id_usuario = ?;";
+                
+                conexion.query(sql,[id], function (err, resultado) {
                     conexion.release();
                     if (err) {
                         callback(err);
@@ -208,9 +206,9 @@ class DAOUsers {
             if (err)
                 callback(err);
             else {
-                var sql = "UPDATE usuario SET reputacion=" + reputacion + " WHERE id_usuario=" + id + ";";
+                const sql = "UPDATE usuario SET reputacion= ? WHERE id_usuario= ?;";
 
-                conexion.query(sql, function (err, resultado) {
+                conexion.query(sql,[reputacion,id], function (err, resultado) {
                     conexion.release();
                     if (err)
                         callback(err);
@@ -237,7 +235,7 @@ class DAOUsers {
                 callback(err);
             else {
         
-                var sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta";   
+                const sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta";   
             
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();
@@ -277,8 +275,7 @@ class DAOUsers {
             else {
             
                 const sql="SELECT merito,tipo FROM medallas_preguntas WHERE id_usuario= ?;";
-                var para=[id_usuario];
-                conexion.query(sql,para, function (err, resultado) {
+                conexion.query(sql,[id_usuario], function (err, resultado) {
                     
                     if (err)
                         callback(err);
@@ -289,8 +286,7 @@ class DAOUsers {
                         else {
                         
                             const sql2="SELECT merito,tipo FROM medallas_respuestas WHERE id_usuario= ?;";
-                            var para2=[id_usuario];
-                            conexion.query(sql2,para2, function (err, resul) {
+                            conexion.query(sql2,[id_usuario], function (err, resul) {
                                 conexion.release();
                                 if (err){
                                     callback(err);
