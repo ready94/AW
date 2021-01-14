@@ -15,7 +15,7 @@ body {
     margin: 0 auto;
     max-width: 1300px;
     min-height: 1000px;
-    overflow: hidden;
+    overflow-y: hidden;
 }
 
 #fondo{
@@ -42,7 +42,7 @@ body {
 }
 
 #mensaje{
-    font-size: 20px;
+    font-size: 24px;
     color: #5b3924;
 }
 

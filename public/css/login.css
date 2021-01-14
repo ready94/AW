@@ -78,6 +78,9 @@ input[type=text],input[type=file]{
     font-family: 'VT323', monospace;
 }
 .button:hover{
-    background-color:#eec170;
-    color:#fff
+    background-color:#eec270a6;
+    color:black;
+    border-radius:4px;
+    border:#5b3924 2px solid;
+
 }
