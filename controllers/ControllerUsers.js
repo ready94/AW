@@ -10,22 +10,6 @@ var pool = mysql.createPool(config.mysqlConfig);
 
 var daoUser = new modelUsers(pool);
 
-
-/*
-****************************************************************************************************************************************************************
-                TIENE QUE ESTAR LOGGEADO
-****************************************************************************************************************************************************************                                                                   
-*/
-
-function comprobarLogin(request, response, next) {
-
-    if (request.session.usuario) 
-        next();
-    else 
-        response.redirect("/usuarios/login.html");
-    
-}
-
 /*
 ****************************************************************************************************************************************************************
                 LOGGIN
@@ -116,7 +100,7 @@ function crear_cuenta(request,response,next){
     if (request.file) 
         icon = request.file.filename;
     else
-        icon = /*"../img/*/"icon" + getRandom(1, 10) + ".png";
+        icon = "icon" + getRandom(1, 10) + ".png";
 
     if (validarPass(password, password2)) {
         //Expresion regular para validar contraseña
@@ -179,7 +163,6 @@ function pag_principal(request,response,next){
                     imagen: resultado[0].imagen
                 };
                 
-
                 request.session.idUsuario = usuario.id;
                 request.session.nombre = usuario.nombre;
                 request.session.imagen = usuario.imagen;
@@ -203,71 +186,35 @@ function maxEtiquetas(etiquetas) {
     var insert = false;
     let max = [];
 
-    console.log("debuggeado:");
     for (var i = 0; i < etiquetas.length - 1; i++) {
-        console.log("etiqueta", etiquetas[i].etiqueta, "==", etiquetas[i + 1].etiqueta);
+       
         if (etiquetas[i].etiqueta == etiquetas[i + 1].etiqueta) {
-
-            console.log("id", etiquetas[i].id_usuario, "==", etiquetas[i + 1].id_usuario);
+           
             if (etiquetas[i].id_usuario == etiquetas[i + 1].id_usuario) {
                 cont += 1;
-                console.log("cont", cont, "> maximo", maximo);
+                
                 if (cont > maximo) {
                     maximo = cont;
                     if (!insert) {
                         insert = true;
-                        console.log(max);
                         max.push(etiquetas[i]);
                     }
                 }
             }
             else {
-                console.log("usu distinto");
                 maximo = 1;
                 cont = 1;
                 insert = false;
             }
         }
         else {
-            console.log("etiqueta distinta");
             cont = 1;
             insert = false;
         }
     }
 
-    console.log("fin");
     return max;
 }
-
-/*function maxEtiquetas(etiquetas){
-    
-    var cont = 1;
-    var maximo = 1;
-    let max = [];
-
-    for(var i = 1; i < etiquetas.length; i++){
-
-        if(etiquetas[i-1].etiqueta == etiquetas[i].etiqueta){
-            cont++;
-
-            if(etiquetas[i-1].id_usuario == etiquetas[i].id_usuario && cont > maximo){
-                max.push(etiquetas[i]);
-                maximo = cont;
-                cont = 1;
-            }
-            else{
-                //maximo = 1;
-                cont = 1;
-            }
-        }
-        else{
-            //maximo = 1;
-            cont = 1;
-        }
-    }
-
-    return max;
-}*/
 
 function usuarios(request,response,next){
     if (request.session.usuario == undefined) {
@@ -301,10 +248,8 @@ function usuarios(request,response,next){
 
                     if(error)
                         next(error);
-                    else{
-                        console.log("etiquetas: " , maxEtiquetas(etiqueta));
+                    else
                         response.render("usuarios", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta) }); 
-                    }
                 });       
             }
         });
@@ -374,7 +319,6 @@ function contadorTipo(medallas,categoria){
             cont++;
     })
 
-    
     return cont;
 }
 
@@ -447,7 +391,6 @@ function perfil_usu(request,response,next){
                 next(err);
             } else {
                 
-                
                 var fecha = new Date(resultado[0].fecha_alta);
                 var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
                 
@@ -466,19 +409,13 @@ function perfil_usu(request,response,next){
                         next(error);
                     }
                     else{
-                        
-
-                        //console.log(medallero(medallas));
                         response.render("perfil_usu", { perfil: usuario, bio: bio,medallas: medallero(medallas) });
                     }
                 })
-
-                
             }
         })
     }
 }
-
 
 module.exports={
     perfil_usu: perfil_usu,

@@ -3,97 +3,66 @@
 class DAOUsers {
 
     constructor(pool) {
-            this.pool = pool;
-        }
-        //Comprobar si el usuario es correcto
+        this.pool = pool;
+    }
+
     isUserCorrect(email, password, callback) {
 
         this.pool.getConnection(function(err, connection) {
-            if (err) {
+            if (err) 
                 callback(new Error("Error de conexión a la base de datos correct"));
-            } else {
+            else {
                 const sql="SELECT * FROM usuario WHERE email = ? AND password = ?;"
                 connection.query(sql, [email, password],function(err, rows) {
-                        connection.release(); // devolver al pool la conexión
-                        if (err) {
-                            callback(new Error("Error de acceso a la base de datos"));
-                        } else {
-                            if (rows.length === 0) {
-                                callback(null, false); //no está el usuario con el password proporcionado
-                            } else {
-                                callback(null, rows);
-                            }
-                        }
-                    });
-            }
-        });
-    }
-
-    // obtener el nombre del fichero que contiene la imagen de perfil de un usuario
-    getUserImageName(email, callback) {
-        this.pool.getConnection(function(err, connection) {
-            if (err) {
-                callback(new Error("Error de conexión a la base de datos image"));
-            } else {
-                const sql="SELECT imagen FROM usuario WHERE email = ?;"
-                connection.query(sql, [email], function (err, rows) {
-                        connection.release(); // devolver al pool la conexión
-                        if (err) {
-                            callback(new Error("Error de acceso a la base de datos"));
-                        } else {
-                            if (rows.length === 0) {
-                                callback(null, false); //no está el usuario con el password proporcionado
-                            } else {
-                                callback(null, rows);
-                            }
-                        }
-                    });
+                    connection.release();
+                    
+                    if (err) 
+                        callback(new Error("Error de acceso a la base de datos"));
+                    else {
+                        if (rows.length === 0) 
+                            callback(null, false); 
+                        else 
+                            callback(null, rows);
+                    }
+                });
             }
         });
     }
 
     getUser(email, callback) {
         this.pool.getConnection(function(err, conexion) {
-            if (err) {
+            if (err) 
                 callback(err);
-            } else {
+            else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
                 const sql = "SELECT * FROM usuario WHERE email = ?;";
                 conexion.query(sql, [email], function(err, resultado) {
                     conexion.release();
-                    if (err) {
+                    if (err) 
                         callback(err);
-                    } else {
-                        /*console.log(resultado);*/
+                    else 
                         callback(null, resultado);
-
-                    }
-                }); //END QUERY
-                
+                }); 
             }
-        }); //END GET CONEXION
+        }); 
     }
 
     getAllUser(callback){
         this.pool.getConnection(function(err, conexion) {
-            if (err) {
+            if (err) 
                 callback(err);
-            } else {
+            else {
                 // devuelve el usuario entero cuyo email es el pasado por parametro
                 const sql = "SELECT id_usuario,nombre,imagen,reputacion FROM usuario ORDER BY nombre ASC;"
                 
                 conexion.query(sql, function(err, resultado) {
-                    if (err) {
+                    if (err) 
                         callback(err);
-                    } else {
-                        /*console.log(resultado);*/
+                    else 
                         callback(null, resultado);
-
-                    }
-                }); //END QUERY
-                
+                }); 
             }
-        }); //END GET CONEXION
+        }); 
     }
 
     getUsuariosPorNombre(nombre, callback){
@@ -111,42 +80,30 @@ class DAOUsers {
                     conexion.release();
                     if (err)
                         callback(err);
-                    else{
-                        console.log(resultado);
-                        callback(null, resultado);
-
-                    }
-                        
-                });//END QUERY                
-                
+                    else
+                        callback(null, resultado);                        
+                });              
             }
-        });//END GET CONEXION
-
+        });
     }
-   
 
     getUserByID(idUsuario, callback) {
         this.pool.getConnection(function (err, conexion) {
-            if (err) {
+            if (err) 
                 callback(err);
-            } else {
+            else {
                 
                 const sql = "SELECT * FROM usuario WHERE id_usuario = ?;";
                 conexion.query(sql,[idUsuario], function (err, resultado) {
                     conexion.release();
-                    if (err) {
+                    if (err) 
                         callback(err);
-                    } else {
-                        //console.log(resultado);
+                    else 
                         callback(null, resultado);
-
-                    }
-                }); //END QUERY
-                
+                }); 
             }
-        }); //END GET CONEXION
+        });
     }
-
 
     insertUser(user, callback) {
 
@@ -161,18 +118,14 @@ class DAOUsers {
 
                 conexion.query(sql, para, function(err, resultado) {
                     conexion.release();
-                    if (err) {
+                    if (err) 
                         callback(err);
-                    } else {
-                        console.log(resultado)
+                    else 
                         callback(null, resultado);
-                    }
-                }); //END QUERY                
-                
+                });                
             }
-        }); //END GET CONEXION
-
-    } //END METODO
+        }); 
+    } 
 
     getReputacion(id, callback) {
         this.pool.getConnection(function (err, conexion) {
@@ -185,22 +138,16 @@ class DAOUsers {
                 
                 conexion.query(sql,[id], function (err, resultado) {
                     conexion.release();
-                    if (err) {
+                    if (err) 
                         callback(err);
-                    } else {
-                        console.log(resultado);
+                    else 
                         callback(null, resultado);
-
-                    }
-                }); //END QUERY
-
+                });
             }
-        }); //END GET CONEXION
+        }); 
     }
 
     actualizarReputacion(id, reputacion, callback) {
-        console.log("id de usuario: " + id);
-        console.log("reputacion: " + reputacion);
         this.pool.getConnection(function (err, conexion) {
 
             if (err)
@@ -212,14 +159,11 @@ class DAOUsers {
                     conexion.release();
                     if (err)
                         callback(err);
-                    else {
+                    else 
                         callback(null, resultado);
-                    }
-
-                });//END QUERY                
-
+                });               
             }
-        });//END GET CONEXION
+        });
     }
 
     /*
@@ -252,13 +196,10 @@ class DAOUsers {
                         callback(null, etiqueta);
                     }
                     
-                });//END QUERY                
-            
+                });               
             }
-        });//END GET CONEXION
+        });
     }
-
-
 
     /*
     ****************************************************************************************************************************************************************
@@ -269,9 +210,8 @@ class DAOUsers {
     getAllMedallas(id_usuario,callback){
         this.pool.getConnection(function (error, conexion) {
 
-            if (error){ 
+            if (error)
                 callback(error);
-            }   
             else {
             
                 const sql="SELECT merito,tipo FROM medallas_preguntas WHERE id_usuario= ?;";
@@ -279,24 +219,25 @@ class DAOUsers {
                     
                     if (err)
                         callback(err);
-                    
                     else{
                         if (error) 
                             callback(error);  
                         else {
                         
-                            const sql2="SELECT merito,tipo FROM medallas_respuestas WHERE id_usuario= ?;";
+                            const sql2 = "SELECT merito,tipo FROM medallas_respuestas WHERE id_usuario= ?;";
+                            
                             conexion.query(sql2,[id_usuario], function (err, resul) {
                                 conexion.release();
-                                if (err){
+                                if (err)
                                     callback(err);
-                                }
                                 else{
                                     let medallas=[];
+
                                     resultado.forEach(element => medallas.push({
                                         merito: element.merito,
                                         tipo: element.tipo
                                     }));
+
                                     resul.forEach(element => medallas.push({
                                         merito: element.merito,
                                         tipo: element.tipo
@@ -305,15 +246,11 @@ class DAOUsers {
                                     callback(null, medallas);
                                 }
                             });
-
-                        
                         }
                     }
-                
-                });//END QUERY                
-        
+                });               
             }
-        });//END GET CONEXION
+        });
     }
 }
 

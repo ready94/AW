@@ -6,13 +6,11 @@ const path = require("path");
 
 var modelRespuestas = require("../models/ModelRespuestas");
 var modelPreguntas = require("../models/ModelPreguntas");
-var modelUsuarios = require("../models/ModelUsers");
 
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoRespuestas = new modelRespuestas(pool);
 var daoPreguntas = new modelPreguntas(pool);
-var daoUsuarios = new modelUsuarios(pool);
 
 /*
 ****************************************************************************************************************************************************************

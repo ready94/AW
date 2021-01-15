@@ -11,7 +11,7 @@ class DAORespuestas{
             if (err)
                 callback(err);
             else {
-                //contador de preguntas
+
                 const sql = "SELECT r.id_respuesta, r.id_usuario, r.texto, r.fecha_respuesta, u.nombre, u.imagen FROM respuestas AS r JOIN usuario AS u ON r.id_usuario=u.id_usuario  WHERE id_pregunta=" + id + " ORDER BY r.fecha_respuesta DESC;"; 
 
                 conexion.query(sql, function (err, resultado) {
@@ -33,9 +33,9 @@ class DAORespuestas{
             else {
 
                 const sql = "INSERT INTO respuestas (id_pregunta,id_usuario,texto,fecha_respuesta) VALUES (?,?,?,?);"; 
-                var para = [idPre, idUsu, texto, fecha];
+                var params = [idPre, idUsu, texto, fecha];
 
-                conexion.query(sql,para, function (err, resultado) {
+                conexion.query(sql, params, function (err, resultado) {
                     
                     if (err)
                         callback(err);
@@ -70,7 +70,7 @@ class DAORespuestas{
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
+
                 const sql =  "SELECT count (*) as TotalRespuestas FROM respuestas WHERE id_pregunta=?;"; 
 
                 conexion.query(sql, [id], function (err, resultado) {
@@ -127,7 +127,7 @@ class DAORespuestas{
             if (err)
                 callback(err);
             else {
-            //contador de preguntas
+                
                 const sql = "UPDATE respuestas SET TotalPuntos= ? WHERE id_respuesta= ?;"; 
                 conexion.query(sql,[voto,idRes], function (err, resultado) {
                     

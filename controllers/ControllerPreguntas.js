@@ -5,13 +5,10 @@ var mysql = require("mysql");
 const path = require("path");
 
 var modelPreguntas = require("../models/ModelPreguntas");
-var modelUsuarios = require("../models/ModelUsers");
-
 
 var pool = mysql.createPool(config.mysqlConfig);
 
 var daoPreguntas = new modelPreguntas(pool);
-var daoUsuarios = new modelUsuarios(pool);
 
 /*
 ****************************************************************************************************************************************************************
@@ -41,8 +38,6 @@ function preguntas(request,response,next){
             imagen: request.session.imagen
         };
 
-        //----------- contador
-        var contador;
         daoPreguntas.getPreguntas(function (error, resultado) {
 
             if (error) {
@@ -66,7 +61,6 @@ function preguntas(request,response,next){
                     }
                     pregunta.push(aux);
                 })
-
 
                 daoPreguntas.getAllEtiquetas(function(error,etiqueta){
 
@@ -284,13 +278,8 @@ function filtrar_etiqueta(request,response,next){
                                 
                             }
                         })
-      
                     }
-
                 })
-                
-
-            
             }
         })
     }
