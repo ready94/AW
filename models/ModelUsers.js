@@ -235,7 +235,7 @@ class DAOUsers {
                 callback(err);
             else {
         
-                const sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY etiqueta ASC";   
+                const sql = "SELECT etiqueta, id_usuario FROM etiquetas ORDER BY id_usuario, etiqueta ASC";   
             
                 conexion.query(sql, function (err, resultado) {
                     conexion.release();

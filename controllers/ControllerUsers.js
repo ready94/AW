@@ -196,34 +196,78 @@ function pag_principal(request,response,next){
 ****************************************************************************************************************************************************************                                                                   
 */
 
-function maxEtiquetas(etiquetas){
+function maxEtiquetas(etiquetas) {
+
+    var cont = 1;
+    var maximo = 1;
+    var insert = false;
+    let max = [];
+
+    console.log("debuggeado:");
+    for (var i = 0; i < etiquetas.length - 1; i++) {
+        console.log("etiqueta", etiquetas[i].etiqueta, "==", etiquetas[i + 1].etiqueta);
+        if (etiquetas[i].etiqueta == etiquetas[i + 1].etiqueta) {
+
+            console.log("id", etiquetas[i].id_usuario, "==", etiquetas[i + 1].id_usuario);
+            if (etiquetas[i].id_usuario == etiquetas[i + 1].id_usuario) {
+                cont += 1;
+                console.log("cont", cont, "> maximo", maximo);
+                if (cont > maximo) {
+                    maximo = cont;
+                    if (!insert) {
+                        insert = true;
+                        console.log(max);
+                        max.push(etiquetas[i]);
+                    }
+                }
+            }
+            else {
+                console.log("usu distinto");
+                maximo = 1;
+                cont = 1;
+                insert = false;
+            }
+        }
+        else {
+            console.log("etiqueta distinta");
+            cont = 1;
+            insert = false;
+        }
+    }
+
+    console.log("fin");
+    return max;
+}
+
+/*function maxEtiquetas(etiquetas){
     
     var cont = 1;
     var maximo = 1;
     let max = [];
 
-    for(var i = 0; i < etiquetas.length-1; i++){
+    for(var i = 1; i < etiquetas.length; i++){
 
-        if(etiquetas[i].etiqueta == etiquetas[i+1].etiqueta){
+        if(etiquetas[i-1].etiqueta == etiquetas[i].etiqueta){
             cont++;
 
-            if(etiquetas[i].id_usuario == etiquetas[i+1].id_usuario && cont > maximo){
+            if(etiquetas[i-1].id_usuario == etiquetas[i].id_usuario && cont > maximo){
                 max.push(etiquetas[i]);
                 maximo = cont;
+                cont = 1;
             }
             else{
-                maximo = 1;
+                //maximo = 1;
                 cont = 1;
             }
         }
         else{
-            maximo = 1;
+            //maximo = 1;
             cont = 1;
         }
     }
 
     return max;
-}
+}*/
 
 function usuarios(request,response,next){
     if (request.session.usuario == undefined) {
