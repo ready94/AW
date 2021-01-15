@@ -95,8 +95,8 @@ app.use(function middlewareNotFound(request,response){
                 ERROR 500
 ****************************************************************************************************************************************************************                                                                   
 */
-app.use(function middlewareServerError(error,request,response,next){
+app.use(function middlewareServerError(request,response){
     response.status(500);
-    response.render("error500",{mensaje:error.message});
+    response.render("error500",{mensaje:request.message});
 });
 
