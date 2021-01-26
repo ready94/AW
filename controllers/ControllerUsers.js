@@ -144,9 +144,9 @@ function crear_cuenta(request,response,next){
 */
 
 function pag_principal(request,response,next){
-    if (request.session.usuario == undefined) {
+    /*if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-    } else {
+    } else {*/
 
         response.locals.email = request.session.usuario;
 
@@ -170,7 +170,7 @@ function pag_principal(request,response,next){
                 response.render("pag_principal", { perfil: usuario });
             }
         }
-    }
+    //}
 }
 
 /*

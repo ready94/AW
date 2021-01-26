@@ -28,9 +28,9 @@ function text_truncate(str, length, ending) {
 };
 
 function preguntas(request,response,next){
-    if (request.session.usuario == undefined) {
+    /*if (request.session.usuario == undefined) {
         response.redirect("/usuarios/login.html");
-    } else {
+    } else {*/
 
         var usuario = {
             id: request.session.idUsuario,
@@ -79,7 +79,7 @@ function preguntas(request,response,next){
                 })       
             }
         })
-    }
+   // }
 };
 
 /*
