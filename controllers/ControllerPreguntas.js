@@ -28,58 +28,54 @@ function text_truncate(str, length, ending) {
 };
 
 function preguntas(request,response,next){
-    /*if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {*/
+ 
+    var usuario = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
 
-        var usuario = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
+    daoPreguntas.getPreguntas(function (error, resultado) {
 
-        daoPreguntas.getPreguntas(function (error, resultado) {
+        if (error) {
+            next(error);
+        } else {
 
-            if (error) {
-                next(error);
-            } else {
+            let pregunta=[];
+            resultado.forEach((p) => {
+                
+                var fecha = new Date(p.fecha);
+                var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
-                let pregunta=[];
-                resultado.forEach((p) => {
-                    
-                    var fecha = new Date(p.fecha);
-                    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+                var aux = {
+                    id_pregunta: p.id_pregunta,
+                    id_usuario: p.id_usuario,
+                    titulo: p.titulo,
+                    cuerpo: text_truncate(p.cuerpo, 150),
+                    fecha: fechaForm,
+                    nombre: p.nombre,
+                    imagen: p.imagen
+                }
+                pregunta.push(aux);
+            })
 
-                    var aux = {
-                        id_pregunta: p.id_pregunta,
-                        id_usuario: p.id_usuario,
-                        titulo: p.titulo,
-                        cuerpo: text_truncate(p.cuerpo, 150),
-                        fecha: fechaForm,
-                        nombre: p.nombre,
-                        imagen: p.imagen
-                    }
-                    pregunta.push(aux);
-                })
+            daoPreguntas.getAllEtiquetas(function(error,etiqueta){
 
-                daoPreguntas.getAllEtiquetas(function(error,etiqueta){
-
-                    if(error)
-                        next(error);
-                    else{
-                        daoPreguntas.count(function (error, res) {
-                            if (error) 
-                                next(error);
-                            else{
-                                var contador = res[0].Total;
-                                response.render("preguntas", { perfil: usuario, pregunta: pregunta, etiqueta:etiqueta, contador:contador });
-                            }   
-                        })  
-                    }
-                })       
-            }
-        })
-   // }
+                if(error)
+                    next(error);
+                else{
+                    daoPreguntas.count(function (error, res) {
+                        if (error) 
+                            next(error);
+                        else{
+                            var contador = res[0].Total;
+                            response.render("preguntas", { perfil: usuario, pregunta: pregunta, etiqueta:etiqueta, contador:contador });
+                        }   
+                    })  
+                }
+            })       
+        }
+    })
 };
 
 /*
@@ -89,71 +85,65 @@ function preguntas(request,response,next){
 */
 
 function acceso_formular_pregunta(request,response){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
-
-        var usuario = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
-        response.render("formular_pregunta", { perfil: usuario });
-    }
+   
+    var usuario = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
+    response.render("formular_pregunta", { perfil: usuario });
+    
 }
 
 function formular_pregunta(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
-        var id_usuario= request.session.idUsuario;
-        var titulo = request.body.titulo;
-        var cuerpo = request.body.cuerpo;
-        var etiqueta = request.body.etiqueta;
-        var fecha = new Date();
+    
+    var id_usuario= request.session.idUsuario;
+    var titulo = request.body.titulo;
+    var cuerpo = request.body.cuerpo;
+    var etiqueta = request.body.etiqueta;
+    var fecha = new Date();
 
-        var aux = [];
+    var aux = [];
 
-        if (etiqueta != "") {
-            var etiquetas = etiqueta.split("@");
-            for (var i = 0; i < 6; i++) {
-                if (etiquetas[i] != "" && etiquetas[i] != undefined) {
-                    aux.push(etiquetas[i]);
-                }
+    if (etiqueta != "") {
+        var etiquetas = etiqueta.split("@");
+        for (var i = 0; i < 6; i++) {
+            if (etiquetas[i] != "" && etiquetas[i] != undefined) {
+                aux.push(etiquetas[i]);
             }
         }
-        
-        daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
+    }
+    
+    daoPreguntas.insertPregunta(request.session.idUsuario, titulo, cuerpo, fecha, cb_insertPregunta);
 
-        function cb_insertPregunta(err, resultado) {
-            if (err) {
-                next(err);
-            } else if (resultado.length != 0) {
-                if (aux.length > 0) {
+    function cb_insertPregunta(err, resultado) {
+        if (err) {
+            next(err);
+        } else if (resultado.length != 0) {
+            if (aux.length > 0) {
 
-                    daoPreguntas.getUltimoID(cb_getUltimoID);
+                daoPreguntas.getUltimoID(cb_getUltimoID);
 
-                    function cb_getUltimoID(err, res) {
-                        if (err) {
-                            next(err);
-                        } else if (res.length != 0) {
+                function cb_getUltimoID(err, res) {
+                    if (err) {
+                        next(err);
+                    } else if (res.length != 0) {
 
-                            var id = res[0].id_pregunta;
+                        var id = res[0].id_pregunta;
 
-                            for (var i = 0; i < aux.length; i++) {
-                                daoPreguntas.insertEtiqueta(aux[i], id,id_usuario, cb_insertEtiquetas);
+                        for (var i = 0; i < aux.length; i++) {
+                            daoPreguntas.insertEtiqueta(aux[i], id,id_usuario, cb_insertEtiquetas);
 
-                                function cb_insertEtiquetas(err, res2) {
-                                    if (err) {
-                                        next(err);
-                                    }
+                            function cb_insertEtiquetas(err, res2) {
+                                if (err) {
+                                    next(err);
                                 }
                             }
                         }
                     }
                 }
-                response.redirect("/preguntas/preguntas.html");
             }
+            response.redirect("/preguntas/preguntas.html");
         }
     }
 }
@@ -165,59 +155,56 @@ function formular_pregunta(request,response,next){
 */
 
 function sin_responder(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
+   
+    var usuario = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
 
-        var usuario = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
+    daoPreguntas.getPreguntasSinResponder(function (error, resultado) {
 
-        daoPreguntas.getPreguntasSinResponder(function (error, resultado) {
+        if (error) {
+            next(error);
+        } else {
 
-            if (error) {
-                next(error);
-            } else {
+            var pregunta = [];
 
-                var pregunta = [];
+            resultado.forEach((p) => {
+                        
+                var fecha = new Date(p.fecha);
+                var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
-                resultado.forEach((p) => {
-                          
-                    var fecha = new Date(p.fecha);
-                    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+                var aux = {
+                    id_pregunta: p.id_pregunta,
+                    id_usuario: p.id_usuario,
+                    titulo: p.titulo,
+                    cuerpo: text_truncate(p.cuerpo, 150),
+                    fecha: fechaForm,
+                    nombre: p.nombre,
+                    imagen: p.imagen
+                }
+                pregunta.push(aux);    
+            })
 
-                    var aux = {
-                        id_pregunta: p.id_pregunta,
-                        id_usuario: p.id_usuario,
-                        titulo: p.titulo,
-                        cuerpo: text_truncate(p.cuerpo, 150),
-                        fecha: fechaForm,
-                        nombre: p.nombre,
-                        imagen: p.imagen
-                    }
-                    pregunta.push(aux);    
-                })
+            daoPreguntas.getAllEtiquetas(function (err, etiqueta) {
 
-                daoPreguntas.getAllEtiquetas(function (err, etiqueta) {
-
-                    if (err) {
-                        next(err);
-                    } else {
-                        daoPreguntas.countSinResponder(function (error, res) {
-                            if (error) {
-                                next(error);
-                            } else {
-                                var contador = res[0].TotalSinResponder;
-                                response.render("sin_responder", { perfil: usuario, contador: contador, pregunta: pregunta, etiqueta:etiqueta });
-                            }
-                        })
-                    }
-                });
-            }
-        })
-    }
+                if (err) {
+                    next(err);
+                } else {
+                    daoPreguntas.countSinResponder(function (error, res) {
+                        if (error) {
+                            next(error);
+                        } else {
+                            var contador = res[0].TotalSinResponder;
+                            response.render("sin_responder", { perfil: usuario, contador: contador, pregunta: pregunta, etiqueta:etiqueta });
+                        }
+                    })
+                }
+            });
+        }
+    })
+    
 }
 
 /*
@@ -227,62 +214,59 @@ function sin_responder(request,response,next){
 */
 
 function filtrar_etiqueta(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
+   
+    var usuario = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
 
-        var usuario = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
+    var filtro = request.params.Etiqueta;
 
-        var filtro = request.params.Etiqueta;
+    daoPreguntas.getPreguntasByEtiqueta(filtro, function (error, resultado) {
+        if (error) {
+            next(error);
+        } else {
 
-        daoPreguntas.getPreguntasByEtiqueta(filtro, function (error, resultado) {
-            if (error) {
-                next(error);
-            } else {
+            var pregunta = [];
 
-                var pregunta = [];
+            resultado.forEach((p) => {
+                var fecha = new Date(p.fecha);
+                var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
-                resultado.forEach((p) => {
-                    var fecha = new Date(p.fecha);
-                    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+                var aux = {
+                    id_pregunta: p.id_pregunta,
+                    id_usuario: p.id_usuario,
+                    titulo: p.titulo,
+                    cuerpo: text_truncate(p.cuerpo, 150),
+                    fecha: fechaForm,
+                    nombre: p.nombre,
+                    imagen: p.imagen
+                }
+                pregunta.push(aux);
 
-                    var aux = {
-                        id_pregunta: p.id_pregunta,
-                        id_usuario: p.id_usuario,
-                        titulo: p.titulo,
-                        cuerpo: text_truncate(p.cuerpo, 150),
-                        fecha: fechaForm,
-                        nombre: p.nombre,
-                        imagen: p.imagen
-                    }
-                    pregunta.push(aux);
+            });
 
-                });
+            daoPreguntas.getAllEtiquetas(function (err, etiqueta) {
 
-                daoPreguntas.getAllEtiquetas(function (err, etiqueta) {
+                if (err) {
+                    next(err);
+                } else {
 
-                    if (err) {
-                        next(err);
-                    } else {
-
-                        daoPreguntas.countEtiquetas(request.params.Etiqueta, function (error, res) {
-                            if (error) {
-                                next(error);
-                            } else {
-                                var contador = res[0].TotalEtiquetas;
-                                response.render("filtrar_etiqueta", { perfil: usuario, etiqueta: etiqueta, contador: contador, pregunta: pregunta, filtro:filtro });
-                                
-                            }
-                        })
-                    }
-                })
-            }
-        })
-    }
+                    daoPreguntas.countEtiquetas(request.params.Etiqueta, function (error, res) {
+                        if (error) {
+                            next(error);
+                        } else {
+                            var contador = res[0].TotalEtiquetas;
+                            response.render("filtrar_etiqueta", { perfil: usuario, etiqueta: etiqueta, contador: contador, pregunta: pregunta, filtro:filtro });
+                            
+                        }
+                    })
+                }
+            })
+        }
+    })
+    
 }
 
 /*
@@ -292,60 +276,57 @@ function filtrar_etiqueta(request,response,next){
 */
 
 function filtrar_texto(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
+   
+    var usuario = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
 
-        var usuario = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
+    var texto = request.body.search;
 
-        var texto = request.body.search;
+    daoPreguntas.getPreguntasPorTexto(texto, function (error, resultado) {
 
-        daoPreguntas.getPreguntasPorTexto(texto, function (error, resultado) {
+        if (error) {
+            next(error);
+        } else {
 
-            if (error) {
-                next(error);
-            } else {
+            var pregunta = [];
 
-                var pregunta = [];
+            resultado.forEach((p) => {
+                var fecha = new Date(p.fecha);
+                var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 
-                resultado.forEach((p) => {
-                    var fecha = new Date(p.fecha);
-                    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+                var aux = {
+                    id_pregunta: p.id_pregunta,
+                    id_usuario: p.id_usuario,
+                    titulo: p.titulo,
+                    cuerpo: text_truncate(p.cuerpo, 150),
+                    fecha: fechaForm,
+                    nombre: p.nombre,
+                    imagen: p.imagen
+                }
+                pregunta.push(aux);
+            })
 
-                    var aux = {
-                        id_pregunta: p.id_pregunta,
-                        id_usuario: p.id_usuario,
-                        titulo: p.titulo,
-                        cuerpo: text_truncate(p.cuerpo, 150),
-                        fecha: fechaForm,
-                        nombre: p.nombre,
-                        imagen: p.imagen
-                    }
-                    pregunta.push(aux);
-                })
+            daoPreguntas.getAllEtiquetas(function (err, etiqueta) {
 
-                daoPreguntas.getAllEtiquetas(function (err, etiqueta) {
-
-                    if (err) {
-                        next(err);
-                    } else {
-                        daoPreguntas.countTexto(texto, function (error, res) {
-                            if (error) {
-                                next(error);
-                            } else {
-                                var contador = res[0].TotalTexto;                         
-                                response.render("filtrar_texto", { perfil: usuario, texto: texto, contador: contador, pregunta: pregunta, etiqueta:etiqueta });        
-                            }
-                        })
-                    }
-                })
-            }
-        });
-    }
+                if (err) {
+                    next(err);
+                } else {
+                    daoPreguntas.countTexto(texto, function (error, res) {
+                        if (error) {
+                            next(error);
+                        } else {
+                            var contador = res[0].TotalTexto;                         
+                            response.render("filtrar_texto", { perfil: usuario, texto: texto, contador: contador, pregunta: pregunta, etiqueta:etiqueta });        
+                        }
+                    })
+                }
+            })
+        }
+    });
+    
 }
 
 /*
@@ -393,67 +374,64 @@ function medallaPregunta(puntos,medalla){
 }
 
 function votar_pregunta(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
-        
-        var id = request.body.id;
+   
+    var id = request.body.id;
 
-        daoPreguntas.getDatosVotarPreguntas(id, function (error, datos) {
-            if (error) 
-                next(error);
-             else {
-                
-                var voto = datos.total_puntos;
-                var idUser = datos.id_usuario;
-                var reputacion = datos.reputacion;
-                let medalla = [];
+    daoPreguntas.getDatosVotarPreguntas(id, function (error, datos) {
+        if (error) 
+            next(error);
+            else {
+            
+            var voto = datos.total_puntos;
+            var idUser = datos.id_usuario;
+            var reputacion = datos.reputacion;
+            let medalla = [];
 
-                datos.resul.forEach(element => medalla.push({
-                    merito: element.merito,
-                    tipo: element.tipo
-                }));
+            datos.resul.forEach(element => medalla.push({
+                merito: element.merito,
+                tipo: element.tipo
+            }));
 
-                switch (request.body.voto) {
-                    case "ok":
-                        voto++;
-                        reputacion = reputacion + 10;
-                        //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
-                        var x = medallaPregunta(voto,medalla);
-                        if(x.ok == false){
-                            daoPreguntas.insertarMedallaPregunta(id,idUser,x.texto,x.tipo,new Date(),function(error,resultado){
-                                if(error){
-                                    next(error); 
-                                }      
-                            });
-                        }
-                        
-                        break;
-                    case "ko":
-                        voto--;
-                        reputacion = reputacion - 2;
-                        if (reputacion < 1) {
-                            reputacion = 1;
-                        }
-                        break;
-                }
-
-                daoPreguntas.insertVotacionPregunta(request.session.idUsuario, id, function(err, res){
-                    if (err)
-                        next(err);
-                    else {
-                        daoPreguntas.actualizarDatosPreguntas(id, idUser, voto, reputacion, function (error, resultado) {
-                            if (error)
-                                next(error);
-                            else {
-                                response.redirect("/respuestas/informacion_pregunta/" + id);
-                            }
+            switch (request.body.voto) {
+                case "ok":
+                    voto++;
+                    reputacion = reputacion + 10;
+                    //si es false, es decir, no existe ese merito para esa pregunta, se inserta en la base de datos
+                    var x = medallaPregunta(voto,medalla);
+                    if(x.ok == false){
+                        daoPreguntas.insertarMedallaPregunta(id,idUser,x.texto,x.tipo,new Date(),function(error,resultado){
+                            if(error){
+                                next(error); 
+                            }      
                         });
                     }
-                }); 
+                    
+                    break;
+                case "ko":
+                    voto--;
+                    reputacion = reputacion - 2;
+                    if (reputacion < 1) {
+                        reputacion = 1;
+                    }
+                    break;
             }
-        })
-    }
+
+            daoPreguntas.insertVotacionPregunta(request.session.idUsuario, id, function(err, res){
+                if (err)
+                    next(err);
+                else {
+                    daoPreguntas.actualizarDatosPreguntas(id, idUser, voto, reputacion, function (error, resultado) {
+                        if (error)
+                            next(error);
+                        else {
+                            response.redirect("/respuestas/informacion_pregunta/" + id);
+                        }
+                    });
+                }
+            }); 
+        }
+    })
+    
 }
 
 module.exports={
