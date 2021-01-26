@@ -144,33 +144,31 @@ function crear_cuenta(request,response,next){
 */
 
 function pag_principal(request,response,next){
-    /*if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {*/
+    
 
-        response.locals.email = request.session.usuario;
+    response.locals.email = request.session.usuario;
 
-        daoUser.getUser(response.locals.email, cb_getUser);
+    daoUser.getUser(response.locals.email, cb_getUser);
 
-        function cb_getUser(error, resultado) {
-            if (error) {
-                next(error);
-            } else {
+    function cb_getUser(error, resultado) {
+        if (error) {
+            next(error);
+        } else {
 
-                var usuario = { 
-                    id: resultado[0].id_usuario,
-                    nombre: resultado[0].nombre,
-                    imagen: resultado[0].imagen
-                };
-                
-                request.session.idUsuario = usuario.id;
-                request.session.nombre = usuario.nombre;
-                request.session.imagen = usuario.imagen;
+            var usuario = { 
+                id: resultado[0].id_usuario,
+                nombre: resultado[0].nombre,
+                imagen: resultado[0].imagen
+            };
+            
+            request.session.idUsuario = usuario.id;
+            request.session.nombre = usuario.nombre;
+            request.session.imagen = usuario.imagen;
 
-                response.render("pag_principal", { perfil: usuario });
-            }
+            response.render("pag_principal", { perfil: usuario });
         }
-    //}
+    }
+    
 }
 
 /*
@@ -217,43 +215,41 @@ function maxEtiquetas(etiquetas) {
 }
 
 function usuarios(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
+   
 
-        var perfil = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
+    var perfil = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
 
-        daoUser.getAllUser(function(error,resultado){
-            if (error) {
-                next(error);
-            } else {
+    daoUser.getAllUser(function(error,resultado){
+        if (error) {
+            next(error);
+        } else {
 
-                let usuario = [];
-                resultado.forEach((u) => {
-                    
-                    var aux = {
-                        id_usuario: u.id_usuario,
-                        nombre: u.nombre,
-                        imagen: u.imagen,
-                        reputacion: u.reputacion
-                    }
-                    usuario.push(aux);
-                })
+            let usuario = [];
+            resultado.forEach((u) => {
+                
+                var aux = {
+                    id_usuario: u.id_usuario,
+                    nombre: u.nombre,
+                    imagen: u.imagen,
+                    reputacion: u.reputacion
+                }
+                usuario.push(aux);
+            })
 
-                daoUser.getAllEtiquetas(function(error,etiqueta){
+            daoUser.getAllEtiquetas(function(error,etiqueta){
 
-                    if(error)
-                        next(error);
-                    else
-                        response.render("usuarios", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta) }); 
-                });       
-            }
-        });
-    }
+                if(error)
+                    next(error);
+                else
+                    response.render("usuarios", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta) }); 
+            });       
+        }
+    });
+    
 }
 
 /*
@@ -263,47 +259,45 @@ function usuarios(request,response,next){
 */
 
 function filtrar_usuario(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
+   
 
-        var perfil = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
+    var perfil = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
 
-        var nombre = request.body.searchUsu;
+    var nombre = request.body.searchUsu;
 
-        daoUser.getUsuariosPorNombre(nombre, function (error, resultado) {
+    daoUser.getUsuariosPorNombre(nombre, function (error, resultado) {
 
-            if (error) {
-                next(error);
-            } else {
+        if (error) {
+            next(error);
+        } else {
 
-                let usuario = [];
-                resultado.forEach((u) => {
-                    
-                    var aux = {
-                        id_usuario: u.id_usuario,
-                        nombre: u.nombre,
-                        imagen: u.imagen,
-                        reputacion: u.reputacion
-                    }
-                    usuario.push(aux);
-                });
+            let usuario = [];
+            resultado.forEach((u) => {
+                
+                var aux = {
+                    id_usuario: u.id_usuario,
+                    nombre: u.nombre,
+                    imagen: u.imagen,
+                    reputacion: u.reputacion
+                }
+                usuario.push(aux);
+            });
 
-                daoUser.getAllEtiquetas(function(error,etiqueta){
+            daoUser.getAllEtiquetas(function(error,etiqueta){
 
-                    if(error)
-                        next(error);
-                    else{
-                        response.render("filtrar_nombre_usu", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta),nombre:nombre }); 
-                    }
-                });
-            }
-        });
-    }
+                if(error)
+                    next(error);
+                else{
+                    response.render("filtrar_nombre_usu", { perfil: perfil,usuario:usuario, etiqueta:maxEtiquetas(etiqueta),nombre:nombre }); 
+                }
+            });
+        }
+    });
+    
 }
 
 /*
@@ -374,47 +368,45 @@ function medallero(medallas){
 }
 
 function perfil_usu(request,response,next){
-    if (request.session.usuario == undefined) {
-        response.redirect("/usuarios/login.html");
-    } else {
+   
 
-        var usuario = {
-            id: request.session.idUsuario,
-            nombre: request.session.nombre,
-            imagen: request.session.imagen
-        };
+    var usuario = {
+        id: request.session.idUsuario,
+        nombre: request.session.nombre,
+        imagen: request.session.imagen
+    };
 
-        var id_usuario = request.params.idUsuario
-        daoUser.getUserByID(id_usuario, function cb_getPreguntas(err, resultado) {
+    var id_usuario = request.params.idUsuario
+    daoUser.getUserByID(id_usuario, function cb_getPreguntas(err, resultado) {
 
-            if (err) {
-                next(err);
-            } else {
-                
-                var fecha = new Date(resultado[0].fecha_alta);
-                var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
-                
-                var bio = {
-                    id_usuario: resultado[0].id_usuario,
-                    nombre: resultado[0].nombre,
-                    imagen: resultado[0].imagen,
-                    fecha:fechaForm,
-                    preguntas: resultado[0].num_preguntas,
-                    respuestas: resultado[0].num_respuestas,
-                    reputacion: resultado[0].reputacion
-                }
-
-                daoUser.getAllMedallas(bio.id_usuario,function(error,medallas){
-                    if(error){
-                        next(error);
-                    }
-                    else{
-                        response.render("perfil_usu", { perfil: usuario, bio: bio,medallas: medallero(medallas) });
-                    }
-                })
+        if (err) {
+            next(err);
+        } else {
+            
+            var fecha = new Date(resultado[0].fecha_alta);
+            var fechaForm = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+            
+            var bio = {
+                id_usuario: resultado[0].id_usuario,
+                nombre: resultado[0].nombre,
+                imagen: resultado[0].imagen,
+                fecha:fechaForm,
+                preguntas: resultado[0].num_preguntas,
+                respuestas: resultado[0].num_respuestas,
+                reputacion: resultado[0].reputacion
             }
-        })
-    }
+
+            daoUser.getAllMedallas(bio.id_usuario,function(error,medallas){
+                if(error){
+                    next(error);
+                }
+                else{
+                    response.render("perfil_usu", { perfil: usuario, bio: bio,medallas: medallero(medallas) });
+                }
+            })
+        }
+    })
+    
 }
 
 module.exports={
